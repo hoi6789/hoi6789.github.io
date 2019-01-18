@@ -70,7 +70,7 @@ function begin() {
 				}
 		}
 	}
-	for(i = 0; i < players.length; i++) {
+	/*for(i = 0; i < players.length; i++) {
 	switch(players[i]) {
 		case "kris":
 			activeAllyID.push(1);
@@ -79,7 +79,7 @@ function begin() {
 				case 0: ctx.drawImage(imgKrisIdle, 10, 10);
 			}
 	}
-	}
+	}*/
 }
 function buttonAttack() {
 	if(navigation == "all") {
