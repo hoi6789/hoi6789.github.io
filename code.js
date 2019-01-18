@@ -25,7 +25,7 @@ imgKrisIdle.src = "https://vignette.wikia.nocookie.net/deltarune/images/0/04/Kri
 var kris = {
 	id: 1,
 	name: "Kris",
-	health: 12,
+	health: 9,
 	atk: 6,
 	def: 6,
 	matk: 2,
@@ -55,7 +55,7 @@ function begin() {
 				break;
 			case "rabbick":
 				activeDataID.push(1);
-				activeDataHP.push(Math.ceil(Math.pow(scalemult, levelHostile[i]) * rabbick.health));
+				activeDataHP.push(rabbick.health * scalemult ^ levelHostile[i]);
 				switch(i) {
 					case 0: document.getElementById("enemy1").innerHTML = "<img src='https://vignette.wikia.nocookie.net/deltarune/images/7/7c/Rabbick_battle.png/revision/latest?cb=20181102085001' alt='rabbick'>";
 				break;
@@ -179,5 +179,5 @@ function navUpdate() {
 }
 
 function slash(attack, level, target, basepower) {
-	activeDataHP[target] -= Math.ceil(attack * Math.pow(scalemult, levelPassive[level]) * basepower);
+	activeDataHP[target] -= (attack * scalemult ^ levelPassive[level]) * basepower;
 }
