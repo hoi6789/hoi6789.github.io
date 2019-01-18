@@ -1,0 +1,45 @@
+span#player1 {
+	position: relative;
+  left: 15%;
+	top: 30%;
+}
+span#player2 {
+	position: relative;
+  left: 15%;
+	top: 50%;
+}
+span#player3 {
+	position: relative;
+  left: 15%;
+	top: 70%;
+}
+span#enemy1 {
+	position: relative;
+	float: right;
+  right: 15%;
+	top: 30%;
+}
+span#enemy2 {
+	position: relative;
+	float: right;
+  right: 15%;
+	top: 40%;
+}
+span#enemy3 {
+	position: relative;
+	float: right;
+  right: 15%;
+	top: 50%;
+}
+span#enemy4 {
+	position: relative;
+	float: right;
+  right: 15%;
+	top: 60%;
+}
+span#enemy5 {
+	position: relative;
+	float: right;
+  right: 15%;
+	top: 70%;
+}
