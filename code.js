@@ -5,6 +5,7 @@ var prereq = "";
 var levelHostile = [0, 3, 0, 3, 0];
 var levelPassive = [3, 3, 3];
 var scalemult = 1.6;
+var players = ["kris"];
 var wavecounter = 0;
 var wavecount = 1;
 var wave1 = ["null", "rabbick", "null", "rabbick", "null"];
@@ -13,6 +14,13 @@ var wave3 = [];
 
 var activeDataID = [];
 var activeDataHP = [];
+var activeAllyID = [];
+var activeAllyHP = [];
+
+var canvas = document.getElementById("myCanvas");
+var ctx = canvas.getContext("2d");
+var imgKrisIdle = new Image();   // Create new img element
+imgKrisIdle.src = "https://vignette.wikia.nocookie.net/deltarune/images/0/04/Kris_battle_fight.gif/revision/latest?cb=20181102012100";
 
 var kris = {
 	id: 1,
@@ -62,7 +70,6 @@ function begin() {
 				}
 		}
 	}
-<<<<<<< HEAD
 	/*for(i = 0; i < players.length; i++) {
 	switch(players[i]) {
 		case "kris":
@@ -73,8 +80,6 @@ function begin() {
 			}
 	}
 	}*/
-=======
->>>>>>> parent of 2922f0b... initialize code now can initialize players
 }
 function buttonAttack() {
 	if(navigation == "all") {
