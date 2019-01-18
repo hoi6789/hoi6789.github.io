@@ -1,3 +1,6 @@
+body {
+  background-color: darkgray;
+}
 span#player1 {
 	position: relative;
   left: 15%;
