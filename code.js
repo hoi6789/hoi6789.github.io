@@ -5,6 +5,7 @@ var prereq = "";
 var levelHostile = [0, 3, 0, 3, 0];
 var levelPassive = [3, 3, 3];
 var scalemult = 1.6;
+var players = ["kris"];
 var wavecounter = 0;
 var wavecount = 1;
 var wave1 = ["null", "rabbick", "null", "rabbick", "null"];
@@ -15,11 +16,18 @@ var iolis = 0;
 
 var activeDataID = [];
 var activeDataHP = [];
+var activeAllyID = [];
+var activeAllyHP = [];
+
+var canvas = document.getElementById("myCanvas");
+var ctx = canvas.getContext("2d");
+var imgKrisIdle = new Image();   // Create new img element
+imgKrisIdle.src = "https://vignette.wikia.nocookie.net/deltarune/images/0/04/Kris_battle_fight.gif/revision/latest?cb=20181102012100";
 
 var kris = {
 	id: 1,
 	name: "Kris",
-	health: 9,
+	health: 12,
 	atk: 6,
 	def: 6,
 	matk: 2,
@@ -29,15 +37,15 @@ var kris = {
 };
 
 var rabbick = {
-	id : 1,
-	name : "Rabbick",
-	health : 8,
-	atk : 3,
-	def : 3,
-	matk : 3,
-	mdef : 3,
-	acc : 3,
-	evd : 3
+	id: 1,
+	name: "Rabbick",
+	health: 8,
+	atk: 3,
+	def: 3,
+	matk: 3,
+	mdef: 3,
+	acc: 3,
+	evd: 3
 };
 function begin() {
 	turn = 1;
@@ -49,10 +57,7 @@ function begin() {
 				break;
 			case "rabbick":
 				activeDataID.push(1);
-				activeDataHP.push(rabbick.health * scalemult ^ levelHostile[i]);
-				console.log(Math.pow(3, 4));
-				//console.log(scalemult);
-				//console.log(levelHostile[i]);
+				activeDataHP.push(Math.ceil(Math.pow(scalemult, levelHostile[i]) * rabbick.health));
 				switch(i) {
 					case 0: document.getElementById("enemy1").innerHTML = "<img src='https://vignette.wikia.nocookie.net/deltarune/images/7/7c/Rabbick_battle.png/revision/latest?cb=20181102085001' alt='rabbick'>";
 				break;
@@ -67,6 +72,16 @@ function begin() {
 				}
 		}
 	}
+	/*for(i = 0; i < players.length; i++) {
+	switch(players[i]) {
+		case "kris":
+			activeAllyID.push(1);
+			activeAllyHP.push(Math.ceil(Math.pow(scalemult, levelPassive[i]) * kris.health));
+			switch(i) {
+				case 0: ctx.drawImage(imgKrisIdle, 10, 10);
+			}
+	}
+	}*/
 }
 function buttonAttack() {
 	if(navigation == "all") {
@@ -166,5 +181,5 @@ function navUpdate() {
 }
 
 function slash(attack, level, target, basepower) {
-	activeDataHP[target] -= (attack * scalemult ^ levelPassive[level]) * basepower;
+	activeDataHP[target] -= Math.ceil(attack * Math.pow(scalemult, levelPassive[level]) * basepower);
 }
