@@ -6,6 +6,7 @@ var levelHostile = [0, 3, 0, 3, 0];
 var levelPassive = [3, 3, 3];
 var scalemult = 1.6;
 var players = ["kris"];
+var activePlayer = 0;
 var wavecounter = 0;
 var wavecount = 1;
 var wave1 = ["null", "rabbick", "null", "rabbick", "null"];
@@ -16,8 +17,14 @@ var iolis = 0;
 
 var activeDataID = [];
 var activeDataHP = [];
+var foe1Status = [];
+var foe2Status = [];
+var foe3Status = [];
+var foe4Status = [];
+var foe5Status = [];
 var activeAllyID = [];
 var activeAllyHP = [];
+var ally1Status = [];
 
 /*var canvas = document.getElementById("myCanvas");
 var ctx = canvas.getContext("2d");
@@ -48,7 +55,7 @@ var rabbick = {
 	evd: 3
 };
 function begin() {
-	turn = 1;
+	activePlayer = 1;
 	for(i = 0; i < wave1.length; i++) {
 		switch(wave1[i]) {
 			case "null":
@@ -90,6 +97,18 @@ function buttonAttack() {
 	prereq = "attack";
 		navUpdate();
 	}
+	if(navigation == "tactics") {
+	if(activePlayer == 1) {
+		statusSelf(ally1Status, "defend", 1, "yote");
+		navUpdate();
+	}
+	}
+}
+function buttonTactics() {
+	if(navigation == "all") {
+		navigation = "tactics";
+		navUpdate();
+	}
 }
 function buttonCancel() {
 	if(navigation == "cancel") {
@@ -101,9 +120,9 @@ function buttonCancel() {
 
 function select1() {
 	if(select == 1) {
-		if(turn == 1) {
+		if(activePlayer == 1) {
 			if(prereq == "attack") {
-				slash(kris.atk, 0, 0, 0.4);
+				slash(kris.atk, kris.acc, 0, 0, 0.4);
 				select = 0;
 				navigation = "all";
 				navUpdate();
@@ -115,7 +134,7 @@ function select2() {
 	if(select == 1) {
 		if(turn == 1) {
 			if(prereq == "attack") {
-				slash(kris.atk, 0, 1, 0.4);
+				slash(kris.atk, kris.acc, 0, 1, 0.4);
 				select = 0;
 				navigation = "all";
 				navUpdate();
@@ -127,7 +146,7 @@ function select3() {
 	if(select == 1) {
 		if(turn == 1) {
 			if(prereq == "attack") {
-				slash(kris.atk, 0, 2, 0.4);
+				slash(kris.atk, kris.acc, 0, 2, 0.4);
 				select = 0;
 				navigation = "all";
 				navUpdate();
@@ -139,7 +158,7 @@ function select4() {
 	if(select == 1) {
 		if(turn == 1) {
 			if(prereq == "attack") {
-				slash(kris.atk, 0, 3, 0.4);
+				slash(kris.atk, kris.acc, 0, 3, 0.4);
 				select = 0;
 				navigation = "all";
 				navUpdate();
@@ -151,7 +170,7 @@ function select5() {
 	if(select == 1) {
 		if(turn == 1) {
 			if(prereq == "attack") {
-				slash(kris.atk, 0, 4, 0.4);
+				slash(0, kris.atk, kris.acc, 0, 4, 0.4);
 				select = 0;
 				navigation = "all";
 				navUpdate();
@@ -180,6 +199,31 @@ function navUpdate() {
 	document.getElementById("target5").innerHTML = activeDataHP[4];
 }
 
-function slash(attack, level, target, basepower) {
-	activeDataHP[target] -= Math.ceil(attack * Math.pow(scalemult, levelPassive[level]) * basepower);
+function slash(id, attack, accuracy, level, target, basepower) {
+	activeDataHP[target] -= function damage(id, attack, accuracy, level, target, basepower, "none", "none", 0, "none", 0, 0, "physical", 1)
+}
+function statusSelf(player, status, length, animation) {
+	for(i = 0; i < length; i++) {
+	player.push(status);
+	}
+}
+function damage(id, attack, accuracy, level, target, basepower, element, status, chance, count, debuff, amp, type, acc) {
+	var hurt = Math.ceil(attack * Math.pow(scalemult, levelPassive[level]) * basepower * 2.5) 
+	switch(activeDataID[target]) {
+		case 0: def = 0;
+		break;
+		case 1: if(type == "physical") {
+			var def = rabbick.def * Math.pow(scalemult, levelHostile[target]);
+		}
+		if(type == "magical") {
+			var def = rabbick.mdef * Math.pow(scalemult, levelHostile[target]);
+		}
+		var evade = rabbick.evade;
+		break;
+	}
+	var dodge = (accuracy * acc) / evade;
+	var dodgecheck = Math.random();
+	if(dodgecheck > dodge) {
+		hurt = 0;
+	}
 }
