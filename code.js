@@ -19,10 +19,10 @@ var activeDataHP = [];
 var activeAllyID = [];
 var activeAllyHP = [];
 
-var canvas = document.getElementById("myCanvas");
+/*var canvas = document.getElementById("myCanvas");
 var ctx = canvas.getContext("2d");
 var imgKrisIdle = new Image();   // Create new img element
-imgKrisIdle.src = "https://vignette.wikia.nocookie.net/deltarune/images/0/04/Kris_battle_fight.gif/revision/latest?cb=20181102012100";
+imgKrisIdle.src = "https://vignette.wikia.nocookie.net/deltarune/images/0/04/Kris_battle_fight.gif/revision/latest?cb=20181102012100"; */
 
 var kris = {
 	id: 1,
