@@ -11,6 +11,8 @@ var wave1 = ["null", "rabbick", "null", "rabbick", "null"];
 var wave2 = [];
 var wave3 = [];
 
+var iolis = 0;
+
 var activeDataID = [];
 var activeDataHP = [];
 
