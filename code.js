@@ -117,60 +117,11 @@ function buttonCancel() {
 		navUpdate();
 	}
 }
-
-function select1() {
+function select(target) {
 	if(select == 1) {
 		if(activePlayer == 1) {
 			if(prereq == "attack") {
-				slash(kris.atk, kris.acc, 0, 0, 0.4);
-				select = 0;
-				navigation = "all";
-				navUpdate();
-			}
-		}
-	}
-}
-function select2() {
-	if(select == 1) {
-		if(turn == 1) {
-			if(prereq == "attack") {
-				slash(kris.atk, kris.acc, 0, 1, 0.4);
-				select = 0;
-				navigation = "all";
-				navUpdate();
-			}
-		}
-	}
-}
-function select3() {
-	if(select == 1) {
-		if(turn == 1) {
-			if(prereq == "attack") {
-				slash(kris.atk, kris.acc, 0, 2, 0.4);
-				select = 0;
-				navigation = "all";
-				navUpdate();
-			}
-		}
-	}
-}
-function select4() {
-	if(select == 1) {
-		if(turn == 1) {
-			if(prereq == "attack") {
-				slash(kris.atk, kris.acc, 0, 3, 0.4);
-				select = 0;
-				navigation = "all";
-				navUpdate();
-			}
-		}
-	}
-}
-function select5() {
-	if(select == 1) {
-		if(turn == 1) {
-			if(prereq == "attack") {
-				slash(0, kris.atk, kris.acc, 0, 4, 0.4);
+				slash(kris.atk, kris.acc, 0, target, 0.4);
 				select = 0;
 				navigation = "all";
 				navUpdate();
