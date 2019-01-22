@@ -5,6 +5,7 @@ var prereq = "";
 var levelHostile = [0, 3, 0, 3, 0];
 var levelPassive = [3, 3, 3];
 var scalemult = 1.6;
+var foescalemult
 var players = ["kris"];
 var activePlayer = 0;
 var wavecounter = 0;
@@ -25,12 +26,15 @@ var foe5Status = [];
 var activeAllyID = [];
 var activeAllyHP = [];
 var ally1Status = [];
+var ally1Equips = ["woodBlade", "ironArmor"];
+var ally1EquipsLevels = [2, 1];
 
 /*var canvas = document.getElementById("myCanvas");
 var ctx = canvas.getContext("2d");
 var imgKrisIdle = new Image();   // Create new img element
 imgKrisIdle.src = "https://vignette.wikia.nocookie.net/deltarune/images/0/04/Kris_battle_fight.gif/revision/latest?cb=20181102012100"; */
 
+//Players
 var kris = {
 	id: 1,
 	name: "Kris",
@@ -41,6 +45,29 @@ var kris = {
 	mdef: 6,
 	acc: 4,
 	evd: 2
+};
+
+//Equips
+var woodBlade = {
+	health: [1, 1, 1, 1, 1],
+	atk: [1.1, 1.2, 1.2, 1.3, 1.4],
+	def: [1, 1, 1.05, 1.05, 1.1],
+	matk: [1, 1, 1, 1, 1],
+	mdef: [1, 1, 1, 1, 1],
+	acc: [1.05, 1.1, 1.15, 1.2, 1.25],
+	evd: [1, 1, 1, 1, 1]
+}
+//Enemies
+var none = {
+	id: 0,
+	name: "iolis",
+	health: 0,
+	atk: 0,
+	def: 0,
+	matk: 0,
+	mdef: 0,
+	acc: 0,
+	evd: 1
 };
 
 var rabbick = {
@@ -64,7 +91,7 @@ function begin() {
 				break;
 			case "rabbick":
 				activeDataID.push(1);
-				activeDataHP.push(Math.ceil(Math.pow(scalemult, levelHostile[i]) * rabbick.health));
+				activeDataHP.push(Math.ceil(Math.pow(foescalemult, levelHostile[i]) * rabbick.health));
 				switch(i) {
 				case 0: document.getElementById("enemy1").innerHTML = "<img src='https://vignette.wikia.nocookie.net/deltarune/images/7/7c/Rabbick_battle.png/revision/latest?cb=20181102085001' alt='rabbick'>";
 				break;
@@ -150,28 +177,41 @@ function navUpdate() {
 	document.getElementById("target5").innerHTML = activeDataHP[4];
 }
 
-function slash(id, attack, accuracy, level, target, basepower) {
-	activeDataHP[target] -= function damage(id, attack, accuracy, level, target, basepower, "none", "none", 0, "none", 0, 0, "physical", 1)
+function slash(attack, accuracy, user, target, basepower) {
+	activeDataHP[target] -= function damage(attack, accuracy, user, target, basepower, ["none"], [0], ["none"], [0], [0], ["none"], [0], "physical", 1)
 }
 function statusSelf(player, status, length, animation) {
 	for(i = 0; i < length; i++) {
 	player.push(status);
 	}
 }
-function damage(id, attack, accuracy, level, target, basepower, element, status, chance, count, debuff, amp, type, acc) {
-	var hurt = Math.ceil(attack * Math.pow(scalemult, levelPassive[level]) * basepower * 2.5) 
-	switch(activeDataID[target]) {
-		case 0: def = 0;
-		break;
-		case 1: if(type == "physical") {
-			var def = rabbick.def * Math.pow(scalemult, levelHostile[target]);
-		}
-		if(type == "magical") {
-			var def = rabbick.mdef * Math.pow(scalemult, levelHostile[target]);
-		}
-		var evade = rabbick.evade;
+function damage(attack, accuracy, user, target, basepower, element, percent, status, chance, count, debuff, amp, type, acc) {
+	//Order of operations: find base damage, calculate elemental interaction and stab damage, apply buffs/status for attack, calculate defence, apply buffs/status for defence, reduce damage, calculate evade, apply evade/accuracy buffs, calculate to hit, inflict debuffs, inflict damage
+	var hurt = Math.ceil(attack * Math.pow(scalemult, levelPassive[user]) * basepower) 
+	switch(user) {
+		case 0: var buffs = ally1Status;
 		break;
 	}
+	switch(activeDataID[target]) {
+		case 0: var tgt = none;
+		break;
+		case 1: var tgt = rabbick;
+		break;
+	}
+	element.forEach(rescheck());
+	function rescheck() {
+		switch() {
+		       
+		       }
+	}
+	if(type == "physical") {
+			var def = tgt.def * Math.pow(foescalemult, levelHostile[target]);
+		}
+	if(type == "magical") {
+			var def = tgt.mdef * Math.pow(foescalemult, levelHostile[target]);
+		}
+	var evade = tgt.evade;
+	
 	var dodge = (accuracy * acc) / evade;
 	var dodgecheck = Math.random();
 	if(dodgecheck > dodge) {
