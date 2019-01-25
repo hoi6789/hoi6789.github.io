@@ -79,7 +79,7 @@ var woodBlade = {
 var none = {
 	id: 0,
 	name: "iolis",
-	img: "img src='https://vignette.wikia.nocookie.net/danball/images/5/5d/Nope.png/revision/latest?cb=20111126172440'>",
+	img: "<img src='https://vignette.wikia.nocookie.net/danball/images/5/5d/Nope.png/revision/latest?cb=20111126172440'>",
 	health: 0,
 	atk: 0,
 	def: 0,
@@ -224,7 +224,7 @@ function statusSelf(player, status, length, animation) {
 }
 function damage(attack, accuracy, user, target, basepower, element, percent, status, chance, count, debuff, amp, type, acc) {
 	//Order of operations: find base damage, calculate elemental interaction and stab damage, apply buffs/status for attack, calculate defence, apply buffs/status for defence, reduce damage, calculate evade, apply evade/accuracy buffs, calculate to hit, inflict debuffs, inflict damage
-	var hurt = Math.ceil(attack * Math.pow(scalemult, levelPassive[user]) * basepower) 
+	var hurt = Math.ceil(attack * Math.pow(scalemult, levelPassive[user]) * basepower);
 	switch(user) {
 		case 0: var buffs = ally1Status;
 		break;
@@ -249,4 +249,5 @@ function damage(attack, accuracy, user, target, basepower, element, percent, sta
 	if(dodgecheck > dodge) {
 		hurt = 0;
 	}
+	return 4;
 }
