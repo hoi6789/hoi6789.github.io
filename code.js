@@ -42,8 +42,7 @@ var kris = {
 	acc: 4,
 	evd: 2
 };
-<<<<<<< HEAD
-=======
+
 var defaultequip = {
 	health: [1, 1, 1, 1, 1],
 	atk: [1, 1, 1, 1, 1],
@@ -86,7 +85,6 @@ var none = {
 	acc: 0,
 	evd: 1
 };
->>>>>>> parent of ef84e9e... Revert "Update code.js"
 
 var rabbick = {
 	id: 1,
@@ -221,15 +219,6 @@ function statusSelf(player, status, length, animation) {
 	player.push(status);
 	}
 }
-<<<<<<< HEAD
-function damage(id, attack, accuracy, level, target, basepower, element, status, chance, count, debuff, amp, type, acc) {
-	var hurt = Math.ceil(attack * Math.pow(scalemult, levelPassive[level]) * basepower * 2.5) 
-	switch(activeDataID[target]) {
-		case 0: def = 0;
-		break;
-		case 1: if(type == "physical") {
-			var def = rabbick.def * Math.pow(scalemult, levelHostile[target]);
-=======
 function damage(attack, accuracy, user, target, basepower, element, percent, status, chance, count, debuff, amp, type, acc) {
 	//Order of operations: find base damage, calculate elemental interaction and stab damage, apply buffs/status for attack, calculate defence, apply buffs/status for defence, reduce damage, calculate evade, apply evade/accuracy buffs, calculate to hit, inflict debuffs, inflict damage
 	var hurt = Math.ceil(attack * Math.pow(scalemult, levelPassive[user]) * basepower);
@@ -246,7 +235,6 @@ function damage(attack, accuracy, user, target, basepower, element, percent, sta
 	}
 	if(type == "physical") {
 			var def = tgt.def * Math.pow(foescalemult, levelHostile[target]);
->>>>>>> parent of ef84e9e... Revert "Update code.js"
 		}
 		if(type == "magical") {
 			var def = rabbick.mdef * Math.pow(scalemult, levelHostile[target]);
