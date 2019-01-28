@@ -5,7 +5,6 @@ var prereq = "";
 var levelHostile = [0, 3, 0, 3, 0];
 var levelPassive = [3, 3, 3];
 var scalemult = 1.6;
-var foescalemult = 1.8;
 var players = ["kris"];
 var activePlayer = 0;
 var wavecounter = 0;
@@ -152,7 +151,7 @@ function navUpdate() {
 }
 
 function slash(id, attack, accuracy, level, target, basepower) {
-	activeDataHP[target] -= function damage(id, attack, accuracy, level, target, basepower, 'none', 'none', 0, 0, 'none', 0, 'physical', 1);
+	activeDataHP[target] -= function damage(id, attack, accuracy, level, target, basepower, "none", "none", 0, "none", 0, 0, "physical", 1)
 }
 function statusSelf(player, status, length, animation) {
 	for(i = 0; i < length; i++) {
@@ -160,7 +159,7 @@ function statusSelf(player, status, length, animation) {
 	}
 }
 function damage(id, attack, accuracy, level, target, basepower, element, status, chance, count, debuff, amp, type, acc) {
-	var hurt = Math.ceil(attack * Math.pow(scalemult, levelPassive[level]) * basepower * 2.5);
+	var hurt = Math.ceil(attack * Math.pow(scalemult, levelPassive[level]) * basepower * 2.5) 
 	switch(activeDataID[target]) {
 		case 0: def = 0;
 		break;
@@ -178,5 +177,4 @@ function damage(id, attack, accuracy, level, target, basepower, element, status,
 	if(dodgecheck > dodge) {
 		hurt = 0;
 	}
-	return 4;
 }
