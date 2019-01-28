@@ -5,7 +5,7 @@ var prereq = "";
 var levelHostile = [0, 3, 0, 3, 0];
 var levelPassive = [3, 3, 3];
 var scalemult = 1.6;
-var foescalemult
+var foescalemult = 1.8;
 var players = ["kris"];
 var activePlayer = 0;
 var wavecounter = 0;
