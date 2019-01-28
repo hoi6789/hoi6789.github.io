@@ -6,7 +6,10 @@ var levelHostile = [0, 3, 0, 3, 0];
 var levelPassive = [3, 3, 3];
 var scalemult = 1.6;
 <<<<<<< HEAD
+<<<<<<< HEAD
 var foescalemult = 1.8;
+=======
+>>>>>>> parent of 50bf027... Update code.js
 =======
 >>>>>>> parent of 50bf027... Update code.js
 var players = ["kris"];
