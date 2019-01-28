@@ -9,7 +9,7 @@ var players = ["kris"];
 var activePlayer = 0;
 var wavecounter = 0;
 var wavecount = 1;
-var wave1 = ["null", "rabbick", "null", "rabbick", "null"];
+var wave1 = [none, rabbick, none, rabbick, none];
 var wave2 = [];
 var wave3 = [];
 
@@ -42,10 +42,56 @@ var kris = {
 	acc: 4,
 	evd: 2
 };
+<<<<<<< HEAD
+=======
+var defaultequip = {
+	health: [1, 1, 1, 1, 1],
+	atk: [1, 1, 1, 1, 1],
+	def: [1, 1, 1, 1, 1],
+	matk: [1, 1, 1, 1, 1],
+	mdef: [1, 1, 1, 1, 1],
+	acc: [1, 1, 1, 1, 1],
+	evd: [1, 1, 1, 1, 1],
+	fireRes: [1, 1, 1, 1, 1],
+	thunderRes: [1, 1, 1, 1, 1],
+	iceRes: [1, 1, 1, 1, 1],
+	earthRes: [1, 1, 1, 1, 1],
+	bioRes: [1, 1, 1, 1, 1],
+	bombRes: [1, 1, 1, 1, 1],
+	waterRes: [1, 1, 1, 1, 1],
+	windRes: [1, 1, 1, 1, 1],
+	holyRes: [1, 1, 1, 1, 1],
+	darkRes: [1, 1, 1, 1, 1]
+}
+//Equips
+var woodBlade = {
+	health: [1, 1, 1, 1, 1],
+	atk: [1.1, 1.2, 1.2, 1.3, 1.4],
+	def: [1, 1, 1.05, 1.05, 1.1],
+	matk: [1, 1, 1, 1, 1],
+	mdef: [1, 1, 1, 1, 1],
+	acc: [1.05, 1.1, 1.15, 1.2, 1.25],
+	evd: [1, 1, 1, 1, 1]
+}
+//Enemies
+var none = {
+	id: 0,
+	name: "iolis",
+	img: "img src='https://vignette.wikia.nocookie.net/danball/images/5/5d/Nope.png/revision/latest?cb=20111126172440'>",
+	health: 0,
+	atk: 0,
+	def: 0,
+	matk: 0,
+	mdef: 0,
+	acc: 0,
+	evd: 1
+};
+>>>>>>> parent of ef84e9e... Revert "Update code.js"
 
 var rabbick = {
 	id: 1,
 	name: "Rabbick",
+	img: "<img src='https://vignette.wikia.nocookie.net/deltarune/images/7/7c/Rabbick_battle.png/revision/latest?cb=20181102085001' alt='rabbick'>",
 	health: 8,
 	atk: 3,
 	def: 3,
@@ -54,10 +100,27 @@ var rabbick = {
 	acc: 3,
 	evd: 3
 };
+function levelscalefoe(hp, level) {
+	return Math.ciel(Math.pow(foescalemult, level, hp));
+}
 function begin() {
 	activePlayer = 1;
 	for(i = 0; i < wave1.length; i++) {
-		switch(wave1[i]) {
+		switch(i) {
+				case 0: document.getElementById("enemy1").innerHTML = wave1[i].img;
+				break;
+				case 1: document.getElementById("enemy2").innerHTML = wave1[i].img;
+				break;
+				case 2: document.getElementById("enemy3").innerHTML = wave1[i].img;
+				break;
+				case 3: document.getElementById("enemy4").innerHTML = wave1[i].img;
+				break;
+				case 4: document.getElementById("enemy5").innerHTML = wave1[i].img;
+				break;
+				}
+		activeDataID.push(1);
+		activeDataHP.push(levelscalefoe(wave1[i].health, levelhostile[i]));
+		/*switch(wave1[i]) {
 			case "null":
 				activeDataID.push(0);
 				activeDataHP.push(0);
@@ -77,7 +140,7 @@ function begin() {
 				case 4: document.getElementById("enemy5").innerHTML = "<img src='https://vignette.wikia.nocookie.net/deltarune/images/7/7c/Rabbick_battle.png/revision/latest?cb=20181102085001' alt='rabbick'>";
 				break;
 				}
-		}
+		}*/
 	}
 	for(i = 0; i < players.length; i++) {
 	switch(players[i]) {
@@ -158,6 +221,7 @@ function statusSelf(player, status, length, animation) {
 	player.push(status);
 	}
 }
+<<<<<<< HEAD
 function damage(id, attack, accuracy, level, target, basepower, element, status, chance, count, debuff, amp, type, acc) {
 	var hurt = Math.ceil(attack * Math.pow(scalemult, levelPassive[level]) * basepower * 2.5) 
 	switch(activeDataID[target]) {
@@ -165,6 +229,24 @@ function damage(id, attack, accuracy, level, target, basepower, element, status,
 		break;
 		case 1: if(type == "physical") {
 			var def = rabbick.def * Math.pow(scalemult, levelHostile[target]);
+=======
+function damage(attack, accuracy, user, target, basepower, element, percent, status, chance, count, debuff, amp, type, acc) {
+	//Order of operations: find base damage, calculate elemental interaction and stab damage, apply buffs/status for attack, calculate defence, apply buffs/status for defence, reduce damage, calculate evade, apply evade/accuracy buffs, calculate to hit, inflict debuffs, inflict damage
+	var hurt = Math.ceil(attack * Math.pow(scalemult, levelPassive[user]) * basepower) 
+	switch(user) {
+		case 0: var buffs = ally1Status;
+		break;
+	}
+	var tgt = wave1[target];
+	element.forEach(rescheck());
+	function rescheck() {
+		switch() {
+		       
+		       }
+	}
+	if(type == "physical") {
+			var def = tgt.def * Math.pow(foescalemult, levelHostile[target]);
+>>>>>>> parent of ef84e9e... Revert "Update code.js"
 		}
 		if(type == "magical") {
 			var def = rabbick.mdef * Math.pow(scalemult, levelHostile[target]);
