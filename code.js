@@ -228,11 +228,11 @@ function damage(attack, accuracy, user, target, basepower, element, percent, sta
 	}
 	var tgt = wave1[target];
 	element.forEach(rescheck());
-	function rescheck() {
+	/*function rescheck() {
 		switch() {
 		       
 		       }
-	}
+	}*/
 	if(type == "physical") {
 			var def = tgt.def * Math.pow(foescalemult, levelHostile[target]);
 		}
