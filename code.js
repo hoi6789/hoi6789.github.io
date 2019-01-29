@@ -9,7 +9,7 @@ var players = ["kris"];
 var activePlayer = 0;
 var wavecounter = 0;
 var wavecount = 1;
-var wave1 = [none, rabbick, none, rabbick, none];
+var wave1 = [rabbick, rabbick, none, rabbick, none];
 var wave2 = [];
 var wave3 = [];
 
