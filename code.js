@@ -240,8 +240,6 @@ function damage(attack, accuracy, user, target, basepower, element, percent, sta
 			var def = rabbick.mdef * Math.pow(scalemult, levelHostile[target]);
 		}
 		var evade = rabbick.evade;
-		break;
-	}
 	var dodge = (accuracy * acc) / evade;
 	var dodgecheck = Math.random();
 	if(dodgecheck > dodge) {
