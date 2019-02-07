@@ -1,36 +1,3 @@
-var navigation = "all";
-var turn = 0;
-var select = 0;
-var prereq = "";
-var levelHostile = [0, 3, 0, 3, 0];
-var levelPassive = [3, 3, 3];
-var scalemult = 1.6;
-var players = ["kris"];
-var activePlayer = 0;
-var wavecounter = 0;
-var wavecount = 1;
-var wave1 = [rabbick, rabbick, none, rabbick, none];
-var wave2 = [];
-var wave3 = [];
-
-var iolis = 0;
-
-var activeDataID = [];
-var activeDataHP = [];
-var foe1Status = [];
-var foe2Status = [];
-var foe3Status = [];
-var foe4Status = [];
-var foe5Status = [];
-var activeAllyID = [];
-var activeAllyHP = [];
-var ally1Status = [];
-
-/*var canvas = document.getElementById("myCanvas");
-var ctx = canvas.getContext("2d");
-var imgKrisIdle = new Image();   // Create new img element
-imgKrisIdle.src = "https://vignette.wikia.nocookie.net/deltarune/images/0/04/Kris_battle_fight.gif/revision/latest?cb=20181102012100"; */
-
 var kris = {
 	id: 1,
 	name: "Kris",
@@ -98,6 +65,41 @@ var rabbick = {
 	acc: 3,
 	evd: 3
 };
+
+var navigation = "all";
+var turn = 0;
+var select = 0;
+var prereq = "";
+var levelHostile = [0, 3, 0, 3, 0];
+var levelPassive = [3, 3, 3];
+var scalemult = 1.6;
+var players = ["kris"];
+var activePlayer = 0;
+var wavecounter = 0;
+var wavecount = 1;
+var wave1 = [rabbick, rabbick, none, rabbick, none];
+var wave2 = [];
+var wave3 = [];
+
+var iolis = 0;
+
+var activeDataID = [];
+var activeDataHP = [];
+var foe1Status = [];
+var foe2Status = [];
+var foe3Status = [];
+var foe4Status = [];
+var foe5Status = [];
+var activeAllyID = [];
+var activeAllyHP = [];
+var ally1Status = [];
+
+/*var canvas = document.getElementById("myCanvas");
+var ctx = canvas.getContext("2d");
+var imgKrisIdle = new Image();   // Create new img element
+imgKrisIdle.src = "https://vignette.wikia.nocookie.net/deltarune/images/0/04/Kris_battle_fight.gif/revision/latest?cb=20181102012100"; */
+
+
 function levelscalefoe(hp, level) {
 	return Math.ciel(Math.pow(foescalemult, level, hp));
 }
