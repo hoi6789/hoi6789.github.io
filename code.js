@@ -1,3 +1,4 @@
+//Prepare Players for fetching
 var kris = {
 	id: 1,
 	name: "Kris",
@@ -10,6 +11,7 @@ var kris = {
 	evd: 2
 };
 
+//Default Values
 var defaultequip = {
 	health: [1, 1, 1, 1, 1],
 	atk: [1, 1, 1, 1, 1],
@@ -29,6 +31,7 @@ var defaultequip = {
 	holyRes: [1, 1, 1, 1, 1],
 	darkRes: [1, 1, 1, 1, 1]
 }
+
 //Equips
 var woodBlade = {
 	health: [1, 1, 1, 1, 1],
@@ -39,6 +42,7 @@ var woodBlade = {
 	acc: [1.05, 1.1, 1.15, 1.2, 1.25],
 	evd: [1, 1, 1, 1, 1]
 }
+
 //Enemies
 var none = {
 	id: 0,
@@ -65,33 +69,52 @@ var rabbick = {
 	acc: 3,
 	evd: 3
 };
-
+//Start Variables
+//used to determine button layout
 var navigation = "all";
+//to be depreciated
 var turn = 0;
+//used to prepare selection
 var select = 0;
+//used to determine attack
 var prereq = "";
-var levelHostile = [0, 3, 0, 3, 0];
+//should really be depreciated and merged with wave data
+var levelHostile = [3, 3, 0, 3, 0];
+//for ally levels
 var levelPassive = [3, 3, 3];
+//frembly level scaling
 var scalemult = 1.6;
+//unfemby level scaling
+var foescalemult = 1.8;
+//players, should be changed to accomodate new system
 var players = ["kris"];
+//used to determine attacker, should be depreciated
 var activePlayer = 0;
+//used to determine what wave it is
 var wavecounter = 0;
+//used to determine total waves
 var wavecount = 1;
+//used to store data for waves
 var wave1 = [rabbick, rabbick, none, rabbick, none];
 var wave2 = [];
 var wave3 = [];
-
-var iolis = 0;
-
+//you go figure this out
+var iolis;
+//depreciated
 var activeDataID = [];
+//stores current hp values of enemies
 var activeDataHP = [];
+//stores status conditions of enemies
 var foe1Status = [];
 var foe2Status = [];
 var foe3Status = [];
 var foe4Status = [];
 var foe5Status = [];
+//depreciated
 var activeAllyID = [];
+//stores player hp
 var activeAllyHP = [];
+//stores player status
 var ally1Status = [];
 
 /*var canvas = document.getElementById("myCanvas");
@@ -99,14 +122,18 @@ var ctx = canvas.getContext("2d");
 var imgKrisIdle = new Image();   // Create new img element
 imgKrisIdle.src = "https://vignette.wikia.nocookie.net/deltarune/images/0/04/Kris_battle_fight.gif/revision/latest?cb=20181102012100"; */
 
-
+//for determining levelscaled stats
 function levelscalefoe(hp, level) {
 	return Math.ciel(Math.pow(foescalemult, level, hp));
 }
+//initialization function
 function begin() {
 	activePlayer = 1;
+	//this checks each slot in wave 1, fetching the enemy data
+	//this is the "fetcher"
 	for(i = 0; i < wave1.length; i++) {
 		switch(i) {
+				//determines appropriate place to draw enemies, and fetched the enemy's picture
 				case 0: document.getElementById("enemy1").innerHTML = wave1[i].img;
 				break;
 				case 1: document.getElementById("enemy2").innerHTML = wave1[i].img;
@@ -118,8 +145,12 @@ function begin() {
 				case 4: document.getElementById("enemy5").innerHTML = wave1[i].img;
 				break;
 				}
+		//depreciated
 		activeDataID.push(1);
-		activeDataHP.push(levelscalefoe(wave1[i].health, levelhostile[i]));
+		//adds enemy hp to array
+		activeDataHP.push(levelscalefoe(wave1[i].health, levelHostile[i]));
+		
+		//depreciated
 		/*switch(wave1[i]) {
 			case "null":
 				activeDataID.push(0);
@@ -142,17 +173,23 @@ function begin() {
 				}
 		}*/
 	}
+	//end enemy fetcher
+	
+	//player fetcher, less useful
 	for(i = 0; i < players.length; i++) {
 	switch(players[i]) {
 		case "kris":
 			activeAllyID.push(1);
 			activeAllyHP.push(Math.ceil(Math.pow(scalemult, levelPassive[i]) * kris.health));
-			switch(i) {
+			/*switch(i) {
 				case 0: ctx.drawImage(imgKrisIdle, 10, 10);
-			}
+			}*/
+			//fuck canvases
 	}
 	}
 }
+
+//honestly all these buttons should be rewritten i'll do that soonish
 function buttonAttack() {
 	if(navigation == "all") {
 		navigation = "cancel";
@@ -180,6 +217,7 @@ function buttonCancel() {
 		navUpdate();
 	}
 }
+//selection code for attacks and stuff, i should change it
 function select(target) {
 	if(select == 1) {
 		if(activePlayer == 1) {
@@ -193,6 +231,7 @@ function select(target) {
 	}
 }
 
+//updates all the buttons
 function navUpdate() {
 	if(navigation == "cancel") {
 		document.getElementById("attack").innerHTML = "-";
@@ -213,39 +252,50 @@ function navUpdate() {
 	document.getElementById("target5").innerHTML = activeDataHP[4];
 }
 
-function slash(id, attack, accuracy, level, target, basepower) {
-	activeDataHP[target] -= damage(id, attack, accuracy, level, target, basepower, "none", "none", 0, "none", 0, 0, "physical", 1);
+//attacks
+function slash(attack, accuracy, level, target, basepower) {
+	activeDataHP[target] -= damage(attack, accuracy, level, target, basepower, "none", "none", 0, "none", 0, 0, "physical", 1);
 }
 function statusSelf(player, status, length, animation) {
 	for(i = 0; i < length; i++) {
 	player.push(status);
 	}
 }
+
+//hurty hurt calculator
 function damage(attack, accuracy, user, target, basepower, element, percent, status, chance, count, debuff, amp, type, acc) {
 	//Order of operations: find base damage, calculate elemental interaction and stab damage, apply buffs/status for attack, calculate defence, apply buffs/status for defence, reduce damage, calculate evade, apply evade/accuracy buffs, calculate to hit, inflict debuffs, inflict damage
+	//generates initial damage value
 	var hurt = Math.ceil(attack * Math.pow(scalemult, levelPassive[user]) * basepower);
+	//finds buffs of user
 	switch(user) {
 		case 0: var buffs = ally1Status;
 		break;
 	}
+	//determines target, used for checking defence
 	var tgt = wave1[target];
+	//i should get to this, but i wont until everything works
 	element.forEach(rescheck());
 	/*function rescheck() {
 		switch() {
 		       
 		       }
 	}*/
+	//determining physical or magical, and true defensive value
 	if(type == "physical") {
-			var def = tgt.def * Math.pow(foescalemult, levelHostile[target]);
+			var def = levelscalefoe(tgt.def, levelHostile[target]);
 		}
 		if(type == "magical") {
-			var def = rabbick.mdef * Math.pow(scalemult, levelHostile[target]);
+			var def = levelscalefoe(tgt.mdef, levelHostile[target]);
 		}
-		var evade = rabbick.evade;
+	//determining evade
+	var evade = levelscalefoe(tgt.evd, levelHostile[target]);
+	//checking for dodge
 	var dodge = (accuracy * acc) / evade;
 	var dodgecheck = Math.random();
 	if(dodgecheck > dodge) {
 		hurt = 0;
 	}
+	//this stays until everything is said and done and i actually finish the damage system
 	return 4;
 }
