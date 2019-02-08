@@ -218,7 +218,7 @@ function buttonCancel() {
 	}
 }
 //selection code for attacks and stuff, i should change it
-function select(target) {
+function selecc(target) {
 	if(select == 1) {
 		if(activePlayer == 1) {
 			if(prereq == "attack") {
