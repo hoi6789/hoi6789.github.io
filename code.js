@@ -275,7 +275,7 @@ function damage(attack, accuracy, user, target, basepower, element, percent, sta
 	//determines target, used for checking defence
 	var tgt = wave1[target];
 	//i should get to this, but i wont until everything works
-	element.forEach(rescheck());
+	//element.forEach(rescheck());
 	/*function rescheck() {
 		switch() {
 		       
