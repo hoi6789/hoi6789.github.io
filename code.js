@@ -69,6 +69,45 @@ var rabbick = {
 	acc: 3,
 	evd: 3
 };
+
+//Status
+var buffATK = 0;
+var buffDEF = 0;
+var buffMATK = 0;
+var buffMDEF = 0;
+var buffACC = 0;
+var buffEVD = 0;
+
+var atkup = {
+	buff = function() {
+	buffATK++;
+	}
+};
+var matkup = {
+	buff = function() {
+	buffMATK++;
+	}
+};
+var defup = {
+	buff = function() {
+	buffDEF++;
+	}
+};
+var mdefup = {
+	buff = function() {
+	buffMDEF++;
+	}
+};
+var accup = {
+	buff = function() {
+	buffACC++;
+	}
+};
+var evdup = {
+	buff = function() {
+	buffEVD++;
+	}
+};
 //Start Variables
 //used to determine button layout
 var navigation = "all";
@@ -100,6 +139,9 @@ var wave2 = [];
 var wave3 = [];
 //you go figure this out
 var iolis;
+//buff constant
+var buffpower = 0.05;
+//buff list
 //depreciated
 var activeDataID = [];
 //stores current hp values of enemies
@@ -254,7 +296,7 @@ function navUpdate() {
 
 //attacks
 function slash(attack, accuracy, level, target, basepower) {
-	activeDataHP[target] -= damage(attack, accuracy, level, target, basepower, "none", "none", 0, "none", 0, 0, "physical", 1);
+	activeDataHP[target] -= damagefremb(attack, accuracy, level, target, basepower, "none", "none", 0, "none", 0, 0, "physical", 1);
 }
 function statusSelf(player, status, length, animation) {
 	for(i = 0; i < length; i++) {
@@ -263,15 +305,62 @@ function statusSelf(player, status, length, animation) {
 }
 
 //hurty hurt calculator
-function damage(attack, accuracy, user, target, basepower, element, percent, status, chance, count, debuff, amp, type, acc) {
+function damagefremb(attack, accuracy, user, target, basepower, element, percent, status, chance, count, debuff, amp, type, acc) {
 	//Order of operations: find base damage, calculate elemental interaction and stab damage, apply buffs/status for attack, calculate defence, apply buffs/status for defence, reduce damage, calculate evade, apply evade/accuracy buffs, calculate to hit, inflict debuffs, inflict damage
+	//generates buff variables
+	var buffATK = 0;
+	var buffDEF = 0;
+	var buffMATK = 0;
+	var buffMDEF = 0;
+	var buffACC = 0;
+	var buffEVD = 0;
 	//generates initial damage value
 	var hurt = Math.ceil(attack * Math.pow(scalemult, levelPassive[user]) * basepower);
 	//finds buffs of user
 	switch(user) {
-		case 0: var buffs = ally1Status;
+		case 0: var buffs = ally1Status[];
+			for(i = 0; i < buffs.length, i++) {
+				buffs[i].buff();
+			}
 		break;
 	}
+	switch(target) {
+		case 0: var rtbuffs = foe1status[];
+			for(i = 0; i < rtbuffs.length, i++) {
+				rtbuffs[i].buff();
+			}
+		break;
+		case 1: var rtbuffs = foe2status[];
+			for(i = 0; i < rtbuffs.length, i++) {
+				rtbuffs[i].buff();
+			}
+		break;
+		case 2: var rtbuffs = foe3status[];
+			for(i = 0; i < rtbuffs.length, i++) {
+				rtbuffs[i].buff();
+			}
+		break;
+		case 3: var rtbuffs = foe4status[];
+			for(i = 0; i < rtbuffs.length, i++) {
+				rtbuffs[i].buff();
+			}
+		break;
+		case 4: var rtbuffs = foe5status[];
+			for(i = 0; i < rtbuffs.length, i++) {
+				rtbuffs[i].buff();
+			}
+		break;
+	}
+	
+	//determining evade
+	var evade = levelscalefoe(tgt.evd, levelHostile[target]);
+	//checking for dodge
+	var dodge = (accuracy * acc) / evade;
+	var dodgecheck = Math.random();
+	if(dodgecheck > dodge) {
+		hurt = 0;
+	}
+	
 	//determines target, used for checking defence
 	var tgt = wave1[target];
 	//i should get to this, but i wont until everything works
@@ -283,19 +372,74 @@ function damage(attack, accuracy, user, target, basepower, element, percent, sta
 	}*/
 	//determining physical or magical, and true defensive value
 	if(type == "physical") {
-			var def = levelscalefoe(tgt.def, levelHostile[target]);
-		}
-		if(type == "magical") {
-			var def = levelscalefoe(tgt.mdef, levelHostile[target]);
-		}
-	//determining evade
-	var evade = levelscalefoe(tgt.evd, levelHostile[target]);
-	//checking for dodge
-	var dodge = (accuracy * acc) / evade;
-	var dodgecheck = Math.random();
-	if(dodgecheck > dodge) {
-		hurt = 0;
+		var def = levelscalefoe(tgt.def, levelHostile[target]);
+		var tbc = (buffATK * buffpower) + 1;
+		hurt = hurt * tbc;
+		switch(target) {
+		case 0: var rtbuffs = foe1status[];
+			for(i = 0; i < rtbuffs.length, i++) {
+				rtbuffs[i].buff();
+			}
+		break;
+		case 1: var rtbuffs = foe2status[];
+			for(i = 0; i < rtbuffs.length, i++) {
+				rtbuffs[i].buff();
+			}
+		break;
+		case 2: var rtbuffs = foe3status[];
+			for(i = 0; i < rtbuffs.length, i++) {
+				rtbuffs[i].buff();
+			}
+		break;
+		case 3: var rtbuffs = foe4status[];
+			for(i = 0; i < rtbuffs.length, i++) {
+				rtbuffs[i].buff();
+			}
+		break;
+		case 4: var rtbuffs = foe5status[];
+			for(i = 0; i < rtbuffs.length, i++) {
+				rtbuffs[i].buff();
+			}
+		break;
 	}
+		var tbc = (buffDEF * buffpower) + 1;
+		def = def * tbc
+		}
+	if(type == "magical") {
+		var def = levelscalefoe(tgt.mdef, levelHostile[target]);
+		var tbc = (buffMATK * buffpower) + 1;
+		hurt = hurt * tbc;
+		switch(target) {
+		case 0: var rtbuffs = foe1status[];
+			for(i = 0; i < rtbuffs.length, i++) {
+				rtbuffs[i].buff();
+			}
+		break;
+		case 1: var rtbuffs = foe2status[];
+			for(i = 0; i < rtbuffs.length, i++) {
+				rtbuffs[i].buff();
+			}
+		break;
+		case 2: var rtbuffs = foe3status[];
+			for(i = 0; i < rtbuffs.length, i++) {
+				rtbuffs[i].buff();
+			}
+		break;
+		case 3: var rtbuffs = foe4status[];
+			for(i = 0; i < rtbuffs.length, i++) {
+				rtbuffs[i].buff();
+			}
+		break;
+		case 4: var rtbuffs = foe5status[];
+			for(i = 0; i < rtbuffs.length, i++) {
+				rtbuffs[i].buff();
+			}
+		break;
+	}
+		var tbc = (buffMDEF * buffpower) + 1;
+		def = def * tbc
+		}
+	
 	//this stays until everything is said and done and i actually finish the damage system
 	return 4;
 }
