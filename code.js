@@ -124,7 +124,7 @@ imgKrisIdle.src = "https://vignette.wikia.nocookie.net/deltarune/images/0/04/Kri
 
 //for determining levelscaled stats
 function levelscalefoe(hp, level) {
-	return Math.ceil(Math.pow(foescalemult, level, hp));
+	return Math.ceil(Math.pow(foescalemult, level) * hp);
 }
 //initialization function
 function begin() {
