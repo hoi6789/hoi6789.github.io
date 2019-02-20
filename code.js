@@ -79,32 +79,32 @@ var buffACC = 0;
 var buffEVD = 0;
 
 var atkup = {
-	buff = function() {
+	buff: function() {
 	buffATK++;
 	}
 };
 var matkup = {
-	buff = function() {
+	buff: function() {
 	buffMATK++;
 	}
 };
 var defup = {
-	buff = function() {
+	buff: function() {
 	buffDEF++;
 	}
 };
 var mdefup = {
-	buff = function() {
+	buff: function() {
 	buffMDEF++;
 	}
 };
 var accup = {
-	buff = function() {
+	buff: function() {
 	buffACC++;
 	}
 };
 var evdup = {
-	buff = function() {
+	buff: function() {
 	buffEVD++;
 	}
 };
