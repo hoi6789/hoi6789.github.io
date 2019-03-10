@@ -319,34 +319,34 @@ function damagefremb(attack, accuracy, user, target, basepower, element, percent
 	//finds buffs of user
 	switch(user) {
 		case 0: var buffs = ally1Status;
-			for(i = 0; i < buffs.length, i++) {
+			for(i = 0; i < buffs.length; i++) {
 				buffs[i].buff();
 			}
 		break;
 	}
 	switch(target) {
 		case 0: var rtbuffs = foe1status;
-			for(i = 0; i < rtbuffs.length, i++) {
+			for(i = 0; i < rtbuffs.length; i++) {
 				rtbuffs[i].buff();
 			}
 		break;
 		case 1: var rtbuffs = foe2status;
-			for(i = 0; i < rtbuffs.length, i++) {
+			for(i = 0; i < rtbuffs.length; i++) {
 				rtbuffs[i].buff();
 			}
 		break;
 		case 2: var rtbuffs = foe3status;
-			for(i = 0; i < rtbuffs.length, i++) {
+			for(i = 0; i < rtbuffs.length; i++) {
 				rtbuffs[i].buff();
 			}
 		break;
 		case 3: var rtbuffs = foe4status;
-			for(i = 0; i < rtbuffs.length, i++) {
+			for(i = 0; i < rtbuffs.length; i++) {
 				rtbuffs[i].buff();
 			}
 		break;
 		case 4: var rtbuffs = foe5status;
-			for(i = 0; i < rtbuffs.length, i++) {
+			for(i = 0; i < rtbuffs.length; i++) {
 				rtbuffs[i].buff();
 			}
 		break;
@@ -377,27 +377,27 @@ function damagefremb(attack, accuracy, user, target, basepower, element, percent
 		hurt = hurt * tbc;
 		switch(target) {
 		case 0: var rtbuffs = foe1status;
-			for(i = 0; i < rtbuffs.length, i++) {
+			for(i = 0; i < rtbuffs.length; i++) {
 				rtbuffs[i].buff();
 			}
 		break;
 		case 1: var rtbuffs = foe2status;
-			for(i = 0; i < rtbuffs.length, i++) {
+			for(i = 0; i < rtbuffs.length; i++) {
 				rtbuffs[i].buff();
 			}
 		break;
 		case 2: var rtbuffs = foe3status;
-			for(i = 0; i < rtbuffs.length, i++) {
+			for(i = 0; i < rtbuffs.length; i++) {
 				rtbuffs[i].buff();
 			}
 		break;
 		case 3: var rtbuffs = foe4status;
-			for(i = 0; i < rtbuffs.length, i++) {
+			for(i = 0; i < rtbuffs.length; i++) {
 				rtbuffs[i].buff();
 			}
 		break;
 		case 4: var rtbuffs = foe5status;
-			for(i = 0; i < rtbuffs.length, i++) {
+			for(i = 0; i < rtbuffs.length; i++) {
 				rtbuffs[i].buff();
 			}
 		break;
@@ -411,27 +411,27 @@ function damagefremb(attack, accuracy, user, target, basepower, element, percent
 		hurt = hurt * tbc;
 		switch(target) {
 		case 0: var rtbuffs = foe1status;
-			for(i = 0; i < rtbuffs.length, i++) {
+			for(i = 0; i < rtbuffs.length; i++) {
 				rtbuffs[i].buff();
 			}
 		break;
 		case 1: var rtbuffs = foe2status;
-			for(i = 0; i < rtbuffs.length, i++) {
+			for(i = 0; i < rtbuffs.length; i++) {
 				rtbuffs[i].buff();
 			}
 		break;
 		case 2: var rtbuffs = foe3status;
-			for(i = 0; i < rtbuffs.length, i++) {
+			for(i = 0; i < rtbuffs.length; i++) {
 				rtbuffs[i].buff();
 			}
 		break;
 		case 3: var rtbuffs = foe4status;
-			for(i = 0; i < rtbuffs.length, i++) {
+			for(i = 0; i < rtbuffs.length; i++) {
 				rtbuffs[i].buff();
 			}
 		break;
 		case 4: var rtbuffs = foe5status;
-			for(i = 0; i < rtbuffs.length, i++) {
+			for(i = 0; i < rtbuffs.length; i++) {
 				rtbuffs[i].buff();
 			}
 		break;
