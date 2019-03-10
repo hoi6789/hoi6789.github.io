@@ -351,6 +351,8 @@ function damagefremb(attack, accuracy, user, target, basepower, element, percent
 			}
 		break;
 	}
+	//determines target, used for checking numerical stats
+	var tgt = wave1[target];
 	
 	//determining evade
 	var evade = levelscalefoe(tgt.evd, levelHostile[target]);
@@ -361,8 +363,7 @@ function damagefremb(attack, accuracy, user, target, basepower, element, percent
 		hurt = 0;
 	}
 	
-	//determines target, used for checking defence
-	var tgt = wave1[target];
+	
 	//i should get to this, but i wont until everything works
 	//element.forEach(rescheck());
 	/*function rescheck() {
