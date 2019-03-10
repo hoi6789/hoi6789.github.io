@@ -325,27 +325,27 @@ function damagefremb(attack, accuracy, user, target, basepower, element, percent
 		break;
 	}
 	switch(target) {
-		case 0: var rtbuffs = foe1status;
+		case 0: var rtbuffs = foe1Status;
 			for(i = 0; i < rtbuffs.length; i++) {
 				rtbuffs[i].buff();
 			}
 		break;
-		case 1: var rtbuffs = foe2status;
+		case 1: var rtbuffs = foe2Status;
 			for(i = 0; i < rtbuffs.length; i++) {
 				rtbuffs[i].buff();
 			}
 		break;
-		case 2: var rtbuffs = foe3status;
+		case 2: var rtbuffs = foe3Status;
 			for(i = 0; i < rtbuffs.length; i++) {
 				rtbuffs[i].buff();
 			}
 		break;
-		case 3: var rtbuffs = foe4status;
+		case 3: var rtbuffs = foe4Status;
 			for(i = 0; i < rtbuffs.length; i++) {
 				rtbuffs[i].buff();
 			}
 		break;
-		case 4: var rtbuffs = foe5status;
+		case 4: var rtbuffs = foe5Status;
 			for(i = 0; i < rtbuffs.length; i++) {
 				rtbuffs[i].buff();
 			}
@@ -410,27 +410,27 @@ function damagefremb(attack, accuracy, user, target, basepower, element, percent
 		var tbc = (buffMATK * buffpower) + 1;
 		hurt = hurt * tbc;
 		switch(target) {
-		case 0: var rtbuffs = foe1status;
+		case 0: var rtbuffs = foe1Status;
 			for(i = 0; i < rtbuffs.length; i++) {
 				rtbuffs[i].buff();
 			}
 		break;
-		case 1: var rtbuffs = foe2status;
+		case 1: var rtbuffs = foe2Status;
 			for(i = 0; i < rtbuffs.length; i++) {
 				rtbuffs[i].buff();
 			}
 		break;
-		case 2: var rtbuffs = foe3status;
+		case 2: var rtbuffs = foe3Status;
 			for(i = 0; i < rtbuffs.length; i++) {
 				rtbuffs[i].buff();
 			}
 		break;
-		case 3: var rtbuffs = foe4status;
+		case 3: var rtbuffs = foe4Status;
 			for(i = 0; i < rtbuffs.length; i++) {
 				rtbuffs[i].buff();
 			}
 		break;
-		case 4: var rtbuffs = foe5status;
+		case 4: var rtbuffs = foe5Status;
 			for(i = 0; i < rtbuffs.length; i++) {
 				rtbuffs[i].buff();
 			}
