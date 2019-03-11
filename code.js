@@ -70,44 +70,6 @@ var rabbick = {
 	evd: 3
 };
 
-//Status
-var buffATK = 0;
-var buffDEF = 0;
-var buffMATK = 0;
-var buffMDEF = 0;
-var buffACC = 0;
-var buffEVD = 0;
-
-var atkup = {
-	buff: function() {
-	buffATK++;
-	}
-};
-var matkup = {
-	buff: function() {
-	buffMATK++;
-	}
-};
-var defup = {
-	buff: function() {
-	buffDEF++;
-	}
-};
-var mdefup = {
-	buff: function() {
-	buffMDEF++;
-	}
-};
-var accup = {
-	buff: function() {
-	buffACC++;
-	}
-};
-var evdup = {
-	buff: function() {
-	buffEVD++;
-	}
-};
 //Start Variables
 //used to determine button layout
 var navigation = "all";
@@ -139,16 +101,12 @@ var wave2 = [];
 var wave3 = [];
 //you go figure this out
 var iolis;
-//buff constant
-var buffpower = 0.05;
-//buff list
-//depreciated
-var activeDataID = [];
 //stores current hp values of enemies
 var activeDataHP = [];
 //stores status conditions of enemies
 var foeStatus = [];
-
+//stores buffs of enemies
+var foeBuffs = [];
 //depreciated
 var activeAllyID = [];
 //stores player hp
@@ -306,14 +264,8 @@ function statusSelf(player, status, length, animation) {
 //hurty hurt calculator
 function damagefremb(attack, accuracy, user, target, basepower, element, percent, status, chance, count, debuff, amp, type, acc) {
 	//Order of operations: find base damage, calculate elemental interaction and stab damage, apply buffs/status for attack, calculate defence, apply buffs/status for defence, reduce damage, calculate evade, apply evade/accuracy buffs, calculate to hit, inflict debuffs, inflict damage
-	buffEVD = 0;
 	//generates initial damage value
 	var hurt = Math.ceil(attack * Math.pow(scalemult, levelPassive[user]) * basepower);
-	//finds buffs of user
-	var buffs = allyBuffs[user];
-		for(i = 0; i < buffs.length; i++) {
-			buffs[i].buff();
-		}
 	//determines target, used for checking numerical stats
 	var tgt = wave1[target];
 	
