@@ -147,17 +147,16 @@ var activeDataID = [];
 //stores current hp values of enemies
 var activeDataHP = [];
 //stores status conditions of enemies
-var foe1Status = [];
-var foe2Status = [];
-var foe3Status = [];
-var foe4Status = [];
-var foe5Status = [];
+var foeStatus = [];
+
 //depreciated
 var activeAllyID = [];
 //stores player hp
 var activeAllyHP = [];
 //stores player status
 var ally1Status = [];
+//stores ally buffs: atk, def, matk, mdef, acc, evd
+var allyBuffs = [];
 
 /*var canvas = document.getElementById("myCanvas");
 var ctx = canvas.getContext("2d");
@@ -307,50 +306,14 @@ function statusSelf(player, status, length, animation) {
 //hurty hurt calculator
 function damagefremb(attack, accuracy, user, target, basepower, element, percent, status, chance, count, debuff, amp, type, acc) {
 	//Order of operations: find base damage, calculate elemental interaction and stab damage, apply buffs/status for attack, calculate defence, apply buffs/status for defence, reduce damage, calculate evade, apply evade/accuracy buffs, calculate to hit, inflict debuffs, inflict damage
-	//generates buff variables
-	var buffATK = 0;
-	var buffDEF = 0;
-	var buffMATK = 0;
-	var buffMDEF = 0;
-	var buffACC = 0;
-	var buffEVD = 0;
+	buffEVD = 0;
 	//generates initial damage value
 	var hurt = Math.ceil(attack * Math.pow(scalemult, levelPassive[user]) * basepower);
 	//finds buffs of user
-	switch(user) {
-		case 0: var buffs = ally1Status;
-			for(i = 0; i < buffs.length; i++) {
-				buffs[i].buff();
-			}
-		break;
-	}
-	switch(target) {
-		case 0: var rtbuffs = foe1Status;
-			for(i = 0; i < rtbuffs.length; i++) {
-				rtbuffs[i].buff();
-			}
-		break;
-		case 1: var rtbuffs = foe2Status;
-			for(i = 0; i < rtbuffs.length; i++) {
-				rtbuffs[i].buff();
-			}
-		break;
-		case 2: var rtbuffs = foe3Status;
-			for(i = 0; i < rtbuffs.length; i++) {
-				rtbuffs[i].buff();
-			}
-		break;
-		case 3: var rtbuffs = foe4Status;
-			for(i = 0; i < rtbuffs.length; i++) {
-				rtbuffs[i].buff();
-			}
-		break;
-		case 4: var rtbuffs = foe5Status;
-			for(i = 0; i < rtbuffs.length; i++) {
-				rtbuffs[i].buff();
-			}
-		break;
-	}
+	var buffs = allyBuffs[user];
+		for(i = 0; i < buffs.length; i++) {
+			buffs[i].buff();
+		}
 	//determines target, used for checking numerical stats
 	var tgt = wave1[target];
 	
@@ -362,8 +325,6 @@ function damagefremb(attack, accuracy, user, target, basepower, element, percent
 	if(dodgecheck > dodge) {
 		hurt = 0;
 	}
-	
-	
 	//i should get to this, but i wont until everything works
 	//element.forEach(rescheck());
 	/*function rescheck() {
@@ -373,73 +334,20 @@ function damagefremb(attack, accuracy, user, target, basepower, element, percent
 	}*/
 	//determining physical or magical, and true defensive value
 	if(type == "physical") {
+		//determine attack buff and applies it
+		hurt = hurt * (1 + allyBuffs[user][0]);
+		//makes defensive value defence
 		var def = levelscalefoe(tgt.def, levelHostile[target]);
-		var tbc = (buffATK * buffpower) + 1;
-		hurt = hurt * tbc;
-		switch(target) {
-		case 0: var rtbuffs = foe1status;
-			for(i = 0; i < rtbuffs.length; i++) {
-				rtbuffs[i].buff();
-			}
-		break;
-		case 1: var rtbuffs = foe2status;
-			for(i = 0; i < rtbuffs.length; i++) {
-				rtbuffs[i].buff();
-			}
-		break;
-		case 2: var rtbuffs = foe3status;
-			for(i = 0; i < rtbuffs.length; i++) {
-				rtbuffs[i].buff();
-			}
-		break;
-		case 3: var rtbuffs = foe4status;
-			for(i = 0; i < rtbuffs.length; i++) {
-				rtbuffs[i].buff();
-			}
-		break;
-		case 4: var rtbuffs = foe5status;
-			for(i = 0; i < rtbuffs.length; i++) {
-				rtbuffs[i].buff();
-			}
-		break;
-	}
-		var tbc = (buffDEF * buffpower) + 1;
-		def = def * tbc
+		//determine defence buff and applies it
+		def = def * (1 + foeBuffs[tgt][1]);
 		}
 	if(type == "magical") {
-		var def = levelscalefoe(tgt.mdef, levelHostile[target]);
-		var tbc = (buffMATK * buffpower) + 1;
-		hurt = hurt * tbc;
-		switch(target) {
-		case 0: var rtbuffs = foe1Status;
-			for(i = 0; i < rtbuffs.length; i++) {
-				rtbuffs[i].buff();
-			}
-		break;
-		case 1: var rtbuffs = foe2Status;
-			for(i = 0; i < rtbuffs.length; i++) {
-				rtbuffs[i].buff();
-			}
-		break;
-		case 2: var rtbuffs = foe3Status;
-			for(i = 0; i < rtbuffs.length; i++) {
-				rtbuffs[i].buff();
-			}
-		break;
-		case 3: var rtbuffs = foe4Status;
-			for(i = 0; i < rtbuffs.length; i++) {
-				rtbuffs[i].buff();
-			}
-		break;
-		case 4: var rtbuffs = foe5Status;
-			for(i = 0; i < rtbuffs.length; i++) {
-				rtbuffs[i].buff();
-			}
-		break;
-	}
-		var tbc = (buffMDEF * buffpower) + 1;
-		def = def * tbc
-		}
+		//determine magic attack buff and applies it
+		hurt = hurt * (1 + allyBuffs[user][2]);
+		//makes defensive value defence
+		var def = levelscalefoe(tgt.def, levelHostile[target]);
+		//determine defence buff and applies it
+		def = def * (1 + foeBuffs[tgt][3]);
 	
 	//this stays until everything is said and done and i actually finish the damage system
 	return 4;
