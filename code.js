@@ -144,8 +144,6 @@ function begin() {
 				case 4: document.getElementById("enemy5").innerHTML = wave1[i].img;
 				break;
 				}
-		//depreciated
-		activeDataID.push(1);
 		//adds enemy hp to array
 		activeDataHP.push(levelscalefoe(wave1[i].health, levelHostile[i]));
 		
