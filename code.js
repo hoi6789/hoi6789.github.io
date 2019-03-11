@@ -348,7 +348,7 @@ function damagefremb(attack, accuracy, user, target, basepower, element, percent
 		var def = levelscalefoe(tgt.def, levelHostile[target]);
 		//determine defence buff and applies it
 		def = def * (1 + foeBuffs[tgt][3]);
-	
+	}
 	//this stays until everything is said and done and i actually finish the damage system
 	return 4;
 }
