@@ -258,7 +258,7 @@ function damagefremb(attack, accuracy, user, target, basepower, element, percent
 	//determining evade
 	var evade = levelscalefoe(tgt.evd, levelHostile[target]);
 	//checking for dodge
-	var dodge = (accuracy * acc * (1 + allyBuffs[user][4]) / evade * (1 + foeBuffs[tgt][5]);
+	var dodge = (accuracy * acc * (1 + allyBuffs[user][4])) / (evade * (1 + foeBuffs[tgt][5]));
 	var dodgecheck = Math.random();
 	if(dodgecheck > dodge) {
 		return 0;
