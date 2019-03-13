@@ -8,7 +8,11 @@ var kris = {
 	matk: 2,
 	mdef: 6,
 	acc: 4,
-	evd: 2
+	evd: 2,
+	
+	basicAttack: function() {
+		
+	}
 };
 
 //Default Values
@@ -34,6 +38,7 @@ var defaultequip = {
 
 //Equips
 var woodBlade = {
+	element: none,
 	health: [1, 1, 1, 1, 1],
 	atk: [1.1, 1.2, 1.2, 1.3, 1.4],
 	def: [1, 1, 1.05, 1.05, 1.1],
@@ -69,8 +74,8 @@ var rabbick = {
 	acc: 3,
 	evd: 3,
 	
-	fire: 1.8,
-	thunder: 0.5,
+	"fire": 1.8,
+	"thunder": 0.5,
 	ice: 0.5,
 	earth: 0.5,
 	bio: 1,
@@ -100,9 +105,9 @@ var scalemult = 1.6;
 //unfemby level scaling
 var foescalemult = 1.8;
 //players, should be changed to accomodate new system
-var players = ["kris"];
-//used to determine attacker, should be depreciated
-var activePlayer = 0;
+var players = [kris];
+//player equips
+var equips = [[woodBlade], [], []])
 //used to determine what wave it is
 var wavecounter = 0;
 //used to determine total waves
@@ -119,8 +124,10 @@ var activeDataHP = [];
 var foeStatus = [];
 //stores buffs of enemies
 var foeBuffs = [[1, 1, 1, 1, 1, 1], [1, 1, 1, 1, 1, 1], [1, 1, 1, 1, 1, 1], [1, 1, 1, 1, 1, 1], [1, 1, 1, 1, 1, 1]];
-//depreciated
-var activeAllyID = [];
+//keeps track of current active player
+var turn = 0;
+//tracks whether a turn has been taken
+var turntaken = [0, 0, 0];
 //stores player hp
 var activeAllyHP = [];
 //stores player status
@@ -143,7 +150,6 @@ function levelscaleally(hp, level) {
 }
 //initialization function
 function begin() {
-	activePlayer = 1;
 	//this checks each slot in wave 1, fetching the enemy data
 	//this is the "fetcher"
 	for(i = 0; i < wave1.length; i++) {
@@ -180,27 +186,27 @@ function begin() {
 }
 
 //honestly all these buttons should be rewritten i'll do that soonish
-function buttonAttack() {
-	if(navigation == "all") {
+function button1() {
+	switch(navigation) {
+		case "all":
 		navigation = "cancel";
 		select = 1;
-	prereq = "attack";
+		prereq = "attack";
 		navUpdate();
-	}
-	if(navigation == "tactics") {
-	if(activePlayer == 1) {
-		statusSelf(ally1Status, "defend", 1, "yote");
+		break;
+		case "tactics":
+		statusSelf(ally1Status[turn], "defend", 1, "yote");
 		navUpdate();
-	}
+		break;
 	}
 }
-function buttonTactics() {
+function button2() {
 	if(navigation == "all") {
 		navigation = "tactics";
 		navUpdate();
 	}
 }
-function buttonCancel() {
+function button4() {
 	if(navigation == "cancel") {
 		navigation = "all";
 		select = 0;
@@ -210,7 +216,7 @@ function buttonCancel() {
 //selection code for attacks and stuff, i should change it
 function selecc(target) {
 	if(select == 1) {
-		if(activePlayer == 1) {
+		if(turn == 0) {
 			if(prereq == "attack") {
 				slash(kris.atk, kris.acc, 0, target, 40);
 				select = 0;
@@ -244,7 +250,7 @@ function navUpdate() {
 
 //attacks
 function slash(attack, accuracy, user, target, basepower) {
-	activeDataHP[target] -= damagefremb(attack, accuracy, user, target, basepower, none, 0, "none", 0, "none", 0, 0, "physical", 1);
+	activeDataHP[target] -= damagefremb(attack, accuracy, user, target, basepower, "weapon", 100, "none", 0, "none", 0, 0, "physical", 1);
 }
 function statusSelf(player, status, length, animation) {
 	for(i = 0; i < length; i++) {
@@ -272,6 +278,9 @@ function damagefremb(attack, accuracy, user, target, basepower, element, percent
 		return 0;
 	}
 	//determines elemental resistances
+	if(element = "weapon") {
+		element = equips[user][0];
+	}
 	hurt = hurt * tgt.element;
 	
 	//determining physical or magical, and true defensive value
