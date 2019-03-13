@@ -61,13 +61,25 @@ var rabbick = {
 	id: 1,
 	name: "Rabbick",
 	img: "<img src='https://vignette.wikia.nocookie.net/deltarune/images/7/7c/Rabbick_battle.png/revision/latest?cb=20181102085001' alt='rabbick'>",
-	health: 8,
+	health: 20,
 	atk: 3,
 	def: 3,
 	matk: 3,
 	mdef: 3,
 	acc: 3,
-	evd: 3
+	evd: 3,
+	
+	fire: 1.8,
+	thunder: 0.5,
+	ice: 0.5,
+	earth: 0.5,
+	bio: 1,
+	bomb: 1.5,
+	water: 1.5,
+	wind: 1.8,
+	holy: 1,
+	dark: 0.5,
+	none: 1
 };
 
 //Start Variables
@@ -146,29 +158,6 @@ function begin() {
 				}
 		//adds enemy hp to array
 		activeDataHP.push(levelscalefoe(wave1[i].health, levelHostile[i]));
-		
-		//depreciated
-		/*switch(wave1[i]) {
-			case "null":
-				activeDataID.push(0);
-				activeDataHP.push(0);
-				break;
-			case "rabbick":
-				activeDataID.push(1);
-				activeDataHP.push(Math.ceil(Math.pow(scalemult, levelHostile[i]) * rabbick.health));
-				switch(i) {
-				case 0: document.getElementById("enemy1").innerHTML = "<img src='https://vignette.wikia.nocookie.net/deltarune/images/7/7c/Rabbick_battle.png/revision/latest?cb=20181102085001' alt='rabbick'>";
-				break;
-				case 1: document.getElementById("enemy2").innerHTML = "<img src='https://vignette.wikia.nocookie.net/deltarune/images/7/7c/Rabbick_battle.png/revision/latest?cb=20181102085001' alt='rabbick'>";
-				break;
-				case 2: document.getElementById("enemy3").innerHTML = "<img src='https://vignette.wikia.nocookie.net/deltarune/images/7/7c/Rabbick_battle.png/revision/latest?cb=20181102085001' alt='rabbick'>";
-				break;
-				case 3: document.getElementById("enemy4").innerHTML = "<img src='https://vignette.wikia.nocookie.net/deltarune/images/7/7c/Rabbick_battle.png/revision/latest?cb=20181102085001' alt='rabbick'>";
-				break;
-				case 4: document.getElementById("enemy5").innerHTML = "<img src='https://vignette.wikia.nocookie.net/deltarune/images/7/7c/Rabbick_battle.png/revision/latest?cb=20181102085001' alt='rabbick'>";
-				break;
-				}
-		}*/
 	}
 	//end enemy fetcher
 	
@@ -219,7 +208,7 @@ function selecc(target) {
 	if(select == 1) {
 		if(activePlayer == 1) {
 			if(prereq == "attack") {
-				slash(kris.atk, kris.acc, 0, target, 0.4);
+				slash(kris.atk, kris.acc, 0, target, 40);
 				select = 0;
 				navigation = "all";
 				navUpdate();
@@ -250,8 +239,8 @@ function navUpdate() {
 }
 
 //attacks
-function slash(attack, accuracy, level, target, basepower) {
-	activeDataHP[target] -= damagefremb(attack, accuracy, level, target, basepower, "none", "none", 0, "none", 0, 0, "physical", 1);
+function slash(attack, accuracy, user, target, basepower) {
+	activeDataHP[target] -= damagefremb(attack, accuracy, user, target, basepower, "none", 0, "none", 0, "none", 0, 0, "physical", 1);
 }
 function statusSelf(player, status, length, animation) {
 	for(i = 0; i < length; i++) {
@@ -264,30 +253,25 @@ function damagefremb(attack, accuracy, user, target, basepower, element, percent
 	//Order of operations: find base damage, calculate elemental interaction and stab damage, apply buffs/status for attack, calculate defence, apply buffs/status for defence, reduce damage, calculate evade, apply evade/accuracy buffs, calculate to hit, inflict debuffs, inflict damage
 	//generates initial damage value
 	var hurt = Math.ceil(attack * Math.pow(scalemult, levelPassive[user]) * basepower);
-	//determines target, used for checking numerical stats
+	//determines target, used for checking numerical stats by converting the numerical position of the enemy in the wave into the name of the target
 	var tgt = wave1[target];
-	
 	//determining evade
 	var evade = levelscalefoe(tgt.evd, levelHostile[target]);
 	//checking for dodge
-	var dodge = (accuracy * acc) / evade;
+	var dodge = (accuracy * acc * (1 + allyBuffs[user][4]) / evade * (1 + foeBuffs[tgt][5]);
 	var dodgecheck = Math.random();
 	if(dodgecheck > dodge) {
-		hurt = 0;
+		return 0;
 	}
-	//i should get to this, but i wont until everything works
-	//element.forEach(rescheck());
-	/*function rescheck() {
-		switch() {
-		       
-		       }
-	}*/
+	//determines elemental resistances
+	//hurt * tgt.
+	
 	//determining physical or magical, and true defensive value
 	if(type == "physical") {
 		//determine attack buff and applies it
 		hurt = hurt * (1 + allyBuffs[user][0]);
 		//makes defensive value defence
-		var def = levelscalefoe(tgt.def, levelHostile[target]);
+		var def = tgt.def;
 		//determine defence buff and applies it
 		def = def * (1 + foeBuffs[tgt][1]);
 		}
@@ -295,7 +279,7 @@ function damagefremb(attack, accuracy, user, target, basepower, element, percent
 		//determine magic attack buff and applies it
 		hurt = hurt * (1 + allyBuffs[user][2]);
 		//makes defensive value defence
-		var def = levelscalefoe(tgt.def, levelHostile[target]);
+		var def = tgt.mdef;
 		//determine defence buff and applies it
 		def = def * (1 + foeBuffs[tgt][3]);
 	}
