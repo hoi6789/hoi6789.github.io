@@ -170,7 +170,7 @@ function begin() {
 			/*switch(i) {
 				case 0: ctx.drawImage(imgKrisIdle, 10, 10);
 			}*/
-			//fuck canvases
+			//canvases suck
 	}
 	}
 }
@@ -259,6 +259,9 @@ function damagefremb(attack, accuracy, user, target, basepower, element, percent
 	var evade = levelscalefoe(tgt.evd, levelHostile[target]);
 	//checking for dodge
 	var dodge = (accuracy * acc * (1 + allyBuffs[user][4])) / (evade * (1 + foeBuffs[target][5]));
+	console.log((accuracy * acc * (1 + allyBuffs[user][4])));
+	console.log((evade * (1 + foeBuffs[target][5])));
+	console.log(dodge);
 	var dodgecheck = Math.random();
 	if(dodgecheck > dodge) {
 		return 0;
