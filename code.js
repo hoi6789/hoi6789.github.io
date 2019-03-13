@@ -258,7 +258,7 @@ function damagefremb(attack, accuracy, user, target, basepower, element, percent
 	//determining evade
 	var evade = levelscalefoe(tgt.evd, levelHostile[target]);
 	//checking for dodge
-	var dodge = (accuracy * acc * (1 + allyBuffs[user][4])) / (evade * (1 + foeBuffs[tgt][5]));
+	var dodge = (accuracy * acc * (1 + allyBuffs[user][4])) / (evade * (1 + foeBuffs[target][5]));
 	var dodgecheck = Math.random();
 	if(dodgecheck > dodge) {
 		return 0;
@@ -273,7 +273,7 @@ function damagefremb(attack, accuracy, user, target, basepower, element, percent
 		//makes defensive value defence
 		var def = tgt.def;
 		//determine defence buff and applies it
-		def = def * (1 + foeBuffs[tgt][1]);
+		def = def * (1 + foeBuffs[target][1]);
 		}
 	if(type == "magical") {
 		//determine magic attack buff and applies it
@@ -281,7 +281,7 @@ function damagefremb(attack, accuracy, user, target, basepower, element, percent
 		//makes defensive value defence
 		var def = tgt.mdef;
 		//determine defence buff and applies it
-		def = def * (1 + foeBuffs[tgt][3]);
+		def = def * (1 + foeBuffs[target][3]);
 	}
 	//this stays until everything is said and done and i actually finish the damage system
 	return 4;
