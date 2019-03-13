@@ -107,7 +107,7 @@ var foescalemult = 1.8;
 //players, should be changed to accomodate new system
 var players = [kris];
 //player equips
-var equips = [[woodBlade], [], []]);
+var equips = [[woodBlade], [], []];
 //used to determine what wave it is
 var wavecounter = 0;
 //used to determine total waves
