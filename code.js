@@ -137,6 +137,10 @@ imgKrisIdle.src = "https://vignette.wikia.nocookie.net/deltarune/images/0/04/Kri
 function levelscalefoe(hp, level) {
 	return Math.ceil(Math.pow(foescalemult, level) * hp);
 }
+
+function levelscaleally(hp, level) {
+	return Math.ceil(Math.pow(scalemult, level) * hp);
+}
 //initialization function
 function begin() {
 	activePlayer = 1;
@@ -255,11 +259,12 @@ function damagefremb(attack, accuracy, user, target, basepower, element, percent
 	var hurt = Math.ceil(attack * Math.pow(scalemult, levelPassive[user]) * basepower);
 	//determines target, used for checking numerical stats by converting the numerical position of the enemy in the wave into the name of the target
 	var tgt = wave1[target];
-	//determining evade
+	//determining evade and accuracy
+	var accur = levelscaleally(user.accuracy, levelPassive[user]);
 	var evade = levelscalefoe(tgt.evd, levelHostile[target]);
 	//checking for dodge
-	var dodge = (accuracy * acc * (1 + allyBuffs[user][4])) / (evade * (1 + foeBuffs[target][5]));
-	console.log((accuracy * acc * (1 + allyBuffs[user][4])));
+	var dodge = (accur * acc * (1 + allyBuffs[user][4])) / (evade * (1 + foeBuffs[target][5]));
+	console.log((accur * acc * (1 + allyBuffs[user][4])));
 	console.log((evade * (1 + foeBuffs[target][5])));
 	console.log(dodge);
 	var dodgecheck = Math.random();
