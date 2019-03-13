@@ -244,7 +244,7 @@ function navUpdate() {
 
 //attacks
 function slash(attack, accuracy, user, target, basepower) {
-	activeDataHP[target] -= damagefremb(attack, accuracy, user, target, basepower, "none", 0, "none", 0, "none", 0, 0, "physical", 1);
+	activeDataHP[target] -= damagefremb(attack, accuracy, user, target, basepower, none, 0, "none", 0, "none", 0, 0, "physical", 1);
 }
 function statusSelf(player, status, length, animation) {
 	for(i = 0; i < length; i++) {
@@ -272,7 +272,7 @@ function damagefremb(attack, accuracy, user, target, basepower, element, percent
 		return 0;
 	}
 	//determines elemental resistances
-	//hurt * tgt.
+	hurt = hurt * tgt.element;
 	
 	//determining physical or magical, and true defensive value
 	if(type == "physical") {
