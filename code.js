@@ -47,7 +47,7 @@ var woodBlade = {
 var none = {
 	id: 0,
 	name: "iolis",
-	img: "<img src='https://vignette.wikia.nocookie.net/danball/images/5/5d/Nope.png/revision/latest?cb=20111126172440'>",
+	img: "<p>yo</p>",
 	health: 0,
 	atk: 0,
 	def: 0,
@@ -118,7 +118,7 @@ var activeDataHP = [];
 //stores status conditions of enemies
 var foeStatus = [];
 //stores buffs of enemies
-var foeBuffs = [];
+var foeBuffs = [[1, 1, 1, 1, 1, 1], [1, 1, 1, 1, 1, 1], [1, 1, 1, 1, 1, 1], [1, 1, 1, 1, 1, 1], [1, 1, 1, 1, 1, 1]];
 //depreciated
 var activeAllyID = [];
 //stores player hp
