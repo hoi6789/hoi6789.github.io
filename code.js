@@ -260,13 +260,12 @@ function damagefremb(attack, accuracy, user, target, basepower, element, percent
 	//determines target, used for checking numerical stats by converting the numerical position of the enemy in the wave into the name of the target
 	var tgt = wave1[target];
 	//determining evade and accuracy
-	var accur = levelscaleally(user.accuracy, levelPassive[user]);
+	var accur = levelscaleally(accuracy, levelPassive[user]);
 	var evade = levelscalefoe(tgt.evd, levelHostile[target]);
 	//checking for dodge
 	var dodge = (accur * acc * (1 + allyBuffs[user][4])) / (evade * (1 + foeBuffs[target][5]));
 	console.log((accur * acc * (1 + allyBuffs[user][4])));
 	console.log((evade * (1 + foeBuffs[target][5])));
-	console.log(user.accuracy);
 	console.log(dodge);
 	var dodgecheck = Math.random();
 	if(dodgecheck > dodge) {
