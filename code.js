@@ -266,6 +266,7 @@ function damagefremb(attack, accuracy, user, target, basepower, element, percent
 	var dodge = (accur * acc * (1 + allyBuffs[user][4])) / (evade * (1 + foeBuffs[target][5]));
 	console.log((accur * acc * (1 + allyBuffs[user][4])));
 	console.log((evade * (1 + foeBuffs[target][5])));
+	console.log(user.accuracy);
 	console.log(dodge);
 	var dodgecheck = Math.random();
 	if(dodgecheck > dodge) {
