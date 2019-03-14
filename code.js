@@ -84,7 +84,11 @@ var none = {
 	matk: 0,
 	mdef: 0,
 	acc: 0,
-	evd: 1
+	evd: 1,
+	
+	ai: function() {
+		console.log("internal");
+	}
 };
 
 var rabbick = {
