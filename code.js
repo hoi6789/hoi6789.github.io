@@ -301,8 +301,6 @@ function statusSelf(player, status, length, animation) {
 
 function enemyTurn() {
 	for(i = 0; i < wave1.length; i++) {
-		console.log(wave1);
-		console.log(wave1[i]);
 		wave1[i].ai();
 		turntaken = [0, 0, 0]
 	}
@@ -336,7 +334,6 @@ function damagefremb(attack, accuracy, user, target, basepower, element, percent
 	if(type == "physical") {
 		//determine attack buff and applies it
 		hurt = hurt * (allyBuffs[user][0]);
-		console.log(hurt);
 		//makes defensive value defence
 		var def = tgt.def;
 		//determine defence buff and applies it
@@ -345,13 +342,11 @@ function damagefremb(attack, accuracy, user, target, basepower, element, percent
 	if(type == "magical") {
 		//determine magic attack buff and applies it
 		hurt = hurt * (allyBuffs[user][2]);
-		console.log(hurt);
 		//makes defensive value defence
 		var def = tgt.mdef;
 		//determine defence buff and applies it
 		def = def * (foeBuffs[target][3]);
 	}
-	console.log(def);
 	hurt = hurt / def;
 	console.log(hurt);
 	//this stays until everything is said and done and i actually finish the damage system
@@ -363,7 +358,6 @@ function damagefoe(attack, accuracy, user, target, basepower, element, percent, 
 	//Order of operations: find base damage, calculate elemental interaction and stab damage, apply buffs/status for attack, calculate defence, apply buffs/status for defence, reduce damage, calculate evade, apply evade/accuracy buffs, calculate to hit, inflict debuffs, inflict damage
 	//generates initial damage value
 	var hurt = Math.ceil(attack * Math.pow(scalemult, levelHostile[user]) * basepower);
-	console.log(hurt);
 	//determines target, used for checking numerical stats by converting the numerical position of the enemy in the wave into the name of the target
 	var tgt = wave1[target];
 	//determining evade and accuracy
@@ -379,12 +373,10 @@ function damagefoe(attack, accuracy, user, target, basepower, element, percent, 
 	for(i = 0; i < element.length; i++) {
 	hurt = hurt * (tgt[element[i]] * percent[i]);
 	}
-	console.log(hurt);
 	//determining physical or magical, and true defensive value
 	if(type == "physical") {
 		//determine attack buff and applies it
 		hurt = hurt * (foeBuffs[user][0]);
-		console.log(hurt);
 		//makes defensive value defence
 		var def = tgt.def;
 		//determine defence buff and applies it
@@ -393,13 +385,11 @@ function damagefoe(attack, accuracy, user, target, basepower, element, percent, 
 	if(type == "magical") {
 		//determine magic attack buff and applies it
 		hurt = hurt * (foeBuffs[user][2]);
-		console.log(hurt);
 		//makes defensive value defence
 		var def = tgt.mdef;
 		//determine defence buff and applies it
 		def = def * (allyBuffs[target][3]);
 	}
-	console.log(def);
 	hurt = hurt / def;
 	console.log(hurt);
 	//this stays until everything is said and done and i actually finish the damage system
