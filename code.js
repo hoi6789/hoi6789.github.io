@@ -262,7 +262,7 @@ function selecc(target) {
 function turnCheck() {
 	var temp = 0;
 	for(i = 0; i < turntaken.length; i++) {
-		if(turntaken[i] = 1) {
+		if(turntaken[i] == 1) {
 			temp++;
 		}
 	}
@@ -302,8 +302,9 @@ function statusSelf(player, status, length, animation) {
 function enemyTurn() {
 	for(i = 0; i < wave1.length; i++) {
 		wave1[i].ai();
-		turntaken = [0, 0, 0]
+		console.log(i);
 	}
+	turntaken = [0, 0, 0];
 }
 //damage calculation for allies
 function damagefremb(attack, accuracy, user, target, basepower, element, percent, status, chance, count, debuff, amp, type, acc) {
