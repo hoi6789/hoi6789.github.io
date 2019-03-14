@@ -370,9 +370,9 @@ function damagefoe(attack, accuracy, user, target, basepower, element, percent, 
 		return 0;
 	}
 	//determines elemental resistances
-	for(i = 0; i < element.length; i++) {
-	hurt = hurt * (tgt[element[i]] * percent[i]);
-	}
+	//for(i = 0; i < element.length; i++) {
+	//hurt = hurt * (tgt[element[i]] * percent[i]);
+	//}
 	//determining physical or magical, and true defensive value
 	if(type == "physical") {
 		//determine attack buff and applies it
