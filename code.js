@@ -303,6 +303,7 @@ function enemyTurn() {
 	for(i = 0; i < wave1.length; i++) {
 		wave1[i].ai();
 		console.log(i);
+		break;
 	}
 	turntaken = [0, 0, 0];
 }
