@@ -250,7 +250,7 @@ function navUpdate() {
 
 //attacks
 function slash(attack, accuracy, user, target, basepower) {
-	activeDataHP[target] -= damagefremb(attack, accuracy, user, target, basepower, "weapon", 1.00, "none", 0, "none", 0, 0, "physical", 1);
+	activeDataHP[target] -= damagefremb(attack, accuracy, user, target, basepower, ["weapon"], [1.00], "none", 0, "none", 0, 0, "physical", 1);
 }
 function statusSelf(player, status, length, animation) {
 	for(i = 0; i < length; i++) {
