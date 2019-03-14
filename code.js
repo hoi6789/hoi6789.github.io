@@ -280,6 +280,9 @@ function damagefremb(attack, accuracy, user, target, basepower, element, percent
 	if(element[i] = "weapon") {
 		element[i] = equips[user][0]["element"];
 	}
+		console.log(element[i]);
+		console.log(tgt[element[i]]);
+		console.log(percent[i]);
 	hurt = hurt * (tgt[element[i]] * percent[i]);
 	}
 	console.log(hurt);
