@@ -297,6 +297,8 @@ function statusSelf(player, status, length, animation) {
 
 function enemyTurn() {
 	for(i = 0; i < wave1.length; i++) {
+		console.log(wave1);
+		console.log(wave1[i]);
 		wave1[i].ai();
 		turntaken = [0, 0, 0]
 	}
