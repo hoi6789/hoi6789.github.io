@@ -303,7 +303,7 @@ function enemyTurn() {
 	for(i = 0; i < wave1.length; i++) {
 		wave1[i].ai();
 		console.log(i);
-		break;
+		//break;
 	}
 	turntaken = [0, 0, 0];
 }
@@ -348,7 +348,6 @@ function damagefremb(attack, accuracy, user, target, basepower, element, percent
 		def = def * (foeBuffs[target][3]);
 	}
 	hurt = hurt / def;
-	//this stays until everything is said and done and i actually finish the damage system
 	return Math.floor(hurt);
 }
 
@@ -390,9 +389,6 @@ function damagefoe(attack, accuracy, user, target, basepower, element, percent, 
 		//determine defence buff and applies it
 		def = def * (allyBuffs[target][3]);
 	}
-	console.log(hurt);
 	hurt = hurt / def;
-	console.log(hurt);
-	//this stays until everything is said and done and i actually finish the damage system
 	return Math.floor(hurt);
 }
