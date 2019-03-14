@@ -280,7 +280,7 @@ function damagefremb(attack, accuracy, user, target, basepower, element, percent
 	if(element[i] = "weapon") {
 		element[i] = equips[user][0]["element"];
 	}
-		console.log(element[i]);
+		console.log(rabbick."fire");
 	hurt = hurt * (tgt.element[i] * percent[i]);
 	}
 	//determining physical or magical, and true defensive value
