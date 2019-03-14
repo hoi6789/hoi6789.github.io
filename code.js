@@ -15,11 +15,14 @@
 		execute: function(user, target, origin) {
 			if(origin = "ally") {
 				var username = players[user];
+				activeDataHP[target] -= damagefremb(username[this.stat], username.acc, user, target, this.basepower, [this.element], [this.percent], [this.status], [this.chance], [this.count], [this.debuff], [this.amp], [this.type], [this.acc]);
 			}
 			else {
 				var username = wave1[user];
+				activeAllyHP[target] -= damagefoe(username[this.stat], username.acc, user, target, this.basepower, [this.element], [this.percent], [this.status], [this.chance], [this.count], [this.debuff], [this.amp], [this.type], [this.acc]);
+				console.log(activeAllyHP);
 			}
-			activeDataHP[target] -= damagefremb(username[this.stat], username.acc, user, target, this.basepower, [this.element], [this.percent], [this.status], [this.chance], [this.count], [this.debuff], [this.amp], [this.type], [this.acc]);
+			
 		}
 	}
 //Create spellbooks for each player
@@ -154,7 +157,7 @@ var turn = 0;
 //tracks whether a turn has been taken
 var turntaken = [0, 0, 0];
 //stores player hp
-var activeAllyHP = [];
+var activeAllyHP = [1000];
 //stores player status
 var ally1Status = [];
 //stores ally buffs: atk, def, matk, mdef, acc, evd
