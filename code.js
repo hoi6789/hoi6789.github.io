@@ -116,8 +116,6 @@ var wavecount = 1;
 var wave1 = [rabbick, rabbick, none, rabbick, none];
 var wave2 = [];
 var wave3 = [];
-//you go figure this out
-var iolis;
 //stores current hp values of enemies
 var activeDataHP = [];
 //stores status conditions of enemies
@@ -270,7 +268,7 @@ function damagefremb(attack, accuracy, user, target, basepower, element, percent
 	var accur = levelscaleally(accuracy, levelPassive[user]);
 	var evade = levelscalefoe(tgt.evd, levelHostile[target]);
 	//checking for dodge
-	var dodge = (accur * acc * (1 + allyBuffs[user][4])) / (evade * (1 + foeBuffs[target][5]));
+	var dodge = (accur * acc * (allyBuffs[user][4])) / (evade * (foeBuffs[target][5]));
 	var dodgecheck = Math.random();
 	if(dodgecheck > dodge) {
 		return 0;
@@ -280,33 +278,30 @@ function damagefremb(attack, accuracy, user, target, basepower, element, percent
 	if(element[i] = "weapon") {
 		element[i] = equips[user][0]["element"];
 	}
-		console.log(element[i]);
-		console.log(tgt[element[i]]);
-		console.log(percent);
-		console.log(i);
-		console.log(percent[i]);
 	hurt = hurt * (tgt[element[i]] * percent[i]);
 	}
 	console.log(hurt);
 	//determining physical or magical, and true defensive value
 	if(type == "physical") {
 		//determine attack buff and applies it
-		hurt = hurt * (1 + allyBuffs[user][0]);
+		hurt = hurt * (allyBuffs[user][0]);
 		console.log(hurt);
 		//makes defensive value defence
 		var def = tgt.def;
 		//determine defence buff and applies it
-		def = def * (1 + foeBuffs[target][1]);
+		def = def * (foeBuffs[target][1]);
 		}
 	if(type == "magical") {
 		//determine magic attack buff and applies it
-		hurt = hurt * (1 + allyBuffs[user][2]);
+		hurt = hurt * (allyBuffs[user][2]);
 		console.log(hurt);
 		//makes defensive value defence
 		var def = tgt.mdef;
 		//determine defence buff and applies it
-		def = def * (1 + foeBuffs[target][3]);
+		def = def * (foeBuffs[target][3]);
 	}
+	console.log(def);
+	hurt = hurt / def;
 	console.log(hurt);
 	//this stays until everything is said and done and i actually finish the damage system
 	return hurt;
