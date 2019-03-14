@@ -38,7 +38,7 @@ var defaultequip = {
 
 //Equips
 var woodBlade = {
-	element: none,
+	element: "none",
 	health: [1, 1, 1, 1, 1],
 	atk: [1.1, 1.2, 1.2, 1.3, 1.4],
 	def: [1, 1, 1.05, 1.05, 1.1],
@@ -74,8 +74,8 @@ var rabbick = {
 	acc: 3,
 	evd: 3,
 	
-	"fire": 1.8,
-	"thunder": 0.5,
+	fire: 1.8,
+	thunder: 0.5,
 	ice: 0.5,
 	earth: 0.5,
 	bio: 1,
@@ -280,8 +280,7 @@ function damagefremb(attack, accuracy, user, target, basepower, element, percent
 	if(element[i] = "weapon") {
 		element[i] = equips[user][0]["element"];
 	}
-		console.log(rabbick."fire");
-	hurt = hurt * (tgt.element[i] * percent[i]);
+	hurt = hurt * (tgt[element[i]] * percent[i]);
 	}
 	//determining physical or magical, and true defensive value
 	if(type == "physical") {
