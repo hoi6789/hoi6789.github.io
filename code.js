@@ -250,7 +250,7 @@ function navUpdate() {
 
 //attacks
 function slash(attack, accuracy, user, target, basepower) {
-	activeDataHP[target] -= damagefremb(attack, accuracy, user, target, basepower, "weapon", 100, "none", 0, "none", 0, 0, "physical", 1);
+	activeDataHP[target] -= damagefremb(attack, accuracy, user, target, basepower, "weapon", 1.00, "none", 0, "none", 0, 0, "physical", 1);
 }
 function statusSelf(player, status, length, animation) {
 	for(i = 0; i < length; i++) {
@@ -278,11 +278,12 @@ function damagefremb(attack, accuracy, user, target, basepower, element, percent
 		return 0;
 	}
 	//determines elemental resistances
-	if(element = "weapon") {
-		element = equips[user][0];
+	for(i = 0; i < element.length; i++); {
+	if(element[i] = "weapon") {
+		element[i] = equips[user][0];
 	}
-	hurt = hurt * tgt.element;
-	
+	hurt = hurt * (tgt.element[i] * percent[i]);
+	}
 	//determining physical or magical, and true defensive value
 	if(type == "physical") {
 		//determine attack buff and applies it
