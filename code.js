@@ -31,13 +31,13 @@
 var kris = {
 	id: 1,
 	name: "Kris",
-	health: 12,
+	health: 15,
 	atk: 6,
 	def: 6,
-	matk: 2,
+	matk: 4,
 	mdef: 6,
 	acc: 4,
-	evd: 2,
+	evd: 4,
 };
 
 //Default Values
@@ -377,7 +377,7 @@ function damagefoe(attack, accuracy, user, target, basepower, element, percent, 
 		//determine attack buff and applies it
 		hurt = hurt * (foeBuffs[user][0]);
 		//makes defensive value defence
-		var def = tgt.def;
+		var def = levelscaleally(tgt.def, levelPassive[target]);
 		//determine defence buff and applies it
 		def = def * (allyBuffs[target][1]);
 		}
@@ -385,7 +385,7 @@ function damagefoe(attack, accuracy, user, target, basepower, element, percent, 
 		//determine magic attack buff and applies it
 		hurt = hurt * (foeBuffs[user][2]);
 		//makes defensive value defence
-		var def = tgt.mdef;
+		var def = levelscaleally(tgt.mdef, levelPassive[target]);
 		//determine defence buff and applies it
 		def = def * (allyBuffs[target][3]);
 	}
