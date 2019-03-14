@@ -270,18 +270,17 @@ function damagefremb(attack, accuracy, user, target, basepower, element, percent
 	var evade = levelscalefoe(tgt.evd, levelHostile[target]);
 	//checking for dodge
 	var dodge = (accur * acc * (1 + allyBuffs[user][4])) / (evade * (1 + foeBuffs[target][5]));
-	console.log((accur * acc * (1 + allyBuffs[user][4])));
-	console.log((evade * (1 + foeBuffs[target][5])));
-	console.log(dodge);
 	var dodgecheck = Math.random();
 	if(dodgecheck > dodge) {
 		return 0;
 	}
+	console.log(element);
 	//determines elemental resistances
 	for(i = 0; i < element.length; i++); {
 	if(element[i] = "weapon") {
 		element[i] = equips[user][0]["element"];
 	}
+		console.log(element[i]);
 	hurt = hurt * (tgt.element[i] * percent[i]);
 	}
 	//determining physical or magical, and true defensive value
