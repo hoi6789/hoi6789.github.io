@@ -18,7 +18,7 @@
 		}
 	}
 //Create spellbooks for each player
-	var spellbooks = [[basicSlash], [], []])
+	var spellbooks = [[basicSlash], [], []];
 //Prepare Players for fetching
 var kris = {
 	id: 1,
