@@ -276,7 +276,7 @@ function damagefremb(attack, accuracy, user, target, basepower, element, percent
 		return 0;
 	}
 	//determines elemental resistances
-	for(i = 0; i < element.length; i++); {
+	for(i = 0; i < element.length; i++) {
 	if(element[i] = "weapon") {
 		element[i] = equips[user][0]["element"];
 	}
