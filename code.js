@@ -1,3 +1,23 @@
+//Prepare Spells for fetching
+	var basicSlash = {
+		stat: "atk",
+		basepower: 30,
+		element: "weapon",
+		percent: 1,
+		status: "none",
+		chance: 0,
+		count: 0,
+		debuff: 0,
+		amp: 0,
+		type: "physical",
+		acc: 1,
+		
+		execute: function(user, target) {
+			var username = players[user];
+			//(attack, accuracy, user, target, basepower, element, percent, status, chance, count, debuff, amp, type, acc)
+			activeDataHP[target] -= damagefremb(username[this.stat], username.acc, user, target, this.basepower, [this.element], [this.percent], [this.status], [this.chance], [this.count], [this.debuff], [this.amp], [this.type], [this.acc]);
+		}
+	}
 //Prepare Players for fetching
 var kris = {
 	id: 1,
@@ -11,7 +31,7 @@ var kris = {
 	evd: 2,
 	
 	basicAttack: function() {
-		activeDataHP[target] -= damagefremb(attack, accuracy, user, target, basepower, ["weapon"], [1.00], "none", 0, "none", 0, 0, "physical", 1);
+		activeDataHP[target] -= damagefremb(kris.atk, kris.acc, 0, target, 30, ["weapon"], [1.00], "none", 0, "none", 0, 0, "physical", 1);
 	}
 };
 
@@ -152,7 +172,7 @@ function begin() {
 	//this is the "fetcher"
 	for(i = 0; i < wave1.length; i++) {
 		switch(i) {
-				//determines appropriate place to draw enemies, and fetched the enemy's picture
+				//determines appropriate place to draw enemies, and fetches the enemy's picture
 				case 0: document.getElementById("enemy1").innerHTML = wave1[i].img;
 				break;
 				case 1: document.getElementById("enemy2").innerHTML = wave1[i].img;
@@ -216,7 +236,8 @@ function selecc(target) {
 	if(select == 1) {
 		if(turn == 0) {
 			if(prereq == "attack") {
-				slash(kris.atk, kris.acc, 0, target, 40);
+				basicSlash.execute(turn, target);
+				//slash(kris.atk, kris.acc, 0, target, 40);
 				select = 0;
 				navigation = "all";
 				navUpdate();
@@ -304,5 +325,5 @@ function damagefremb(attack, accuracy, user, target, basepower, element, percent
 	hurt = hurt / def;
 	console.log(hurt);
 	//this stays until everything is said and done and i actually finish the damage system
-	return hurt;
+	return Math.floor(hurt);
 }
