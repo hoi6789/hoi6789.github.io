@@ -14,10 +14,11 @@
 		
 		execute: function(user, target) {
 			var username = players[user];
-			//(attack, accuracy, user, target, basepower, element, percent, status, chance, count, debuff, amp, type, acc)
 			activeDataHP[target] -= damagefremb(username[this.stat], username.acc, user, target, this.basepower, [this.element], [this.percent], [this.status], [this.chance], [this.count], [this.debuff], [this.amp], [this.type], [this.acc]);
 		}
 	}
+//Create spellbooks for each player
+	var spellbooks = [[basicSlash], [], []])
 //Prepare Players for fetching
 var kris = {
 	id: 1,
@@ -236,7 +237,7 @@ function selecc(target) {
 	if(select == 1) {
 		if(turn == 0) {
 			if(prereq == "attack") {
-				basicSlash.execute(turn, target);
+				spellbook[turn][0].execute(turn, target);
 				//slash(kris.atk, kris.acc, 0, target, 40);
 				select = 0;
 				navigation = "all";
