@@ -283,6 +283,8 @@ function damagefremb(attack, accuracy, user, target, basepower, element, percent
 		console.log(element[i]);
 		console.log(tgt[element[i]]);
 		console.log(percent);
+		console.log(i);
+		console.log(percent[i]);
 	hurt = hurt * (tgt[element[i]] * percent[i]);
 	}
 	console.log(hurt);
