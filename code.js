@@ -11,7 +11,7 @@ var kris = {
 	evd: 2,
 	
 	basicAttack: function() {
-		
+		activeDataHP[target] -= damagefremb(attack, accuracy, user, target, basepower, ["weapon"], [1.00], "none", 0, "none", 0, 0, "physical", 1);
 	}
 };
 
@@ -274,7 +274,6 @@ function damagefremb(attack, accuracy, user, target, basepower, element, percent
 	if(dodgecheck > dodge) {
 		return 0;
 	}
-	console.log(element);
 	//determines elemental resistances
 	for(i = 0; i < element.length; i++); {
 	if(element[i] = "weapon") {
@@ -299,6 +298,7 @@ function damagefremb(attack, accuracy, user, target, basepower, element, percent
 		//determine defence buff and applies it
 		def = def * (1 + foeBuffs[target][3]);
 	}
+	console.log(hurt);
 	//this stays until everything is said and done and i actually finish the damage system
-	return 4;
+	return hurt;
 }
