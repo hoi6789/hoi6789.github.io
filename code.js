@@ -13,7 +13,7 @@
 		acc: 1,
 		
 		execute: function(user, target, origin) {
-			if(origin = "ally") {
+			if(origin == "ally") {
 				var username = players[user];
 				activeDataHP[target] -= damagefremb(username[this.stat], username.acc, user, target, this.basepower, [this.element], [this.percent], [this.status], [this.chance], [this.count], [this.debuff], [this.amp], [this.type], [this.acc]);
 			}
