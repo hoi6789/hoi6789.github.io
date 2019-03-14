@@ -253,9 +253,10 @@ function selecc(target) {
 }
 
 function turnCheck() {
+	var temp = 0;
 	for(i = 0; i < turntaken.length; i++) {
 		if(turntaken[i] = 1) {
-			var temp++;
+			temp++;
 		}
 	}
 	if(temp >= players.length) {
