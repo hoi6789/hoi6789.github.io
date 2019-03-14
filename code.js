@@ -249,7 +249,7 @@ function button4() {
 function selecc(target) {
 	if(select == 1) {
 		if(prereq == "attack") {
-			spellbook[turn][0].execute(turn, target);
+			spellbook[turn][0].execute(turn, target, "ally");
 			select = 0;
 			navigation = "all";
 			navUpdate();
@@ -312,7 +312,6 @@ function damagefremb(attack, accuracy, user, target, basepower, element, percent
 	//Order of operations: find base damage, calculate elemental interaction and stab damage, apply buffs/status for attack, calculate defence, apply buffs/status for defence, reduce damage, calculate evade, apply evade/accuracy buffs, calculate to hit, inflict debuffs, inflict damage
 	//generates initial damage value
 	var hurt = Math.ceil(attack * Math.pow(scalemult, levelPassive[user]) * basepower);
-	console.log(hurt);
 	//determines target, used for checking numerical stats by converting the numerical position of the enemy in the wave into the name of the target
 	var tgt = wave1[target];
 	//determining evade and accuracy
@@ -331,7 +330,6 @@ function damagefremb(attack, accuracy, user, target, basepower, element, percent
 	}
 	hurt = hurt * (tgt[element[i]] * percent[i]);
 	}
-	console.log(hurt);
 	//determining physical or magical, and true defensive value
 	if(type == "physical") {
 		//determine attack buff and applies it
@@ -350,7 +348,6 @@ function damagefremb(attack, accuracy, user, target, basepower, element, percent
 		def = def * (foeBuffs[target][3]);
 	}
 	hurt = hurt / def;
-	console.log(hurt);
 	//this stays until everything is said and done and i actually finish the damage system
 	return Math.floor(hurt);
 }
@@ -360,6 +357,7 @@ function damagefoe(attack, accuracy, user, target, basepower, element, percent, 
 	//Order of operations: find base damage, calculate elemental interaction and stab damage, apply buffs/status for attack, calculate defence, apply buffs/status for defence, reduce damage, calculate evade, apply evade/accuracy buffs, calculate to hit, inflict debuffs, inflict damage
 	//generates initial damage value
 	var hurt = Math.ceil(attack * Math.pow(scalemult, levelHostile[user]) * basepower);
+	console.log(hurt);
 	//determines target, used for checking numerical stats by converting the numerical position of the enemy in the wave into the name of the target
 	var tgt = wave1[target];
 	//determining evade and accuracy
@@ -392,6 +390,7 @@ function damagefoe(attack, accuracy, user, target, basepower, element, percent, 
 		//determine defence buff and applies it
 		def = def * (allyBuffs[target][3]);
 	}
+	console.log(hurt);
 	hurt = hurt / def;
 	console.log(hurt);
 	//this stays until everything is said and done and i actually finish the damage system
