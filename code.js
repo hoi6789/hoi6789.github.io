@@ -280,7 +280,7 @@ function damagefremb(attack, accuracy, user, target, basepower, element, percent
 	//determines elemental resistances
 	for(i = 0; i < element.length; i++); {
 	if(element[i] = "weapon") {
-		element[i] = equips[user][0].element;
+		element[i] = equips[user][0].["element"];
 	}
 	hurt = hurt * (tgt.element[i] * percent[i]);
 	}
