@@ -263,6 +263,7 @@ function damagefremb(attack, accuracy, user, target, basepower, element, percent
 	//Order of operations: find base damage, calculate elemental interaction and stab damage, apply buffs/status for attack, calculate defence, apply buffs/status for defence, reduce damage, calculate evade, apply evade/accuracy buffs, calculate to hit, inflict debuffs, inflict damage
 	//generates initial damage value
 	var hurt = Math.ceil(attack * Math.pow(scalemult, levelPassive[user]) * basepower);
+	console.log(hurt);
 	//determines target, used for checking numerical stats by converting the numerical position of the enemy in the wave into the name of the target
 	var tgt = wave1[target];
 	//determining evade and accuracy
@@ -281,10 +282,12 @@ function damagefremb(attack, accuracy, user, target, basepower, element, percent
 	}
 	hurt = hurt * (tgt[element[i]] * percent[i]);
 	}
+	console.log(hurt);
 	//determining physical or magical, and true defensive value
 	if(type == "physical") {
 		//determine attack buff and applies it
 		hurt = hurt * (1 + allyBuffs[user][0]);
+		console.log(hurt);
 		//makes defensive value defence
 		var def = tgt.def;
 		//determine defence buff and applies it
@@ -293,6 +296,7 @@ function damagefremb(attack, accuracy, user, target, basepower, element, percent
 	if(type == "magical") {
 		//determine magic attack buff and applies it
 		hurt = hurt * (1 + allyBuffs[user][2]);
+		console.log(hurt);
 		//makes defensive value defence
 		var def = tgt.mdef;
 		//determine defence buff and applies it
