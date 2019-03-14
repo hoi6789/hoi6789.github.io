@@ -12,8 +12,13 @@
 		type: "physical",
 		acc: 1,
 		
-		execute: function(user, target) {
-			var username = players[user];
+		execute: function(user, target, origin) {
+			if(origin = "ally") {
+				var username = players[user];
+			}
+			else {
+				var username = wave1[user];
+			}
 			activeDataHP[target] -= damagefremb(username[this.stat], username.acc, user, target, this.basepower, [this.element], [this.percent], [this.status], [this.chance], [this.count], [this.debuff], [this.amp], [this.type], [this.acc]);
 		}
 	}
@@ -30,10 +35,6 @@ var kris = {
 	mdef: 6,
 	acc: 4,
 	evd: 2,
-	
-	basicAttack: function() {
-		activeDataHP[target] -= damagefremb(kris.atk, kris.acc, 0, target, 30, ["weapon"], [1.00], "none", 0, "none", 0, 0, "physical", 1);
-	}
 };
 
 //Default Values
@@ -105,7 +106,12 @@ var rabbick = {
 	wind: 1.8,
 	holy: 1,
 	dark: 0.5,
-	none: 1
+	none: 1,
+	
+	ai: function() {
+		var target = Math.floor(Math.random() * players.length);
+		basicSlash.execute(i, target, "foe");
+	}
 };
 
 //Start Variables
@@ -235,15 +241,25 @@ function button4() {
 //selection code for attacks and stuff, i should change it
 function selecc(target) {
 	if(select == 1) {
-		if(turn == 0) {
-			if(prereq == "attack") {
-				spellbook[turn][0].execute(turn, target);
-				//slash(kris.atk, kris.acc, 0, target, 40);
-				select = 0;
-				navigation = "all";
-				navUpdate();
-			}
+		if(prereq == "attack") {
+			spellbook[turn][0].execute(turn, target);
+			select = 0;
+			navigation = "all";
+			navUpdate();
+			turntaken[turn] = 1;
+			turnCheck();
 		}
+	}
+}
+
+function turnCheck() {
+	for(i = 0; i < turntaken.length; i++) {
+		if(turntaken[i] = 1) {
+			var temp++;
+		}
+	}
+	if(temp >= players.length) {
+		enemyTurn();
 	}
 }
 
@@ -268,17 +284,20 @@ function navUpdate() {
 	document.getElementById("target5").innerHTML = activeDataHP[4];
 }
 
-//attacks
-function slash(attack, accuracy, user, target, basepower) {
-	activeDataHP[target] -= damagefremb(attack, accuracy, user, target, basepower, ["weapon"], [1.00], "none", 0, "none", 0, 0, "physical", 1);
-}
+//attacks, changed to different system
 function statusSelf(player, status, length, animation) {
 	for(i = 0; i < length; i++) {
 	player.push(status);
 	}
 }
 
-//hurty hurt calculator
+function enemyTurn() {
+	for(i = 0; i < wave1.length; i++) {
+		wave1[i].ai();
+		turntaken = [0, 0, 0]
+	}
+}
+//damage calculation for allies
 function damagefremb(attack, accuracy, user, target, basepower, element, percent, status, chance, count, debuff, amp, type, acc) {
 	//Order of operations: find base damage, calculate elemental interaction and stab damage, apply buffs/status for attack, calculate defence, apply buffs/status for defence, reduce damage, calculate evade, apply evade/accuracy buffs, calculate to hit, inflict debuffs, inflict damage
 	//generates initial damage value
@@ -321,6 +340,54 @@ function damagefremb(attack, accuracy, user, target, basepower, element, percent
 		var def = tgt.mdef;
 		//determine defence buff and applies it
 		def = def * (foeBuffs[target][3]);
+	}
+	console.log(def);
+	hurt = hurt / def;
+	console.log(hurt);
+	//this stays until everything is said and done and i actually finish the damage system
+	return Math.floor(hurt);
+}
+
+//damage calculation for enemies
+function damagefoe(attack, accuracy, user, target, basepower, element, percent, status, chance, count, debuff, amp, type, acc) {
+	//Order of operations: find base damage, calculate elemental interaction and stab damage, apply buffs/status for attack, calculate defence, apply buffs/status for defence, reduce damage, calculate evade, apply evade/accuracy buffs, calculate to hit, inflict debuffs, inflict damage
+	//generates initial damage value
+	var hurt = Math.ceil(attack * Math.pow(scalemult, levelHostile[user]) * basepower);
+	console.log(hurt);
+	//determines target, used for checking numerical stats by converting the numerical position of the enemy in the wave into the name of the target
+	var tgt = wave1[target];
+	//determining evade and accuracy
+	var accur = levelscalefoe(accuracy, levelHostile[user]);
+	var evade = levelscaleally(tgt.evd, levelPassive[target]);
+	//checking for dodge
+	var dodge = (accur * acc * (foeBuffs[user][4])) / (evade * (allyBuffs[target][5]));
+	var dodgecheck = Math.random();
+	if(dodgecheck > dodge) {
+		return 0;
+	}
+	//determines elemental resistances
+	for(i = 0; i < element.length; i++) {
+	hurt = hurt * (tgt[element[i]] * percent[i]);
+	}
+	console.log(hurt);
+	//determining physical or magical, and true defensive value
+	if(type == "physical") {
+		//determine attack buff and applies it
+		hurt = hurt * (foeBuffs[user][0]);
+		console.log(hurt);
+		//makes defensive value defence
+		var def = tgt.def;
+		//determine defence buff and applies it
+		def = def * (allyBuffs[target][1]);
+		}
+	if(type == "magical") {
+		//determine magic attack buff and applies it
+		hurt = hurt * (foeBuffs[user][2]);
+		console.log(hurt);
+		//makes defensive value defence
+		var def = tgt.mdef;
+		//determine defence buff and applies it
+		def = def * (allyBuffs[target][3]);
 	}
 	console.log(def);
 	hurt = hurt / def;
