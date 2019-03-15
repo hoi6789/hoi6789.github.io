@@ -25,6 +25,10 @@
 			
 		}
 	}
+//Spell executor to actually use the spell
+	var exe = {
+		cute: function
+	}
 //Create spellbooks for each player
 	var spellbook = [[basicSlash], [], []];
 //Prepare Players for fetching
@@ -117,7 +121,7 @@ var rabbick = {
 	
 	ai: function() {
 		var target = Math.floor(Math.random() * players.length);
-		basicSlash.execute(i, target, "foe");
+		exe.cute.call(basicSlash, i, target, "foe")
 	}
 };
 
@@ -249,7 +253,7 @@ function button4() {
 function selecc(target) {
 	if(select == 1) {
 		if(prereq == "attack") {
-			spellbook[turn][0].execute(turn, target, "ally");
+			exe.cute.call(spellbook[turn][0], turn, target, "ally");
 			select = 0;
 			navigation = "all";
 			navUpdate();
