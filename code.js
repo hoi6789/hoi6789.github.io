@@ -27,7 +27,18 @@
 	}
 //Spell executor to actually use the spell
 	var exe = {
-		cute: function
+		cute: function(user, target, origin) {
+			if(origin == "ally") {
+				var username = players[user];
+				activeDataHP[target] -= damagefremb(username[this.stat], username.acc, user, target, this.basepower, [this.element], [this.percent], [this.status], [this.chance], [this.count], [this.debuff], [this.amp], [this.type], [this.acc]);
+			}
+			else {
+				var username = wave1[user];
+				activeAllyHP[target] -= damagefoe(username[this.stat], username.acc, user, target, this.basepower, [this.element], [this.percent], [this.status], [this.chance], [this.count], [this.debuff], [this.amp], [this.type], [this.acc]);
+				console.log(activeAllyHP);
+			}
+			
+		}
 	}
 //Create spellbooks for each player
 	var spellbook = [[basicSlash], [], []];
