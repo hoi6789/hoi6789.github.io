@@ -343,7 +343,7 @@ function damagefremb(attack, accuracy, user, target, basepower, element, percent
 	if(element[i] = "weapon") {
 		element[i] = equips[user][0]["element"];
 	}
-	hurt = hurt * (tgt[element[i]] * percent[i]);
+	hurt = (hurt * ((tgt[element[i]] - 1) * percent[i]) + hurt);
 	}
 	//determining physical or magical, and true defensive value
 	if(type == "physical") {
