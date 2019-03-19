@@ -2,8 +2,8 @@
 	var basicSlash = {
 		stat: "atk",
 		basepower: 30,
-		element: "weapon",
-		percent: 1,
+		element: ["weapon", "none"],
+		percent: [0.5, 0.5],
 		status: "none",
 		chance: 0,
 		count: 0,
