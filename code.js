@@ -339,11 +339,11 @@ function damagefremb(attack, accuracy, user, target, basepower, element, percent
 		return 0;
 	}
 	//determines elemental resistances
-	for(i = 0; i < element.length; i++) {
-	if(element[i] = "weapon") {
-		element[i] = equips[user][0]["element"];
+	for(i = 0; i < element.length[0]; i++) {
+	if(element[0][i] = "weapon") {
+		element[0][i] = equips[user][0]["element"];
 	}
-	hurt = (hurt * ((tgt[element[i]] - 1) * percent[i]) + hurt);
+	hurt = (hurt * ((tgt[element[0][i]] - 1) * percent[0][i]) + hurt);
 	}
 	//determining physical or magical, and true defensive value
 	if(type == "physical") {
