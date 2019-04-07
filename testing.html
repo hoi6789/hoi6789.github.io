@@ -109,8 +109,8 @@ function component(width, height, color, x, y) {
     x = myGameArea.canvas.width;
     y = Math.random() * myGameArea.canvas.height / 2;
     //tall = (Math.random() * 100) + 100;
-    myObstacles.push(new component(10, 200, "green", x, 0));
-      myObstacles.push(new component(10, 200, "green", x, y));
+    myObstacles.push(new component(10, 100, "green", x, 0));
+      myObstacles.push(new component(10, 100, "green", x, y));
   }
   for (i = 0; i < myObstacles.length; i += 1) {
     myObstacles[i].x += -1;
