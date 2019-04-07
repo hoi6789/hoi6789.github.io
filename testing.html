@@ -13,6 +13,7 @@ canvas {
 <script>
 
     var myGamePiece;
+    var orient = 0;
     
 function startGame() {
     myGameArea.start();
@@ -46,7 +47,18 @@ function component(width, height, color, x, y) {
 }
 
     function updateGameArea() {
+        if(orient == 0) {
         myGamePiece.x++;
+        }
+        if(myGamePiece.x > 600) {
+            orient = 1;
+        }
+        if(orient == 1) {
+            myGamePiece.x--;
+        }
+        if(myGamePiece.x < -100) {
+            orient = 0;
+        }
   myGameArea.clear();
   myGamePiece.update();
 }
