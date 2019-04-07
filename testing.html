@@ -13,12 +13,14 @@ canvas {
 <script>
 
     var myGamePiece;
+    var mouseGamePiece;
     var orient = 0;
     
     
 function startGame() {
     myGameArea.start();
     myGamePiece = new component(30, 30, "red", 10, 120);
+    mouseGamePiece = new component(30, 30, "blue", 10, 120);
 }
 
 var myGameArea = {
@@ -35,6 +37,10 @@ var myGameArea = {
     })
     window.addEventListener('keyup', function (e) {
       myGameArea.keys[e.keyCode] = false; 
+    })
+        window.addEventListener('mousemove', function (e) {
+      myGameArea.x = e.pageX;
+      myGameArea.y = e.pageY;
     })
     },
   clear : function() {
@@ -67,6 +73,10 @@ function component(width, height, color, x, y) {
   if (myGameArea.keys && myGameArea.keys[39]) {myGamePiece.speedX = 1; }
   if (myGameArea.keys && myGameArea.keys[38]) {myGamePiece.speedY = -1; }
   if (myGameArea.keys && myGameArea.keys[40]) {myGamePiece.speedY = 1; }
+        if (myGameArea.x && myGameArea.y) {
+    mouseGamePiece.x = myGameArea.x;
+    mouseGamePiece.y = myGameArea.y; 
+  }
   myGamePiece.newPos();
   myGameArea.clear();
   myGamePiece.update();
