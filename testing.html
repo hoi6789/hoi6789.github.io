@@ -16,11 +16,13 @@ canvas {
     var mouseGamePiece;
     var myObstacles = [];
     var orient = 0;
+    var myScore;
     
     
 function startGame() {
     myGameArea.start();
     myGamePiece = new component(30, 30, "red", 10, 120);
+    myScore = new component("30px", "Consolas", "black", 280, 40, "text");
     //myObstacles = new component(10, 200, "green", 300, 120); 
     mouseGamePiece = new component(30, 30, "blue", 10, 120);
 }
@@ -59,7 +61,8 @@ function everyinterval(n) {
   return false;
 }
 
-function component(width, height, color, x, y) {
+function component(width, height, color, x, y, type) {
+    this.type = type;
     this.width = width;
     this.height = height;
     this.x = x;
@@ -68,8 +71,14 @@ function component(width, height, color, x, y) {
     this.speedY = 0;
     this.update = function(){
     ctx = myGameArea.context;
+        if (this.type == "text") {
+      ctx.font = this.width + " " + this.height;
+      ctx.fillStyle = color;
+      ctx.fillText(this.text, this.x, this.y);
+    } else {
     ctx.fillStyle = color;
     ctx.fillRect(this.x, this.y, this.width, this.height);
+    }
   }
     this.newPos = function() {
     this.x += this.speedX;
@@ -103,6 +112,8 @@ function component(width, height, color, x, y) {
       return;
     } 
   }
+        myScore.text = "SCORE: " + myGameArea.frameNo;
+  myScore.update();
   myGameArea.clear();
   myGameArea.frameNo += 1;
   if (myGameArea.frameNo == 1 || everyinterval(150)) {
