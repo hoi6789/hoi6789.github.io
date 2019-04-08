@@ -110,7 +110,7 @@ function component(width, height, color, x, y) {
     y = (Math.random() * myGameArea.canvas.height / 2) + 100;
     tall = (Math.random() * y);
       if(y - tall < 50) {
-          tall += 50;
+          tall -= 50;
       }
     myObstacles.push(new component(10, tall, "green", x, 0));
     myObstacles.push(new component(10, 300, "green", x, y));
