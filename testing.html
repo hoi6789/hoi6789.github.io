@@ -15,8 +15,10 @@ canvas {
     var myGamePiece;
     var mouseGamePiece;
     var myObstacles = [];
+    var bullets = [];
     var orient = 0;
     var myScore;
+    var cooldown = 0;
     
     
 function startGame() {
@@ -103,6 +105,51 @@ function component(width, height, color, x, y, type) {
     return crash;
   }
 }
+    
+    function bullet(width, height, color, x, y, hp, type) {
+    this.type = type;
+    this.width = width;
+    this.height = height;
+    this.x = x;
+    this.y = y;    
+    this.speedX = 0;
+    this.speedY = 0;
+    this.hp = 1;
+    this.update = function(){
+    ctx = myGameArea.context;
+        if (this.type == "text") {
+      ctx.font = this.width + " " + this.height;
+      ctx.fillStyle = color;
+      ctx.fillText(this.text, this.x, this.y);
+    } else {
+    ctx.fillStyle = color;
+    ctx.fillRect(this.x, this.y, this.width, this.height);
+    }
+
+  }
+    this.newPos = function() {
+    this.x += this.speedX;
+    this.y += this.speedY; 
+  } 
+    this.crashWith = function(otherobj) {
+    var myleft = this.x;
+    var myright = this.x + (this.width);
+    var mytop = this.y;
+    var mybottom = this.y + (this.height);
+    var otherleft = otherobj.x;
+    var otherright = otherobj.x + (otherobj.width);
+    var othertop = otherobj.y;
+    var otherbottom = otherobj.y + (otherobj.height);
+    var crash = true;
+    if ((mybottom < othertop) ||
+    (mytop > otherbottom) ||
+    (myright < otherleft) ||
+    (myleft > otherright)) {
+      crash = false;
+    }
+    return crash;
+  }
+}
 
     function updateGameArea() {
         var x, y, tall;
@@ -112,6 +159,21 @@ function component(width, height, color, x, y, type) {
       return;
     } 
   }
+        
+        for (i = 0; i < myObstacles.length; i += 1) {
+            for(j = 0; j < bullets.length; j++) {
+    if (bullets[j].crashWith(myObstacles[i])) {
+      bullets[j].hp--;
+      return;
+    } 
+            }
+  }
+        
+        for(j = 0; j < bullets.length; j++) {
+    if (bullets[j].hp == 0) {
+      bullets.splice(j, 1);
+      return;
+    } 
         
   myGameArea.clear();
   myGameArea.frameNo += 1;
@@ -137,6 +199,9 @@ function component(width, height, color, x, y, type) {
   if (myGameArea.keys && myGameArea.keys[39]) {myGamePiece.speedX = 1; }
   if (myGameArea.keys && myGameArea.keys[38]) {myGamePiece.speedY = -1; }
   if (myGameArea.keys && myGameArea.keys[40]) {myGamePiece.speedY = 1; }
+        if(myGameArea.keys && myGameArea.keys[16] && cooldown == 0) {
+            bullets.push(new bullet(5, 5, "orange", myGamePiece.x, myGamePiece.y));
+        }
         if (myGameArea.x && myGameArea.y) {
     mouseGamePiece.x = myGameArea.x;
     mouseGamePiece.y = myGameArea.y; 
