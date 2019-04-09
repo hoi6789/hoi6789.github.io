@@ -203,6 +203,10 @@ function component(width, height, color, x, y, type) {
         if(myGameArea.keys && myGameArea.keys[16] && cooldown == 0) {
             bullets.push(new bullet(5, 5, "orange", myGamePiece.x, myGamePiece.y));
         }
+        for (i = 0; i < bullets.length; i += 1) {
+    bullets[i].x += -1;
+    bullets[i].update();
+  }
         if (myGameArea.x && myGameArea.y) {
     mouseGamePiece.x = myGameArea.x;
     mouseGamePiece.y = myGameArea.y; 
