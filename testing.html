@@ -112,8 +112,7 @@ function component(width, height, color, x, y, type) {
       return;
     } 
   }
-        myScore.text = "SCORE: " + myGameArea.frameNo;
-  myScore.update();
+        
   myGameArea.clear();
   myGameArea.frameNo += 1;
   if (myGameArea.frameNo == 1 || everyinterval(150)) {
@@ -132,6 +131,8 @@ function component(width, height, color, x, y, type) {
   }
         myGamePiece.speedX = 0;
   myGamePiece.speedY = 0; 
+        myScore.text = "SCORE: " + myGameArea.frameNo;
+  myScore.update();
   if (myGameArea.keys && myGameArea.keys[37]) {myGamePiece.speedX = -1; }
   if (myGameArea.keys && myGameArea.keys[39]) {myGamePiece.speedX = 1; }
   if (myGameArea.keys && myGameArea.keys[38]) {myGamePiece.speedY = -1; }
