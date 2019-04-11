@@ -14,6 +14,7 @@ function startGame() {
     myScore = new component("30px", "Consolas", "black", 280, 40, "text");
     //myObstacles = new component(10, 200, "green", 300, 120); 
     mouseGamePiece = new component(30, 30, "blue", 10, 120);
+    clearZones.push(new component(15, 15, "orange", -100, -100));
 }
 
 var myGameArea = {
