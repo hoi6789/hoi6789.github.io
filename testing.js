@@ -2,6 +2,7 @@
     var mouseGamePiece;
     var myObstacles = [];
     var bullets = [];
+    var clearZones = [];
     var orient = 0;
     var myScore;
     var cooldown = 0;
@@ -150,7 +151,7 @@ function component(width, height, color, x, y, type) {
             for(j = 0; j < bullets.length; j++) {
     if (bullets[j].crashWith(myObstacles[i])) {
       bullets[j].hp--;
-     myGameArea.context.clearRect(bullets[j].x, bullets[j].y, 5, 5);
+     clearZones.push(new component(5, 5, "orange", bullets[j].x, bullets[j].y));
       //return;
     } 
             }
@@ -179,6 +180,11 @@ function component(width, height, color, x, y, type) {
   for (i = 0; i < myObstacles.length; i += 1) {
     myObstacles[i].x += -1;
     myObstacles[i].update();
+  }
+     for (i = 0; i < clearZones.length; i += 1) {
+    clearZones[i].x += -1;
+    clearZones[i].update();
+      myGameArea.context.clearRect(clearZones[i].x, clearZones[i].y, 5, 5);
   }
         myGamePiece.speedX = 0;
   myGamePiece.speedY = 0; 
