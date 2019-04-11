@@ -150,7 +150,7 @@ function component(width, height, color, x, y, type) {
             for(j = 0; j < bullets.length; j++) {
     if (bullets[j].crashWith(myObstacles[i])) {
       bullets[j].hp--;
-      return;
+      //return;
     } 
             }
   }
@@ -158,7 +158,7 @@ function component(width, height, color, x, y, type) {
         for(j = 0; j < bullets.length; j++) {
     if (bullets[j].hp == 0) {
       bullets.splice(j, 1);
-      return;
+      //return;
     } 
         }
         
