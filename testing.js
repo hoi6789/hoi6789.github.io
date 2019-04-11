@@ -150,6 +150,7 @@ function component(width, height, color, x, y, type) {
             for(j = 0; j < bullets.length; j++) {
     if (bullets[j].crashWith(myObstacles[i])) {
       bullets[j].hp--;
+     myGameArea.context.clearRect(bullets[j].x, bullets[j].y, 5, 5);
       //return;
     } 
             }
