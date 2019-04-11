@@ -153,7 +153,7 @@ function component(width, height, color, x, y, type) {
      clearZones.push(new component(5, 5, "orange", bullets[j].x, bullets[j].y));
      
      for(k = 0; k < clearZones.length + 1; k++) {
-      clearZones[k].update();
+      console.log(clearZones);
       if(!bullets[j].crashWith(clearZones[k])) {
       bullets[j].hp--;
      }
