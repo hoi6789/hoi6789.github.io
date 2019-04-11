@@ -150,10 +150,10 @@ function component(width, height, color, x, y, type) {
         for (i = 0; i < myObstacles.length; i += 1) {
             for(j = 0; j < bullets.length; j++) {
     if (bullets[j].crashWith(myObstacles[i])) {
-     //for(k = 0; k < clearZones.length + 1; k++) {
-      if(!bullets[j].crashWith(clearZones)) {
-      bullets[j].hp--;
      clearZones.push(new component(5, 5, "orange", bullets[j].x, bullets[j].y));
+     for(k = 0; k < clearZones.length + 1; k++) {
+      if(!bullets[j].crashWith(clearZones[k])) {
+      bullets[j].hp--;
      }
     //}
       //return;
