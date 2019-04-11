@@ -151,9 +151,9 @@ function component(width, height, color, x, y, type) {
             for(j = 0; j < bullets.length; j++) {
     if (bullets[j].crashWith(myObstacles[i])) {
      clearZones.push(new component(5, 5, "orange", bullets[j].x, bullets[j].y));
-     
+     console.log(clearZones);
      for(k = 0; k < clearZones.length + 1; k++) {
-      console.log(clearZones);
+      
       if(!bullets[j].crashWith(clearZones[k])) {
       bullets[j].hp--;
      }
