@@ -142,7 +142,7 @@ function component(width, height, color, x, y, type) {
   for (i = 0; i < myObstacles.length; i += 1) {
     if (myGamePiece.crashWith(myObstacles[i])) {
       //myGameArea.stop();
-      return;
+      //return;
     } 
   }
         
