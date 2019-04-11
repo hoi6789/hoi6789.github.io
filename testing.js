@@ -157,7 +157,6 @@ function component(width, height, color, x, y, type) {
       //console.log(clearZones[k].x);
       if(!bullets[j].crashWith(clearZones[k])/* && bullets[j].crashWith(myObstacles[i])*/) {
       bullets[j].hp--;
-       bullets.splice(j, 1);
        clearZones.push(new component(15, 15, "orange", bullets[j].x, bullets[j].y));
      }
     }
@@ -168,8 +167,8 @@ function component(width, height, color, x, y, type) {
         
         for(j = 0; j < bullets.length; j++) {
     if (bullets[j].hp <= 0) {
-      
-     //console.log(bullets);
+      bullets.splice(j, 1);
+     console.log(bullets);
       //return;
     } 
         }
