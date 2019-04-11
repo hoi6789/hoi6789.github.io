@@ -190,7 +190,7 @@ function component(width, height, color, x, y, type) {
      for (i = 0; i < clearZones.length; i += 1) {
     clearZones[i].x += -1;
     clearZones[i].update();
-      myGameArea.context.clearRect(clearZones[i].x, clearZones[i].y, 5, 5);
+      myGameArea.context.clearRect(clearZones[i].x, clearZones[i].y, 15, 15);
   }
         myGamePiece.speedX = 0;
   myGamePiece.speedY = 0; 
