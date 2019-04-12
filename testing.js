@@ -161,7 +161,7 @@ function component(width, height, color, x, y, type) {
      }
       else {console.log("hit wall");
             bullets[j].hp--;
-       clearZones.push(new component(15, 15, "orange", bullets[j].x, bullets[j].y));
+       clearZones.push(new component(15, 15, "orange", bullets[j].x - 2, bullets[j].y));
            }
     }
       //return;
