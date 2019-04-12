@@ -160,7 +160,8 @@ function component(width, height, color, x, y, type) {
        clearZones.push(new component(15, 15, "orange", bullets[j].x, bullets[j].y));
        console.log("succ");
      }
-      else {console.log("nou");}
+      else {console.log("nou");
+           break;}
     }
       //return;
     } 
