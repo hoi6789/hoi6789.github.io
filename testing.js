@@ -189,15 +189,21 @@ function component(width, height, color, x, y, type) {
     myObstacles.push(new component(10, tall, "green", x, 0));
     myObstacles.push(new component(10, 300, "green", x, y));
   }
+     for (i = 0; i < clearZones.length; i += 1) {
+    clearZones[i].x += -1;
+    clearZones[i].update();
+      //myGameArea.context.clearRect(clearZones[i].x, clearZones[i].y, 15, 15);
+  }
   for (i = 0; i < myObstacles.length; i += 1) {
     myObstacles[i].x += -1;
     myObstacles[i].update();
   }
      for (i = 0; i < clearZones.length; i += 1) {
-    clearZones[i].x += -1;
+    //clearZones[i].x += -1;
     clearZones[i].update();
       myGameArea.context.clearRect(clearZones[i].x, clearZones[i].y, 15, 15);
   }
+     
         myGamePiece.speedX = 0;
   myGamePiece.speedY = 0; 
         myScore.text = "SCORE: " + myGameArea.frameNo;
