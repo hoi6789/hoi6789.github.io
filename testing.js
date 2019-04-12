@@ -144,18 +144,14 @@ function component(width, height, color, x, y, type) {
   for (i = 0; i < myObstacles.length; i += 1) {
     if (myGamePiece.crashWith(myObstacles[i])) {
       myGameArea.stop();
-      //return;
     } 
   }
         
         for (i = 0; i < myObstacles.length; i += 1) {
             for(j = 0; j < bullets.length; j++) {
     if (bullets[j].crashWith(myObstacles[i])) {
-     
-     //return;
      for(k = 0; k < clearZones.length; k++) {
-      //console.log(clearZones[k].x);
-      if(bullets[j].crashWith(clearZones[k])/* && bullets[j].crashWith(myObstacles[i])*/) {
+      if(bullets[j].crashWith(clearZones[k])) {
       
        console.log("hit clear");
      }
@@ -165,7 +161,6 @@ function component(width, height, color, x, y, type) {
             break;
            }
     }
-      //return;
     } 
             }
   }
