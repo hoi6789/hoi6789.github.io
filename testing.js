@@ -155,7 +155,7 @@ function component(width, height, color, x, y, type) {
      //return;
      for(k = 0; k < clearZones.length; k++) {
       //console.log(clearZones[k].x);
-      if(bullets[j].crashWith(clearZones[k]) && !bullets[j].crashWith(myObstacles[i])) {
+      if(bullets[j].crashWith(clearZones[k])/* && bullets[j].crashWith(myObstacles[i])*/) {
       
        console.log("hit clear");
      }
