@@ -1,18 +1,17 @@
 
-			var tickspeed = 20; //should be 200 in release ver
-		
-    var wood = 0;
-		var woodraw = 200;
+		var tickspeed = 200; //should be 200 in release ver
+    		var wood = 0;
+		var woodraw = 0;
 		var woodcut = 0;
-    var stone = 2000;
-		var science = 100;
+    		var stone = 0;
+		var science = 0;
 		var copperore = 0;
-		var copperingot = 5;
+		var copperingot = 0;
 		var tinore = 0;
 		var tiningot = 0;
 		var zincore = 0;
 		var zincingot = 0;
-		var manpower = 40;
+		var manpower = 0;
 		var clay = 0;
 		var clayE = 0;
 		var sand = 0;
@@ -360,6 +359,9 @@
 setInterval(timer, tickspeed);
 
 function timer()	{
+	function tt_gen() {
+		
+	}
 	wood = woodraw + woodcut
 	document.getElementById("woodDisplay").innerHTML = "Wood: " + wood.toFixed(3) + " <span class='tooltiptext'> <span class='forceleft'> Timber </span> <span class='forceright'> " + woodraw.toFixed(3) + "</span> <br> <span class='forceleft'> Lumber </span> <span class='forceright'>" + woodcut.toFixed(3) + "</span> </span>";
 	document.getElementById("stoneDisplay").innerHTML = "Stone: " + stone.toFixed(3);
