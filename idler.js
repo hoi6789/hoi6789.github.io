@@ -365,7 +365,7 @@ function timer()	{
 		output += " </span> <span class='forceright'>";
 		output += data[1];
 		for(i = 2; i < data.length; i++) {
-			if(i % 2 = 0) {
+			if(i % 2 == 0) {
 		output += "</span> <br> <span class='forceleft'>";
 		output += data[i];
 			} else {
