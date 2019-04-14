@@ -361,19 +361,19 @@ setInterval(timer, tickspeed);
 function timer()	{
 	function tt_gen(data) {
 		var output = "<span class='tooltiptext'> <span class='forceleft'> ";
-		var output += data[0];
-		var output += " </span> <span class='forceright'>";
-		var output += data[1];
+		output += data[0];
+		output += " </span> <span class='forceright'>";
+		output += data[1];
 		for(i = 2; i < data.length; i++) {
 			if(i % 2 = 0) {
-		var output += "</span> <br> <span class='forceleft'>";
-		var output += data[i];
+		output += "</span> <br> <span class='forceleft'>";
+		output += data[i];
 			} else {
-		var output += "</span> <span class='forceright'>";
-		var output += data[i];
+		output += "</span> <span class='forceright'>";
+		output += data[i];
 			}
 		}
-		var output += "</span> </span>";
+		output += "</span> </span>";
 		return output;
 	} " <span class='tooltiptext'> <span class='forceleft'> Timber </span> <span class='forceright'> " + woodraw.toFixed(3) + "</span> <br> <span class='forceleft'> Lumber </span> <span class='forceright'>" + woodcut.toFixed(3) + "</span> </span>"
 	wood = woodraw + woodcut
