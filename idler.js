@@ -1,186 +1,159 @@
-
-		var tickspeed = 200; //should be 200 in release ver
-    		var wood = 0;
-		var woodraw = 0;
-		var woodcut = 0;
-    		var stone = 0;
-		var science = 0;
-		var copperore = 0;
-		var copperingot = 0;
-		var tinore = 0;
-		var tiningot = 0;
-		var zincore = 0;
-		var zincingot = 0;
-		var manpower = 0;
-		var clay = 0;
-		var clayE = 0;
-		var sand = 0;
-		var sandE = 0;
-		var glass = 0;
-		var naviData = 0;
-		var EnaviData = 0;
-		//wood pickaxe
-    //check, costwood
-		var toolstation1 = [0, 30];
-		
-		//wood axe
-		//check, costwood, time, queue
-		var toolstation2 = [0, 10, 3, 1];
-		
-		//stone pickaxe
-		//check, costwood, coststone, time, queue
-		var toolstation3 = [0, 30, 15, 3, 1];
-		
-		//stone axe
-		//check, costwood, coststone, time, queue
-		var toolstation4 = [0, 15, 30, 2, 2];
-		
-		//copper axe
-		//check, costwood, costcopper, mult
-		var toolstation5 = [0, 25, 5, 1.2];
-		
-		//copper pickaxe
-		//check, costwood, costcopper, mult
-		var toolstation6 = [0, 25, 5, 1.2];
-		
-		//copper instruments
-		//check, costcopper, mult
-		var toolstation7 = [0, 5, 1.2];
-		
-		//copper optics
-		//check, costglass, costcopper, mult
-		var toolstation8 = [0, 25, 5, 1.2];
-		
-    var woodTime = 0;
-		var woodQueue = 0;
-		var woodTimeMax = 15;
-		var woodQueueMax = 5;
-		var stoneTime = 0;
-		var stoneQueue = 0;
-		var stoneTimeMax = 15;
-		var stoneQueueMax = 5;
-		var scienceTime = 0;
-		var scienceQueue = 0;
-		var scienceTimeMax = 25;
-		var scienceQueueMax = 3;
-		var oresQueue = 0;
-		var manpowerTime = 0;
-		var manpowerTimeMax = 100;
-		var sandTime = 0;
-		var sandQueue = 0;
-		var sandTimeMax = 20;
-		var sandQueueMax = 4;
-		var sandClay = 0.6;
-		
-		
-		//research station
-		//count, woodcost, stonecost, prodbonus
-		var campsiteResearch1 = [0, 45, 35, 25];
-		
-		//fire
-		//check, costscience
-		var research1 = [0, 10];
-		
-		//exploration
-		//check, costscience
-		var research2 = [0, 20];
-		//area, mult, coast
-		var exploration = [0, 1, 10];
-		var caravan1 = [10, 100, 50, 50];
-		
-		//geology
-		//check, costscience
-		var research3 = [0, 40];
-		//coststone, mult, chancecopper, chancetin, chancezinc
-		var geology = [50, 50, 45, 15, 10]
-		
-		//agriculture
-		//check, costscience
-		var research4 = [0, 60];
-		
-		//mining
-		//check, costscience
-		var research5 = [0, 60];
-		
-		//metallurgy
-		//check, costscience
-		var research6 = [0, 90];
-
-			document.getElementById("explorationzone").setAttribute("hidden", true);
-			document.getElementById("coastEzone").setAttribute("hidden", true);
-			document.getElementById("naviExploration").setAttribute("hidden", true);
-      function harvestWood() {
-        woodQueue++;
-				woodTime++
-      }
-
-      function harvestStone() {
-        stoneQueue++;
-				stoneTime++;
-      }
+var tickspeed = 200; //should be 200 in release ver
+var wood = 0;
+var woodraw = 0;
+var woodcut = 0;
+var stone = 0;
+var science = 0;
+var copperore = 0;
+var copperingot = 0;
+var tinore = 0;
+var tiningot = 0;
+var zincore = 0;
+var zincingot = 0;
+var manpower = 0;
+var clay = 0;
+var clayE = 0;
+var sand = 0;
+var sandE = 0;
+var glass = 0;
+var naviData = 0;
+var EnaviData = 0;
+//wood pickaxe
+//check, costwood
+var toolstation1 = [0, 30];
+//wood axe
+//check, costwood, time, queue
+var toolstation2 = [0, 10, 3, 1];
+//stone pickaxe
+//check, costwood, coststone, time, queue
+var toolstation3 = [0, 30, 15, 3, 1];
+//stone axe
+//check, costwood, coststone, time, queue
+var toolstation4 = [0, 15, 30, 2, 2];
+//copper axe
+//check, costwood, costcopper, mult
+var toolstation5 = [0, 25, 5, 1.2];
+//copper pickaxe
+//check, costwood, costcopper, mult
+var toolstation6 = [0, 25, 5, 1.2];
+//copper instruments
+//check, costcopper, mult
+var toolstation7 = [0, 5, 1.2];
+//copper optics
+//check, costglass, costcopper, mult
+var toolstation8 = [0, 25, 5, 1.2];
+var woodTime = 0;
+var woodQueue = 0;
+var woodTimeMax = 15;
+var woodQueueMax = 5;
+var stoneTime = 0;
+var stoneQueue = 0;
+var stoneTimeMax = 15;
+var stoneQueueMax = 5;
+var scienceTime = 0;
+var scienceQueue = 0;
+var scienceTimeMax = 25;
+var scienceQueueMax = 3;
+var oresQueue = 0;
+var manpowerTime = 0;
+var manpowerTimeMax = 100;
+var sandTime = 0;
+var sandQueue = 0;
+var sandTimeMax = 20;
+var sandQueueMax = 4;
+var sandClay = 0.6;
+//research station
+//count, woodcost, stonecost, prodbonus
+var campsiteResearch1 = [0, 45, 35, 25];
+//fire
+//check, costscience
+var research1 = [0, 10];
+//exploration
+//check, costscience
+var research2 = [0, 20];
+//area, mult, coast
+var exploration = [0, 1, 10];
+var caravan1 = [10, 100, 50, 50];
+//geology
+//check, costscience
+var research3 = [0, 40];
+//coststone, mult, chancecopper, chancetin, chancezinc
+var geology = [50, 50, 45, 15, 10]
+//agriculture
+//check, costscience
+var research4 = [0, 60];
+//mining
+//check, costscience
+var research5 = [0, 60];
+//metallurgy
+//check, costscience
+var research6 = [0, 90];
+document.getElementById("explorationzone").setAttribute("hidden", true);
+document.getElementById("coastEzone").setAttribute("hidden", true);
+document.getElementById("naviExploration").setAttribute("hidden", true);
+function harvestWood() {
+	woodQueue++;
+	woodTime++
+}
+function harvestStone() {
+	stoneQueue++;
+	stoneTime++;
+}
+function harvestScience() {
+	scienceQueue++;
+	scienceTime++;
+}
+function harvestSand() {
+	sandQueue++;
+	sandTime++;
+}
+function harvestOres() {
+	oresQueue++;
+}
+function harvestManpower() {
+	manpowerTime++;
+}
+function clickExplore() {
+	exploration[0] += manpower * exploration[1];
+	manpower = 0;
+}
+function caravanCoast() {
+	if(manpower >= caravan1[0]) {
+		document.getElementById("caravanCoast").setAttribute("disabled", true);
+		if(sandE >= caravan1[2]) {
+			sandE -= caravan1[2];
+			var tempsand = caravan1[2];
+		}	else {
+			var tempsand = sandE;
+			sandE = 0;
+		}
+		if(clayE >= caravan1[3]) {
+			clayE -= caravan1[3];
+			var tempclay = caravan1[3];
+		}	else {
+			var tempclay = clayE;
+			clayE = 0;
+		}
+		setTimeout(function() {sand += tempsand; clay += tempclay; document.getElementById("caravanCoast").removeAttribute("disabled");}, caravan1[1] * tickspeed)
+	}
+}
 			
-			function harvestScience() {
-        scienceQueue++;
-				scienceTime++;
-      }
-			
-			function harvestSand() {
-        sandQueue++;
-				sandTime++;
-      }
-			
-			function harvestOres() {
-				oresQueue++;
-			}
-			
-			function harvestManpower() {
-				manpowerTime++;
-			}
-			
-			function clickExplore() {
-				exploration[0] += manpower * exploration[1];
-				manpower = 0;
-			}
-			
-			function caravanCoast() {
-				if(manpower >= caravan1[0]) {
-					document.getElementById("caravanCoast").setAttribute("disabled", true);
-					if(sandE >= caravan1[2]) {
-						sandE -= caravan1[2];
-						var tempsand = caravan1[2];
-					}
-					else {
-						var tempsand = sandE;
-						sandE = 0;
-					}
-					if(clayE >= caravan1[3]) {
-						clayE -= caravan1[3];
-						var tempclay = caravan1[3];
-					}
-					else {
-						var tempclay = clayE;
-						clayE = 0;
-					}
-					setTimeout(function() {sand += tempsand; clay += tempclay; document.getElementById("caravanCoast").removeAttribute("disabled");}, caravan1[1] * tickspeed)
-				}
-			}
-			
-			//Navi Campsite
-			function clickNaviCampsite() {
-				naviData = 0;
-				document.getElementsByClassName("active")[0].removeAttribute("class");
+//Navi Campsite
+function clickNaviCampsite() {
+	naviData = 0;
+	document.getElementsByClassName("active")[0].removeAttribute("class");
 	document.getElementById("explorationzone").setAttribute("hidden", true);
 	document.getElementById("campsitezone").removeAttribute("hidden");
-			}
-			//Navi Campsite
-			
-			//Navi Exploration
-			function clickNaviExploration() {
-				naviData = 1;
-				document.getElementsByClassName("active")[0].removeAttribute("class");
-					document.getElementById("campsitezone").setAttribute("hidden", true);	
-				document.getElementById("explorationzone").removeAttribute("hidden");
-			}
+}
+//Navi Campsite
+
+//Navi Exploration
+function clickNaviExploration() {
+	naviData = 1;
+	document.getElementsByClassName("active")[0].removeAttribute("class");
+	document.getElementById("campsitezone").setAttribute("hidden", true);	
+	document.getElementById("explorationzone").removeAttribute("hidden");
+}
 			//Navi Exploration
 			
 			//ENavi Coast
