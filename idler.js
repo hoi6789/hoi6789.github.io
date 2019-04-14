@@ -377,7 +377,7 @@ function timer()	{
 		return output;
 	} " <span class='tooltiptext'> <span class='forceleft'> Timber </span> <span class='forceright'> " + woodraw.toFixed(3) + "</span> <br> <span class='forceleft'> Lumber </span> <span class='forceright'>" + woodcut.toFixed(3) + "</span> </span>"
 	wood = woodraw + woodcut
-	document.getElementById("woodDisplay").innerHTML = "Wood: " + wood.toFixed(3) + tt_gen(["Timber", woodraw.toFixed(3), "Lumber", woodcut.toFixed]);
+	document.getElementById("woodDisplay").innerHTML = "Wood: " + wood.toFixed(3) + tt_gen(["Timber", woodraw.toFixed(3), "Lumber", woodcut.toFixed(3)]);
 	document.getElementById("stoneDisplay").innerHTML = "Stone: " + stone.toFixed(3);
 	document.getElementById("scienceDisplay").innerHTML = "Science: " + science.toFixed(3);
 	document.getElementById("copperDisplay").innerHTML = "Copper: " + copperingot.toFixed(3) + " <span class='tooltiptext'> <span class='forceleft'> Copper Ingots </span> <span class='forceright'> " + copperingot.toFixed(3) + "</span> <br> <span class='forceleft'> Copper Ore </span> <span class='forceright'>" + copperore.toFixed(3) + "</span> </span>";
