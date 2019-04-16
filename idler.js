@@ -348,14 +348,14 @@ function timer()	{
 		}
 		output += "</span> </span>";
 		return output;
-	} " <span class='tooltiptext'> <span class='forceleft'> Timber </span> <span class='forceright'> " + woodraw.toFixed(3) + "</span> <br> <span class='forceleft'> Lumber </span> <span class='forceright'>" + woodcut.toFixed(3) + "</span> </span>"
+	} 
 	wood = woodraw + woodcut
 	document.getElementById("woodDisplay").innerHTML = "Wood: " + wood.toFixed(3) + tt_gen(["Timber", woodraw.toFixed(3), "Lumber", woodcut.toFixed(3)]);
 	document.getElementById("stoneDisplay").innerHTML = "Stone: " + stone.toFixed(3);
 	document.getElementById("scienceDisplay").innerHTML = "Science: " + science.toFixed(3);
-	document.getElementById("copperDisplay").innerHTML = "Copper: " + copperingot.toFixed(3) + " <span class='tooltiptext'> <span class='forceleft'> Copper Ingots </span> <span class='forceright'> " + copperingot.toFixed(3) + "</span> <br> <span class='forceleft'> Copper Ore </span> <span class='forceright'>" + copperore.toFixed(3) + "</span> </span>";
-	document.getElementById("tinDisplay").innerHTML = "Tin: " + tiningot.toFixed(3) + " <span class='tooltiptext'> <span class='forceleft'> Tin Ingots </span> <span class='forceright'> " + tiningot.toFixed(3) + "</span> <br> <span class='forceleft'> Tin Ore </span> <span class='forceright'>" + tinore.toFixed(3) + "</span> </span>";
-	document.getElementById("zincDisplay").innerHTML = "Zinc: " + zincingot.toFixed(3) + " <span class='tooltiptext'> <span class='forceleft'> Zinc Ingots </span> <span class='forceright'> " + zincingot.toFixed(3) + "</span> <br> <span class='forceleft'> Zinc Ore </span> <span class='forceright'>" + zincore.toFixed(3) + "</span> </span>";
+	document.getElementById("copperDisplay").innerHTML = "Copper: " + copperingot.toFixed(3) + tt_gen(["Copper Ingots", copperingot.toFixed(3), "Copper Ore", copperore.toFixed(3)]);
+	document.getElementById("tinDisplay").innerHTML = "Tin: " + tiningot.toFixed(3) + tt_gen(["Tin Ingots", tiningot.toFixed(3), "Tin Ore", tinore.toFixed(3)]);
+	document.getElementById("zincDisplay").innerHTML = "Zinc: " + zincingot.toFixed(3) + tt_gen(["Zinc Ingots", zincingot.toFixed(3), "Zinc Ore", Zincore.toFixed(3)]);
 	document.getElementById("manpowerDisplay").innerHTML = "Manpower: " + manpower.toFixed(3);
 	document.getElementById("sandDisplayE").innerHTML = "Sand: " + sandE.toFixed(3);
 	document.getElementById("clayDisplayE").innerHTML = "Clay: " + clayE.toFixed(3);
