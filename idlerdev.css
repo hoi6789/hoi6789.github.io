@@ -35,6 +35,7 @@
 	 	border-left: 6px solid slategrey;
     background-color: lightgrey;
 		top: 100%;
+		left: 100%;
  		
     /* Position the tooltip text - see examples below! */
     position: absolute;
