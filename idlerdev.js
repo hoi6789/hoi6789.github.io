@@ -355,7 +355,7 @@ function timer()	{
 	document.getElementById("scienceDisplay").innerHTML = "Science: " + science.toFixed(3);
 	document.getElementById("copperDisplay").innerHTML = "Copper: " + copperingot.toFixed(3) + tt_gen(["Copper Ingots", copperingot.toFixed(3), "Copper Ore", copperore.toFixed(3)]);
 	document.getElementById("tinDisplay").innerHTML = "Tin: " + tiningot.toFixed(3) + tt_gen(["Tin Ingots", tiningot.toFixed(3), "Tin Ore", tinore.toFixed(3)]);
-	document.getElementById("zincDisplay").innerHTML = "Zinc: " + zincingot.toFixed(3) + tt_gen(["Zinc Ingots", zincingot.toFixed(3), "Zinc Ore", Zincore.toFixed(3)]);
+	document.getElementById("zincDisplay").innerHTML = "Zinc: " + zincingot.toFixed(3) + tt_gen(["Zinc Ingots", zincingot.toFixed(3), "Zinc Ore", zincore.toFixed(3)]);
 	document.getElementById("manpowerDisplay").innerHTML = "Manpower: " + manpower.toFixed(3);
 	document.getElementById("sandDisplayE").innerHTML = "Sand: " + sandE.toFixed(3);
 	document.getElementById("clayDisplayE").innerHTML = "Clay: " + clayE.toFixed(3);
