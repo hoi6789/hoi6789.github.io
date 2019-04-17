@@ -1,0 +1,272 @@
+<meta name="description" content="
+Version: dev-0.1
+Features: 6 distinct resources, 3 of which do nothing
+4 different tools
+2 working sciences
+Quality bug-free code
+">
+<title></title>
+<head>
+      <link rel="stylesheet" type="text/css" href="idler.css">
+</head
+<body>
+
+
+  <script src="idler.js">
+		
+  </script>
+  <font size="2">
+    Survival Game
+		<br>
+		<ul>
+			<li><a href="#" id="naviCampsite" onclick="clickNaviCampsite()">Campsite</a></li>
+			<li><a href="#" id="naviExploration" onclick="clickNaviExploration()">Exploration</a></li>
+		</ul>
+		<br>
+		<br>
+			<div class="tooltipbr">
+    <p id="woodDisplay">
+			Wood <span class="tooltiptext"> no u </span>
+    </p>
+				</div>
+				<div class="tooltipbr">
+    <p hidden id="stoneDisplay">
+      Stone
+    </p>
+					</div>
+					<div class="tooltipbr">
+		<p hidden id="scienceDisplay">
+			Science
+		</p>
+						</div>
+						<div class="tooltipbr">
+		<p hidden id="copperDisplay">
+			Copper
+		</p>
+							</div>
+							<div class="tooltipbr">
+		<p hidden id="tinDisplay">
+			Tin
+		</p>
+		</div>
+								<div class="tooltipbr">
+		<p hidden id="zincDisplay">
+			Zinc
+		</p>
+									</div>
+		<div class="tooltipbr">
+		<p hidden id="manpowerDisplay">
+			Manpower
+		</p>
+									</div>
+		<div class="tooltipbr">
+		<p hidden id="sandDisplay">
+			Sand
+		</p>
+									</div>
+		<div class="tooltipbr">
+		<p hidden id="clayDisplay">
+			Clay
+		</p>
+									</div>
+		<p id="diagnostic">
+			Diagnostic Information
+		</p>
+	<div class="zone" id="campsitezone">
+		<h2>Campsite</h2>
+		<!-- Wood -->
+		<div class="tooltip">
+    <button onclick="harvestWood()" id="harvestWood">Collect Wood</button>
+			<span class="tooltiptext" id="tooltipHarvestWood">Enable Javascript to play this game. Alternatively, there's a bug.</span>
+		</div>
+		<!-- Wood -->
+		
+		<!-- Stone -->
+		<div class="tooltip">
+    <button hidden onclick="harvestStone()" id="harvestStone"><font size="2">Collect Stone</font></button>
+			<span class="tooltiptext" id="tooltipHarvestStone">ur mum big gae</span>
+		</div>
+		<!-- Stone -->
+		
+		<!-- Science -->
+		<div class="tooltip">
+    <button hidden onclick="harvestScience()" id="harvestScience"><font size="2">Conduct Research</font></button>
+			<span class="tooltiptext" id="tooltipHarvestScience">ur mum bigger gae</span>
+		</div>
+		<!-- Science -->
+		
+		<!-- Ores -->
+		<div class="tooltip">
+			<button hidden onclick="harvestOres()" id="harvestOres">Analyze Ores</button>
+			<span class="tooltiptext" id="tooltipHarvestOres">ur mum bigger gaer</span>
+		</div>
+		<!-- Ores -->
+		
+		<!-- Manpower -->
+		<div class="tooltip">
+			<button hidden onclick="harvestManpower()" id="harvestManpower">Collect Supplies</button>
+			<span class="tooltiptext" id="tooltipHarvestManpower">ur mum biggest gaer</span>
+		</div>
+		<!-- Manpower -->
+		
+		<!-- Manpower -->
+		<div class="tooltip">
+			<button hidden onclick="harvestManpower()" id="harvestManpower">Collect Supplies</button>
+			<span class="tooltiptext" id="tooltipHarvestManpower">ur mum biggest gaer</span>
+		</div>
+		<!-- Manpower -->
+		
+		<!-- Research Station -->
+		<div class="tooltip">
+    <button hidden onclick="clickCampsiteResearch1()" id="campsiteResearch1"><font size="2">Research Station</font></button>
+		<span class="tooltiptext" id="tooltipCampsiteResearch1">Allows you to conduct research. The more the better!</span>
+		</div>
+		<!-- Research Station -->
+		
+		<!-- Smelt Copper -->
+		<div class="tooltip">
+    <button hidden onclick="clickSmeltCopper()" id="smeltCopper"><font size="2">Smelt Copper</font></button>
+		<span class="tooltiptext" id="tooltipSmeltCopper">i wont even bother</span>
+		</div>
+		<!-- Smelt Copper -->
+		
+    <h2>Toolstation</h2>
+		<!-- Wooden Pickaxe -->
+		<div class="tooltip">
+    <button hidden onclick="clickToolstation1()" id="toolstation1"><font size="2">Wooden Pickaxe</font></button>
+		<span class="tooltiptext" id="tooltipToolstation1">Allows the collection of stone. Cost: 50 Wood</span>
+		</div>
+		<!-- Wooden Pickaxe -->
+		
+		<!-- Wooden Axe -->
+		<div class="tooltip">
+    <button hidden onclick="clickToolstation2()" id="toolstation2"><font size="2">Wooden Axe</font></button>
+		<span class="tooltiptext" id="tooltipToolstation2">Harvest wood faster. Cost: 15 Wood</span>
+		</div>
+		<!-- Wooden Axe -->
+		
+		<!-- Stone Pickaxe -->
+		<div class="tooltip">
+    <button hidden onclick="clickToolstation3()" id="toolstation3"><font size="2">Stone Pickaxe</font></button>
+		<span class="tooltiptext" id="tooltipToolstation3">Harvest stone faster. Cost: 40 Stone, 20 Wood</span>
+		</div>
+		<!-- Stone Pickaxe -->
+		
+		<!-- Stone Axe -->
+		<div class="tooltip">
+    <button hidden onclick="clickToolstation4()" id="toolstation4"><font size="2">Stone Axe</font></button>
+		<span class="tooltiptext" id="tooltipToolstation4">Harvest wood faster. Cost: 40 Stone, 20 Wood</span>
+		</div>
+		<!-- Stone Axe -->
+		
+		<!-- Copper Axe -->
+		<div class="tooltip">
+    <button hidden onclick="clickToolstation5()" id="toolstation5"><font size="2">Copper Axe</font></button>
+		<span class="tooltiptext" id="tooltipToolstation5">wood mult 1.2</span>
+		</div>
+		<!-- Copper Axe -->
+		
+		<!-- Copper Pickaxe -->
+		<div class="tooltip">
+    <button hidden onclick="clickToolstation6()" id="toolstation6"><font size="2">Copper Pickaxe</font></button>
+		<span class="tooltiptext" id="tooltipToolstation6">stone mult 1.2</span>
+		</div>
+		<!-- Copper Pickaxe -->
+		
+		<!-- Copper Instruments -->
+		<div class="tooltip">
+    <button hidden onclick="clickToolstation7()" id="toolstation7"><font size="2">Copper Instruments</font></button>
+		<span class="tooltiptext" id="tooltipToolstation7">Science mult 1.2</span>
+		</div>
+		<!-- Copper Instruments -->
+		
+		<!-- Copper Sights -->
+		<div class="tooltip">
+    <button hidden onclick="clickToolstation8()" id="toolstation8"><font size="2">Copper Optics</font></button>
+		<span class="tooltiptext" id="tooltipToolstation8">manpower mult 1.2</span>
+		</div>
+		<!-- Copper Sights -->
+		
+		<h2> Research </h2>
+		
+		<!-- Fire -->
+		<div class="tooltip">
+    <button hidden onclick="clickResearch1()" id="research1"><font size="2">Fire</font></button>
+		<span class="tooltiptext" id="tooltipResearch1">Discover Fire. Required for all other research upgrades. Cost: 10 Science</span>
+		</div>
+		<!-- Fire -->
+		
+		<!-- Exploration -->
+		<div class="tooltip">
+    <button hidden onclick="clickResearch2()" id="research2"><font size="2">Exploration</font></button>
+		<span class="tooltiptext" id="tooltipResearch2">Look around you. See what's available. Unlocks exploration and a few new resources. Cost: 30 Science</span>
+		</div>
+		<!-- Exploration -->
+		
+		<!-- Geology -->
+		<div class="tooltip">
+    <button hidden onclick="clickResearch3()" id="research3"><font size="2">Geology</font></button>
+		<span class="tooltiptext" id="tooltipResearch3">Find metals in stone. Cost: 60 Science</span>
+		</div>
+		<!-- Geology -->
+		
+		<!-- Agriculture -->
+		<div class="tooltip">
+    <button hidden onclick="clickResearch4()" id="research4"><font size="2">Agriculture</font></button>
+		<span class="tooltiptext" id="tooltipResearch4">Learn how to grow things. Could boost wood production. Cost: 90 Science</span>
+		</div>
+		<!-- Agriculture -->
+		
+		<!-- Mining -->
+		<div class="tooltip">
+    <button hidden onclick="clickResearch5()" id="research5"><font size="2">Mining</font></button>
+		<span class="tooltiptext" id="tooltipResearch5">Better digging techniques. Could boost stone production. Cost: 90 Science</span>
+		</div>
+		<!-- Mining -->
+		
+		<!-- Metallurgy -->
+		<div class="tooltip">
+    <button hidden onclick="clickResearch6()" id="research6"><font size="2">Agriculture</font></button>
+		<span class="tooltiptext" id="tooltipResearch6">Smelt materials into different forms. Cost: 120 Science</span>
+		</div>
+		<!-- Metallurgy -->
+		</div>
+	<div class="zone" id="explorationzone">
+		<h2> Explore</h2>
+		<div class="tooltip">
+		<button onclick="clickExplore()" id="buttonExplore">Explore</button>
+			<span class="tooltiptext" id="tooltipExplore">*notices bulge*</span>
+	</div>
+		<br>
+		<br>
+		<ul>
+			<li><a href="#" id="EnaviCoast" style="display:none;" onclick ="clickEnaviCoast()">Coast</a></li>
+		</ul>
+		<br>
+		<br>
+		<br>
+		<div class="ezone" id="coastEzone">
+			<div class="tooltipbr">
+    <p id="sandDisplayE">
+      Sand
+    </p>
+					</div>
+			<div class="tooltipbr">
+    <p id="clayDisplayE">
+      Clay
+    </p>
+					</div>
+			<div class="tooltip">
+    <button onclick="harvestSand()" id="harvestSand">Collect Sand</button>
+			<span class="tooltiptext" id="tooltipHarvestSand">hooga hooga hooga</span>
+		</div>
+			<div class="tooltip">
+    <button onclick="caravanCoast()" id="caravanCoast">Send Caravan</button>
+			<span class="tooltiptext" id="tooltipcaravanCoast">what do we want? low flying aeroplane noises! when do we want it? neeeoooowww</span>
+		</div>
+		</div>
+	</div>
+    <script src="idler.js">
+		
+  </script>
+</body>
