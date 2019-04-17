@@ -96,3 +96,16 @@ li a:hover {
 	.activeE {
   background-color: silver;
 }
+
+.column {
+  float: left;
+  padding: 10px;
+}
+
+.left {
+  width: 25%;
+}
+
+.right {
+  width: 75%;
+}
