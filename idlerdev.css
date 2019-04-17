@@ -1,0 +1,95 @@
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+	.tooltipbr {
+		position: relative;
+	}
+
+/* Tooltip text */
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 180px;
+    background-color: silver;
+  	border-color: orange;
+    color: #000;
+    text-align: center;
+    padding: 5px 4px;
+	 	border-left: 6px solid slategrey;
+    background-color: lightgrey;
+ 		
+    /* Position the tooltip text - see examples below! */
+    position: absolute;
+    z-index: 1;
+}
+	.tooltipbr .tooltiptext {
+    visibility: hidden;
+    width: 180px;
+    background-color: silver;
+  	border-color: orange;
+    color: #000;
+    text-align: center;
+    padding: 5px 4px;
+	 	border-left: 6px solid slategrey;
+    background-color: lightgrey;
+ 		
+    /* Position the tooltip text - see examples below! */
+    position: absolute;
+    z-index: 1;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+}
+	.tooltipbr:hover .tooltiptext {
+    visibility: visible;
+}
+	
+	.forceleft {
+		float: left;
+	}
+	.forceright	{
+		float: right;
+	}
+	.attribute {
+		float: left;
+		font-size: 90%;
+	}
+body {
+		font-family: Maven Pro, Lato, sans-serif;
+	}
+button {
+		font-family: Maven Pro, Lato, sans-serif;
+	}
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+li {
+  display: inline;
+	float: left;
+}
+a {
+  display: block;
+  padding: 8px;
+  background-color: lightgrey;
+	border-left: 6px solid slategrey;
+}
+li a {
+  display: block;
+  color: black;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+li a:hover {
+  background-color: silver;
+}
+.active {
+  background-color: silver;
+}
+	.activeE {
+  background-color: silver;
+}
