@@ -353,7 +353,7 @@ function loadGame(list) {
 	}
 	console.log("Load Complete!" + woodraw);
 	//console.log(localStorage[0]);
-	//woodraw = localStorage[0];
+	woodraw = Number(localStorage[0]);
 }
 
 
