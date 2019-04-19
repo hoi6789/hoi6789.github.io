@@ -347,6 +347,7 @@ function saveGame() {
 function loadGame() {
 	var _load_ = localStorage.saveMaterials;
 	var materialsRestore = JSON.parse(_load_);
+	materials = materialsRestore;
 	console.log("Load Complete!");
 	//console.log(localStorage[0]);
 	
