@@ -343,8 +343,9 @@ function saveGame(list) {
 function loadGame(list) {
 	for(p = 0; p < list.length; p++) {
 		list[p] = localStorage[p];
-		console.log(localStorage[p]);
-		console.log(list[p]);
+		//console.log(localStorage[p]);
+		//console.log(list[p]);
+		console.log(woodraw);
 		//woodraw = localStorage[1];
 	}
 	console.log("Load Complete!" + woodraw);
