@@ -91,7 +91,8 @@ var research6 = [0, 90];
 document.getElementById("explorationzone").setAttribute("hidden", true);
 document.getElementById("coastEzone").setAttribute("hidden", true);
 document.getElementById("naviExploration").setAttribute("hidden", true);
-//loadGame([woodraw,woodcut,stone,science,copperore,copperingot,tinore,tiningot,zincore,zincingot,manpower,clay,clayE,sand,sandE,glass,toolstation1[0],toolstation2[0],toolstation3[0],toolstation4[0],toolstation5[0],toolstation6[0],toolstation7[0],toolstation8[0],campsiteResearch1[0],research1[0],research2[0],research3[0],research4[0],research5[0],research6[0]]);
+loadGame([woodraw,woodcut,stone,science,copperore,copperingot,tinore,tiningot,zincore,zincingot,manpower,clay,clayE,sand,sandE,glass,toolstation1[0],toolstation2[0],toolstation3[0],toolstation4[0],toolstation5[0],toolstation6[0],toolstation7[0],toolstation8[0],campsiteResearch1[0],research1[0],research2[0],research3[0],research4[0],research5[0],research6[0]]);
+saveGame([woodraw,woodcut,stone,science,copperore,copperingot,tinore,tiningot,zincore,zincingot,manpower,clay,clayE,sand,sandE,glass,toolstation1[0],toolstation2[0],toolstation3[0],toolstation4[0],toolstation5[0],toolstation6[0],toolstation7[0],toolstation8[0],campsiteResearch1[0],research1[0],research2[0],research3[0],research4[0],research5[0],research6[0]]);
 function harvestWood() {
 	woodQueue++;
 	woodTime++
@@ -338,6 +339,7 @@ function saveGame(list) {
 		localStorage[l] = list[l] * 5;
 		//console.log(localStorage[l]);
 	}
+	console.log("Save Complete!");
 }
 
 function loadGame(list) {
@@ -345,7 +347,7 @@ function loadGame(list) {
 		list[p] = localStorage[p];
 		//console.log(localStorage[p]);
 		//console.log(list[p]);
-		console.log(woodraw);
+		//console.log(woodraw);
 		//woodraw = localStorage[1];
 	}
 	console.log("Load Complete!" + woodraw);
