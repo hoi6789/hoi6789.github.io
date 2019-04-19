@@ -487,6 +487,7 @@ function timer() {
 	document.getElementById("tooltipResearch3").innerHTML = "Find ores in stone. <hr> <span class='forceleft'>Science</span> <span class='forceright'> " + research3[1] + "</span> <br> <hr> <span class='attribute'>Unlocks: Ores/Metals</span>";
 
 	document.getElementById("tooltipResearch4").innerHTML = "Learn how to grow plants. TBA<hr> <span class='forceleft'>Science</span> <span class='forceright'> " + research4[1] + "</span> <br> <hr> <span class='attribute'>Unlocks: Growing Plants</span>"; {
+		
 		//Research Station
 		if (materials.stone >= campsiteResearch1[2] * 0.3) {
 			document.getElementById("campsiteResearch1").removeAttribute("hidden");
@@ -495,61 +496,61 @@ function timer() {
 
 		//Wooden Pickaxe
 		if (materials.wood >= toolstation1.costWood * 0.3) {
-			if (ts_check .1 != true) {
+			if (ts_check.1 != true) {
 				document.getElementById("toolstation1").removeAttribute("hidden");
 			}
 		}
 		//Wooden Pickaxe
 
 		//Wooden Axe
-		if (materials.wood >= toolstation2[1] * 0.3) {
-			if (toolstation2[0] != 1) {
+		if (materials.wood >= toolstation2.costWood * 0.3) {
+			if (ts_check.2 != true) {
 				document.getElementById("toolstation2").removeAttribute("hidden");
 			}
 		}
 
-		if (toolstation2[0] == 1) {
-			woodTimeMax = woodTimeMax - toolstation2[2];
-			woodQueueMax = woodQueueMax + toolstation2[3];
+		if (ts_check.2 == true) {
+			woodTimeMax = woodTimeMax - toolstation2.timeMod;
+			woodQueueMax = woodQueueMax + toolstation2.queueMod;
 		}
 		//Wooden Axe
 
 		//Stone Pickaxe
-		if (materials.stone >= toolstation3[2] * 0.3) {
-			if (toolstation3[0] != 1) {
+		if (materials.stone >= toolstation3.costStone * 0.3) {
+			if (ts_check.3 != true) {
 				document.getElementById("toolstation3").removeAttribute("hidden");
 			}
 		}
 
-		if (toolstation3[0] == 1) {
-			stoneTimeMax = stoneTimeMax - 3;
-			stoneQueueMax = stoneQueueMax + 1;
+		if (ts_check.3 == true) {
+			stoneTimeMax = stoneTimeMax - toolstation3.timeMod;
+			stoneQueueMax = stoneQueueMax + toolstation3.queueMod;
 		}
 		//Stone Pickaxe
 
 		//Stone Axe
-		if (materials.stone >= toolstation4[2] * 0.3) {
-			if (toolstation4[0] != 1) {
+		if (materials.stone >= toolstation4.costStone * 0.3) {
+			if (ts_check.4 != true) {
 				document.getElementById("toolstation4").removeAttribute("hidden");
 			}
 		}
 
-		if (toolstation4[0] == 1) {
-			woodTimeMax = woodTimeMax - 2;
-			woodQueueMax = woodQueueMax + 2;
+		if (ts_check.4 == true) {
+			woodTimeMax = woodTimeMax - toolstation4.timeMod;
+			woodQueueMax = woodQueueMax + toolstation4.queueMod;
 		}
 		//Stone Axe
 
 		//Copper Axe
-		if (materials.copperingot >= toolstation5[2] * 0.3) {
-			if (toolstation5[0] != 1) {
+		if (materials.copperingot >= toolstation5.costCopper * 0.3) {
+			if (ts_check.5 != true) {
 				document.getElementById("toolstation5").removeAttribute("hidden");
 			}
 		}
 
-		if (toolstation5[0] == 1) {
-			woodTimeMax = woodTimeMax - 2;
-			woodQueueMax = woodQueueMax + 2;
+		if (ts_check.5 == true) {
+			woodTimeMax = woodTimeMax - toolstation5.timeMod;
+			woodQueueMax = woodQueueMax + toolstation.queueMod;
 		}
 		//Copper Axe
 
