@@ -370,7 +370,7 @@ function timer()	{
 		output += "</span> </span>";
 		return output;
 	} 
-	wood = woodraw + woodcut
+	wood = materials.woodraw + materials.woodcut;
 	document.getElementById("woodDisplay").innerHTML = "Wood: " + materials.wood.toFixed(3) + tt_gen(["Timber", materials.woodraw.toFixed(3), "Lumber", materials.woodcut.toFixed(3)]);
 	document.getElementById("stoneDisplay").innerHTML = "Stone: " + materials.stone.toFixed(3);
 	document.getElementById("scienceDisplay").innerHTML = "Science: " + materials.science.toFixed(3);
