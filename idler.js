@@ -340,9 +340,10 @@ function saveGame(list) {
 }
 
 function loadGame(list) {
-	for(l = 0; l < list.length; l++) {
-		list[l] = localStorage[l];
-		console.log(localStorage[l]);
+	for(p = 0; p < list.length; p++) {
+		list[p] = localStorage[p];
+		console.log(localStorage[p]);
+		console.log(list[p]);
 	}
 	console.log("Load Complete!");
 }
