@@ -343,7 +343,7 @@ function loadGame(list) {
 	for(l = 0; l < list.length; l++) {
 		list[l] = localStorage[l];
 	}
-	console.log("Load Complete!"
+	console.log("Load Complete!");
 }
 
 
