@@ -5,6 +5,7 @@ var materials = {
 	woodcut: 0,
 	stone: 0,
 	science: 0,
+	manpower: 0,
 	copperore: 0,
 	copperingot: 0,
 	tinore: 0,
