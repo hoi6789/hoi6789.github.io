@@ -331,7 +331,20 @@ function clickNaviExploration() {
 			
 setInterval(timer, tickspeed);
 
+function saveGame(list) {
+	for(l = 0; l < list.length; l++) {
+		localstorage[l] = list[l];
+	}
+}
+
+function loadGame() {
+	
+}
+
+loadGame();
+
 function timer()	{
+	saveGame([woodraw,woodcut,stone,science,copperore,copperingot,tinore,tiningot,zincore,zincingot,manpower,clay,clayE,sand,sandE,glass,toolstation1[0],toolstation2[0],toolstation3[0],toolstation4[0],toolstation5[0],toolstation6[0],toolstation7[0],toolstation8[0],campsiteResearch[0],research1[0],research2[0],research3[0],research4[0],research5[0],research6[0],]);
 	function tt_gen(data) {
 		var output = "<span class='tooltiptext'> <span class='forceleft'> ";
 		output += data[0];
