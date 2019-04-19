@@ -92,7 +92,7 @@ var research6 = [0, 90];
 document.getElementById("explorationzone").setAttribute("hidden", true);
 document.getElementById("coastEzone").setAttribute("hidden", true);
 document.getElementById("naviExploration").setAttribute("hidden", true);
-loadGame();
+//loadGame();
 saveGame();
 function harvestWood() {
 	woodQueue++;
