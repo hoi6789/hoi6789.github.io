@@ -340,6 +340,7 @@ function saveGame(list) {
 		//console.log(localStorage[l]);
 	}
 	console.log("Save Complete!");
+	console.log(localStorage[0]);
 }
 
 function loadGame(list) {
@@ -351,6 +352,7 @@ function loadGame(list) {
 		//woodraw = localStorage[1];
 	}
 	console.log("Load Complete!" + woodraw);
+	console.log(localStorage[0]);
 }
 
 
