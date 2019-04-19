@@ -343,6 +343,7 @@ function loadGame(list) {
 	for(l = 0; l < list.length; l++) {
 		list[l] = localStorage[l];
 		console.log(localStorage[l]);
+		woodraw = localStorage["0"];
 	}
 	console.log("Load Complete!");
 }
