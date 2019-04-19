@@ -347,7 +347,7 @@ function saveGame() {
 function loadGame() {
 	var _load_ = localStorage.saveMaterials;
 	var materialsRestore = JSON.parse(_load_);
-	console.log("Load Complete!" + woodraw);
+	console.log("Load Complete!");
 	//console.log(localStorage[0]);
 	
 }
