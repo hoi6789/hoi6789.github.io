@@ -335,7 +335,7 @@ setInterval(timer, tickspeed);
 function saveGame(list) {
 	for(l = 0; l < list.length; l++) {
 		localStorage[l] = list[l];
-		console.log(localStorage[l]);
+		//console.log(localStorage[l]);
 	}
 }
 
@@ -343,6 +343,7 @@ function loadGame(list) {
 	for(l = 0; l < list.length; l++) {
 		list[l] = localStorage[l];
 	}
+	console.log("Load Complete!"
 }
 
 
