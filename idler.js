@@ -275,7 +275,7 @@ function clickToolstation1() {
 function clickToolstation2() {
 	if (materials.wood >= toolstation2.costWood) {
 		spendWood(toolstation2.costWood);
-		ts_check.["2"] = true;
+		ts_check["2"] = true;
 		document.getElementById("toolstation2").setAttribute("hidden", true);
 	}
 }
@@ -287,7 +287,7 @@ function clickToolstation3() {
 		if (materials.stone >= toolstation3.costStone) {
 			spendWood(toolstation3.costWood);
 			materials.stone -= toolstation3.costStone;
-			ts_check.["3"] = true;
+			ts_check["3"] = true;
 			document.getElementById("toolstation3").setAttribute("hidden", true);
 		}
 	}
@@ -300,7 +300,7 @@ function clickToolstation4() {
 		if (materials.stone >= toolstation4.costStone) {
 			spendWood(toolstation4.costWood);
 			materials.stone -= toolstation4.costStone;
-			ts_check.["4"] = true;
+			ts_check["4"] = true;
 			document.getElementById("toolstation4").setAttribute("hidden", true);
 		}
 	}
@@ -313,7 +313,7 @@ function clickToolstation5() {
 		if (materials.copperingot >= toolstation5.costCopper) {
 			spendWood(toolstation5.costWood);
 			materials.copperingot -= toolstation5.costCopper;
-			ts_check.["5"] = true;
+			ts_check["5"] = true;
 			document.getElementById("toolstation5").setAttribute("hidden", true);
 		}
 	}
@@ -326,7 +326,7 @@ function clickToolstation6() {
 		if (materials.copperingot >= toolstation6.costCopper) {
 			spendWood(toolstation6.costWood);
 			materials.copperingot -= toolstation6.costCopper;
-			ts_check.["6"] = true;
+			ts_check["6"] = true;
 			document.getElementById("toolstation6").setAttribute("hidden", true);
 		}
 	}
@@ -337,7 +337,7 @@ function clickToolstation6() {
 function clickToolstation7() {
 	if (materials.copperingot >= toolstation7.costCopper) {
 		materials.copperingot -= toolstation7.costCopper;
-		ts_check.["7"] = true;
+		ts_check["7"] = true;
 		document.getElementById("toolstation7").setAttribute("hidden", true);
 	}
 }
@@ -349,7 +349,7 @@ function clickToolstation8() {
 		if (materials.copper >= toolstation8.costCopper) {
 			materials.glass -= toolstation8.costGlass;
 			materials.copper -= toolstation8.costCopper;
-			ts_check.["8"] = true;
+			ts_check["8"] = true;
 			document.getElementById("toolstation8").setAttribute("hidden", true);
 		}
 	}
@@ -496,7 +496,7 @@ function timer() {
 
 		//Wooden Pickaxe
 		if (materials.wood >= toolstation1.costWood * 0.3) {
-			if (ts_check.["1"] != true) {
+			if (ts_check["1"] != true) {
 				document.getElementById("toolstation1").removeAttribute("hidden");
 			}
 		}
@@ -504,12 +504,12 @@ function timer() {
 
 		//Wooden Axe
 		if (materials.wood >= toolstation2.costWood * 0.3) {
-			if (ts_check.["2"] != true) {
+			if (ts_check["2"] != true) {
 				document.getElementById("toolstation2").removeAttribute("hidden");
 			}
 		}
 
-		if (ts_check.["2"] == true) {
+		if (ts_check["2"] == true) {
 			woodTimeMax = woodTimeMax - toolstation2.timeMod;
 			woodQueueMax = woodQueueMax + toolstation2.queueMod;
 		}
@@ -517,12 +517,12 @@ function timer() {
 
 		//Stone Pickaxe
 		if (materials.stone >= toolstation3.costStone * 0.3) {
-			if (ts_check.["3"] != true) {
+			if (ts_check["3"] != true) {
 				document.getElementById("toolstation3").removeAttribute("hidden");
 			}
 		}
 
-		if (ts_check.["3"] == true) {
+		if (ts_check["3"] == true) {
 			stoneTimeMax = stoneTimeMax - toolstation3.timeMod;
 			stoneQueueMax = stoneQueueMax + toolstation3.queueMod;
 		}
@@ -530,12 +530,12 @@ function timer() {
 
 		//Stone Axe
 		if (materials.stone >= toolstation4.costStone * 0.3) {
-			if (ts_check.["4"] != true) {
+			if (ts_check["4"] != true) {
 				document.getElementById("toolstation4").removeAttribute("hidden");
 			}
 		}
 
-		if (ts_check.["4"] == true) {
+		if (ts_check["4"] == true) {
 			woodTimeMax = woodTimeMax - toolstation4.timeMod;
 			woodQueueMax = woodQueueMax + toolstation4.queueMod;
 		}
@@ -543,12 +543,12 @@ function timer() {
 
 		//Copper Axe
 		if (materials.copperingot >= toolstation5.costCopper * 0.3) {
-			if (ts_check.["5"] != true) {
+			if (ts_check["5"] != true) {
 				document.getElementById("toolstation5").removeAttribute("hidden");
 			}
 		}
 
-		if (ts_check.["5"] == true) {
+		if (ts_check["5"] == true) {
 			woodTimeMax = woodTimeMax - toolstation5.timeMod;
 			woodQueueMax = woodQueueMax + toolstation.queueMod;
 		}
