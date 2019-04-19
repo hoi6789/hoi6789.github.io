@@ -1,21 +1,22 @@
 var tickspeed = 200; //should be 200 in release ver
-var wood = 0;
-var woodraw = 0;
-var woodcut = 0;
-var stone = 0;
-var science = 0;
-var copperore = 0;
-var copperingot = 0;
-var tinore = 0;
-var tiningot = 0;
-var zincore = 0;
-var zincingot = 0;
-var manpower = 0;
-var clay = 0;
-var clayE = 0;
-var sand = 0;
-var sandE = 0;
-var glass = 0;
+var materials = {
+	wood: 0,
+	woodraw: 0,
+	woodcut: 0,
+	stone: 0,
+	science: 0,
+	copperore: 0,
+	copperingot: 0,
+	tinore: 0,
+	tiningot: 0,
+	zincore: 0,
+	zincingot: 0,
+	clay: 0,
+	clayE: 0,
+	sand: 0,
+	sandE: 0,
+	glass: 0
+}
 var naviData = 0;
 var EnaviData = 0;
 //wood pickaxe
@@ -91,8 +92,8 @@ var research6 = [0, 90];
 document.getElementById("explorationzone").setAttribute("hidden", true);
 document.getElementById("coastEzone").setAttribute("hidden", true);
 document.getElementById("naviExploration").setAttribute("hidden", true);
-loadGame([woodraw,woodcut,stone,science,copperore,copperingot,tinore,tiningot,zincore,zincingot,manpower,clay,clayE,sand,sandE,glass,toolstation1[0],toolstation2[0],toolstation3[0],toolstation4[0],toolstation5[0],toolstation6[0],toolstation7[0],toolstation8[0],campsiteResearch1[0],research1[0],research2[0],research3[0],research4[0],research5[0],research6[0]]);
-saveGame([woodraw,woodcut,stone,science,copperore,copperingot,tinore,tiningot,zincore,zincingot,manpower,clay,clayE,sand,sandE,glass,toolstation1[0],toolstation2[0],toolstation3[0],toolstation4[0],toolstation5[0],toolstation6[0],toolstation7[0],toolstation8[0],campsiteResearch1[0],research1[0],research2[0],research3[0],research4[0],research5[0],research6[0]]);
+loadGame();
+saveGame();
 function harvestWood() {
 	woodQueue++;
 	woodTime++
@@ -116,27 +117,27 @@ function harvestManpower() {
 	manpowerTime++;
 }
 function clickExplore() {
-	exploration[0] += manpower * exploration[1];
-	manpower = 0;
+	exploration[0] += materials.manpower * exploration[1];
+	materials.manpower = 0;
 }
 function caravanCoast() {
-	if(manpower >= caravan1[0]) {
+	if(materials.manpower >= caravan1[0]) {
 		document.getElementById("caravanCoast").setAttribute("disabled", true);
-		if(sandE >= caravan1[2]) {
-			sandE -= caravan1[2];
+		if(materials.sandE >= caravan1[2]) {
+			materials.sandE -= caravan1[2];
 			var tempsand = caravan1[2];
 		}	else {
-			var tempsand = sandE;
-			sandE = 0;
+			var tempsand = materials.sandE;
+			materials.sandE = 0;
 		}
-		if(clayE >= caravan1[3]) {
-			clayE -= caravan1[3];
+		if(materials.clayE >= caravan1[3]) {
+			materials.clayE -= caravan1[3];
 			var tempclay = caravan1[3];
 		}	else {
-			var tempclay = clayE;
-			clayE = 0;
+			var tempclay = materials.clayE;
+			materials.clayE = 0;
 		}
-		setTimeout(function() {sand += tempsand; clay += tempclay; document.getElementById("caravanCoast").removeAttribute("disabled");}, caravan1[1] * tickspeed)
+		setTimeout(function() {materials.sand += tempsand; materials.clay += tempclay; document.getElementById("caravanCoast").removeAttribute("disabled");}, caravan1[1] * tickspeed)
 	}
 }
 			
@@ -168,10 +169,10 @@ function clickNaviExploration() {
 			
 			//Research Station
 			function clickCampsiteResearch1() {
-				if(wood >= campsiteResearch1[1] * Math.pow(1.15, campsiteResearch1[0])) {
-					if(stone >= campsiteResearch1[2] * Math.pow(1.15, campsiteResearch1[0])) {
+				if(materials.wood >= campsiteResearch1[1] * Math.pow(1.15, campsiteResearch1[0])) {
+					if(materials.stone >= campsiteResearch1[2] * Math.pow(1.15, campsiteResearch1[0])) {
 						spendWood(campsiteResearch1[1] * Math.pow(1.15, campsiteResearch1[0]));
-						stone = stone - campsiteResearch1[2] * Math.pow(1.15, campsiteResearch1[0]);
+						materials.stone = materials.stone - campsiteResearch1[2] * Math.pow(1.15, campsiteResearch1[0]);
 						campsiteResearch1[0]++;
 						document.getElementById("harvestScience").removeAttribute("hidden");
 					document.getElementById("scienceDisplay").removeAttribute("hidden");
@@ -182,11 +183,11 @@ function clickNaviExploration() {
 			
 			//Smelt Copper
 			function clickSmeltCopper() {
-				if(copperore >= 10) {
-					if(clay >= 10) {
-						copperore -= 10;
-						clay -= 10;
-						copperingot++;
+				if(materials.copperore >= 10) {
+					if(materials.clay >= 10) {
+						materials.copperore -= 10;
+						materials.clay -= 10;
+						materials.copperingot++;
 					}
 				}
 			}
@@ -194,7 +195,7 @@ function clickNaviExploration() {
 			
 			//Wooden Pickaxe
       function clickToolstation1() {
-        if (wood >= toolstation1[1]) {
+        if (materials.wood >= toolstation1[1]) {
           spendWood(toolstation1[1]);
           toolstation1[0] = 1;
 					document.getElementById("toolstation1").setAttribute("hidden", true);
@@ -206,7 +207,7 @@ function clickNaviExploration() {
 			
 			//Wooden Axe
 			function clickToolstation2() {
-        if (wood >= toolstation2[1]) {
+        if (materials.wood >= toolstation2[1]) {
           spendWood(toolstation2[1]);
           toolstation2[0] = 1;
 					document.getElementById("toolstation2").setAttribute("hidden", true);
@@ -216,10 +217,10 @@ function clickNaviExploration() {
 			
 			//Stone Pickaxe
 			function clickToolstation3() {
-        if (wood >= toolstation3[1]) {
-					if(stone >= toolstation3[2]) {
+        if (materials.wood >= toolstation3[1]) {
+					if(materials.stone >= toolstation3[2]) {
           spendWood(toolstation3[1]);
-					stone = stone - toolstation3[2];
+					materials.stone = materials.stone - toolstation3[2];
           toolstation3[0] = 1;
 					document.getElementById("toolstation3").setAttribute("hidden", true);
 					}
@@ -229,10 +230,10 @@ function clickNaviExploration() {
 			
 			//Stone Axe
 			function clickToolstation4() {
-        if (wood >= toolstation4[1]) {
-					if(stone >= toolstation4[2]) {
+        if (materials.wood >= toolstation4[1]) {
+					if(materials.stone >= toolstation4[2]) {
           spendWood(toolstation4[1]);
-					stone = stone - toolstation4[2];
+					materials.stone = materials.stone - toolstation4[2];
           toolstation4[0] = 1;
 					document.getElementById("toolstation4").setAttribute("hidden", true);
 					}
@@ -242,10 +243,10 @@ function clickNaviExploration() {
 			
 			//Copper Axe
 			function clickToolstation5() {
-        if (wood >= toolstation5[1]) {
-					if(copperingot >= toolstation5[2]) {
+        if (materials.wood >= toolstation5[1]) {
+					if(materials.copperingot >= toolstation5[2]) {
           spendWood(toolstation5[1]);
-					copperingot = copperingot - toolstation5[2];
+					materials.copperingot = materials.copperingot - toolstation5[2];
           toolstation5[0] = 1;
 					document.getElementById("toolstation5").setAttribute("hidden", true);
 					}
@@ -255,10 +256,10 @@ function clickNaviExploration() {
 			
 			//Copper Pickaxe
 			function clickToolstation6() {
-        if (wood >= toolstation6[1]) {
-					if(copperingot >= toolstation6[2]) {
+        if (materials.wood >= toolstation6[1]) {
+					if(materials.copperingot >= toolstation6[2]) {
           spendWood(toolstation6[1]);
-					copperingot = copperingot - toolstation6[2];
+					materials.copperingot = materials.copperingot - toolstation6[2];
           toolstation6[0] = 1;
 					document.getElementById("toolstation6").setAttribute("hidden", true);
 					}
@@ -268,31 +269,31 @@ function clickNaviExploration() {
 			
 			//Copper Instruments
 			function clickToolstation7() {
-					if(copperingot >= toolstation7[1]) {
-					copperingot = copperingot - toolstation7[1];
+					if(materials.copperingot >= toolstation7[1]) {
+					materials.copperingot = materials.copperingot - toolstation7[1];
           toolstation7[0] = 1;
 					document.getElementById("toolstation7").setAttribute("hidden", true);
 					}
       }
 			//Copper Instruments
 			
-			//Stone Axe
+			//Copper Sights
 			function clickToolstation8() {
-        if (glass >= toolstation8[1]) {
-					if(copper >= toolstation8[2]) {
-          glass -=(toolstation8[1]);
-					copper -= toolstation8[2];
+        if (materials.glass >= toolstation8[1]) {
+					if(materials.copper >= toolstation8[2]) {
+          materials.glass -=(toolstation8[1]);
+					materials.copper -= toolstation8[2];
           toolstation8[0] = 1;
 					document.getElementById("toolstation8").setAttribute("hidden", true);
 					}
         }
       }
-			//Stone Axe
+			//Copper Sights
 			
 			//Fire
 			 function clickResearch1() {
-        if (science >= research1[1]) {
-          science = science - research1[1];
+        if (materials.science >= research1[1]) {
+          materials.science = materials.science - research1[1];
           research1[0] = 1;
 					document.getElementById("research1").setAttribute("hidden", true);
 					document.getElementById("research2").removeAttribute("hidden");
@@ -304,8 +305,8 @@ function clickNaviExploration() {
 			
 			//Exploration
 			function clickResearch2() {
-        if (science >= research2[1]) {
-          science = science - research2[1];
+        if (materials.science >= research2[1]) {
+          materials.science = materials.science - research2[1];
           research2[0] = 1;
 					document.getElementById("research2").setAttribute("hidden", true);
 					document.getElementById("naviExploration").style.display = "block";
@@ -319,8 +320,8 @@ function clickNaviExploration() {
 			
 			//Geology
 			function clickResearch3() {
-				 if(science >= research3[1]) {
-					 science -= research3[1];
+				 if(materials.science >= research3[1]) {
+					 materials.science -= research3[1];
 					 research3[0] = 1;
 					document.getElementById("research3").setAttribute("hidden", true); document.getElementById("copperDisplay").removeAttribute("hidden");
 					 document.getElementById("tinDisplay").removeAttribute("hidden");
@@ -334,33 +335,24 @@ function clickNaviExploration() {
 			
 setInterval(timer, tickspeed);
 
-function saveGame(list) {
-	for(l = 0; l < list.length; l++) {
-		localStorage[l] = list[l];
-		//console.log(localStorage[l]);
-	}
+function saveGame() {
+	localStorage.saveMaterials = JSON.stringify(materials);
 	console.log("Save Complete!");
 	//console.log(localStorage[0]);
 }
 
-function loadGame(list) {
-	for(p = 0; p < list.length; p++) {
-		list[p] = Number(localStorage[p]);
-		//console.log(localStorage[p]);
-		//console.log(list[p]);
-		//console.log(woodraw);
-		//woodraw = localStorage[1];
-	}
+function loadGame() {
+	var _load_ = localStorage.saveMaterials
+	var materialsRestore = JSON.parse(_load_)
 	console.log("Load Complete!" + woodraw);
 	//console.log(localStorage[0]);
-	woodraw = Number(localStorage[0]);
-	list[1] = 5;
+	
 }
 
 
 
 function timer()	{
-	saveGame([woodraw,woodcut,stone,science,copperore,copperingot,tinore,tiningot,zincore,zincingot,manpower,clay,clayE,sand,sandE,glass,toolstation1[0],toolstation2[0],toolstation3[0],toolstation4[0],toolstation5[0],toolstation6[0],toolstation7[0],toolstation8[0],campsiteResearch1[0],research1[0],research2[0],research3[0],research4[0],research5[0],research6[0]]);
+	saveGame();
 	function tt_gen(data) {
 		var output = "<span class='tooltiptext'> <span class='forceleft'> ";
 		output += data[0];
@@ -379,17 +371,17 @@ function timer()	{
 		return output;
 	} 
 	wood = woodraw + woodcut
-	document.getElementById("woodDisplay").innerHTML = "Wood: " + wood.toFixed(3) + tt_gen(["Timber", woodraw.toFixed(3), "Lumber", woodcut.toFixed(3)]);
-	document.getElementById("stoneDisplay").innerHTML = "Stone: " + stone.toFixed(3);
-	document.getElementById("scienceDisplay").innerHTML = "Science: " + science.toFixed(3);
-	document.getElementById("copperDisplay").innerHTML = "Copper: " + copperingot.toFixed(3) + tt_gen(["Copper Ingots", copperingot.toFixed(3), "Copper Ore", copperore.toFixed(3)]);
-	document.getElementById("tinDisplay").innerHTML = "Tin: " + tiningot.toFixed(3) + tt_gen(["Tin Ingots", tiningot.toFixed(3), "Tin Ore", tinore.toFixed(3)]);
-	document.getElementById("zincDisplay").innerHTML = "Zinc: " + zincingot.toFixed(3) + tt_gen(["Zinc Ingots", zincingot.toFixed(3), "Zinc Ore", zincore.toFixed(3)]);
-	document.getElementById("manpowerDisplay").innerHTML = "Manpower: " + manpower.toFixed(3);
-	document.getElementById("sandDisplayE").innerHTML = "Sand: " + sandE.toFixed(3);
-	document.getElementById("clayDisplayE").innerHTML = "Clay: " + clayE.toFixed(3);
-	document.getElementById("sandDisplay").innerHTML = "Sand: " + sand.toFixed(3);
-	document.getElementById("clayDisplay").innerHTML = "Clay: " + clay.toFixed(3);
+	document.getElementById("woodDisplay").innerHTML = "Wood: " + materials.wood.toFixed(3) + tt_gen(["Timber", materials.woodraw.toFixed(3), "Lumber", materials.woodcut.toFixed(3)]);
+	document.getElementById("stoneDisplay").innerHTML = "Stone: " + materials.stone.toFixed(3);
+	document.getElementById("scienceDisplay").innerHTML = "Science: " + materials.science.toFixed(3);
+	document.getElementById("copperDisplay").innerHTML = "Copper: " + materials.copperingot.toFixed(3) + tt_gen(["Copper Ingots", materials.copperingot.toFixed(3), "Copper Ore", materials.copperore.toFixed(3)]);
+	document.getElementById("tinDisplay").innerHTML = "Tin: " + materials.tiningot.toFixed(3) + tt_gen(["Tin Ingots", materials.tiningot.toFixed(3), "Tin Ore", materials.tinore.toFixed(3)]);
+	document.getElementById("zincDisplay").innerHTML = "Zinc: " + materials.zincingot.toFixed(3) + tt_gen(["Zinc Ingots", materials.zincingot.toFixed(3), "Zinc Ore", materials.zincore.toFixed(3)]);
+	document.getElementById("manpowerDisplay").innerHTML = "Manpower: " + materials.manpower.toFixed(3);
+	document.getElementById("sandDisplayE").innerHTML = "Sand: " + materials.sandE.toFixed(3);
+	document.getElementById("clayDisplayE").innerHTML = "Clay: " + materials.clayE.toFixed(3);
+	document.getElementById("sandDisplay").innerHTML = "Sand: " + materials.sand.toFixed(3);
+	document.getElementById("clayDisplay").innerHTML = "Clay: " + materials.clay.toFixed(3);
 	
 	if(naviData == 0) {
 	document.getElementById("naviCampsite").setAttribute("class", "active");
@@ -428,13 +420,13 @@ function timer()	{
 	document.getElementById("tooltipResearch4").innerHTML = "Learn how to grow plants. TBA<hr> <span class='forceleft'>Science</span> <span class='forceright'> " + research4[1] + "</span> <br> <hr> <span class='attribute'>Unlocks: Growing Plants</span>";
 {
 	//Research Station
-	if(stone >= campsiteResearch1[2] * 0.3) {
+	if(materials.stone >= campsiteResearch1[2] * 0.3) {
 		document.getElementById("campsiteResearch1").removeAttribute("hidden");
 	}
 	//Research Station
 	
 	//Wooden Pickaxe
-	if(wood >= toolstation1[1] * 0.3)	{
+	if(materials.wood >= toolstation1[1] * 0.3)	{
 		if(toolstation1[0] != 1) {
 			document.getElementById("toolstation1").removeAttribute("hidden");
 		}
@@ -442,7 +434,7 @@ function timer()	{
 	//Wooden Pickaxe
 	
 	//Wooden Axe
-	if(wood >= toolstation2[1] * 0.3)	{
+	if(materials.wood >= toolstation2[1] * 0.3)	{
 		if(toolstation2[0] != 1) {
 			document.getElementById("toolstation2").removeAttribute("hidden");
 		}
@@ -455,7 +447,7 @@ function timer()	{
 	//Wooden Axe
 	
 	//Stone Pickaxe
-	if(stone >= toolstation3[2] * 0.3)	{
+	if(materials.stone >= toolstation3[2] * 0.3)	{
 		if(toolstation3[0] != 1) {
 			document.getElementById("toolstation3").removeAttribute("hidden");
 		}
@@ -468,7 +460,7 @@ function timer()	{
 	//Stone Pickaxe
 	
 	//Stone Axe
-	if(stone >= toolstation4[2] * 0.3)	{
+	if(materials.stone >= toolstation4[2] * 0.3)	{
 		if(toolstation4[0] != 1) {
 			document.getElementById("toolstation4").removeAttribute("hidden");
 		}
@@ -481,7 +473,7 @@ function timer()	{
 	//Stone Axe
 	
 	//Copper Axe
-	if(copperingot >= toolstation5[2] * 0.3)	{
+	if(materials.copperingot >= toolstation5[2] * 0.3)	{
 		if(toolstation5[0] != 1) {
 			document.getElementById("toolstation5").removeAttribute("hidden");
 		}
@@ -494,7 +486,7 @@ function timer()	{
 	//Copper Axe
 	
 	//Fire
-	if(science >= 1)	{
+	if(materials.science >= 1)	{
 		if(research1[0] != 1) {
 			document.getElementById("research1").removeAttribute("hidden");
 		}
@@ -535,7 +527,7 @@ function timer()	{
 				woodmult *= toolstation5[3];
 			}
 			woodTime = 0;
-			woodraw += woodmult;
+			materials.woodraw += woodmult;
 			woodQueue--;
 		}
 	}
@@ -549,11 +541,11 @@ function timer()	{
 		stoneTime++;
 		if(stoneTime >= stoneTimeMax)	{
 			stoneTime = 0;
-			stone++;
+			materials.stone++;
 			if(research3[0] == 1) {
 				var natcopper = (Math.random());
 				if(natcopper >= 0.9) {
-					copperore++;
+					materials.copperore++;
 				}
 			}
 			stoneQueue--;
@@ -570,7 +562,7 @@ function timer()	{
 		if(scienceTime >= scienceTimeMax)	{
 			scienceTime = 0;
 			var scienceprodtemp = (Math.random() * (3 * (campsiteResearch1[0] * ((campsiteResearch1[3] / 100) + 1))));
-			science = science + scienceprodtemp;
+			materials.science += scienceprodtemp;
 			scienceQueue--;
 		}
 	}
@@ -578,29 +570,29 @@ function timer()	{
 			scienceQueueMax = 3;
 	
 	if(oresQueue > 0) {
-		if(stone >= geology[0]) {
+		if(materials.stone >= geology[0]) {
 			for(i = 0; i < geology[1]; i++) {
 				var geocopper = Math.random();
 				if(geocopper <= (geology[2] / 100)) {
-					copperore++;
+					materials.copperore++;
 				}
 				var geotin = Math.random();
 				if(geotin <= (geology[3] / 100)) {
-					tinore++;
+					materials.tinore++;
 				}
 				var geozinc = Math.random();
 				if(geozinc <= (geology[4] / 100)) {
-					zincore++;
+					materials.zincore++;
 				}
 			}
 			oresQueue--
-			stone -= geology[0];
+			materials.stone -= geology[0];
 		}
 	}
 	if(research2[0] == 1) {
 	manpowerTime++
 	if(manpowerTime >= manpowerTimeMax) {
-		manpower++;
+		materials.manpower++;
 		manpowerTime = 0;
 	}
 	}
@@ -613,11 +605,11 @@ function timer()	{
 		sandTime++;
 		if(sandTime >= sandTimeMax)	{
 			sandTime = 0;
-			sandE++;
+			materials.sandE++;
 
 				var claygen = (Math.random());
 				if(claygen >= sandClay) {
-					clayE++;
+					materials.clayE++;
 				}
 			sandQueue--;
 		}
@@ -628,13 +620,13 @@ function timer()	{
 }
 			
 			function spendWood(purchase) {
-				if(woodcut >= purchase) {
-					woodcut -= purchase;
+				if(materials.woodcut >= purchase) {
+					materials.woodcut -= purchase;
 				}
 				else {
-					purchase -= woodcut;
-					woodcut = 0;
-					woodraw -= purchase;
+					purchase -= materials.woodcut;
+					materials.woodcut = 0;
+					materials.woodraw -= purchase;
 				}
 			}
 
