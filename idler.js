@@ -333,7 +333,7 @@ setInterval(timer, tickspeed);
 
 function saveGame(list) {
 	for(l = 0; l < list.length; l++) {
-		localstorage[l] = list[l];
+		localStorage[l] = list[l];
 	}
 }
 
