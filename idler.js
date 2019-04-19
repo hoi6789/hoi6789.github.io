@@ -336,7 +336,7 @@ setInterval(timer, tickspeed);
 
 function saveGame(list) {
 	for(l = 0; l < list.length; l++) {
-		localStorage[l] = list[l] * 5;
+		localStorage[l] = list[l];
 		//console.log(localStorage[l]);
 	}
 	console.log("Save Complete!");
@@ -353,7 +353,7 @@ function loadGame(list) {
 	}
 	console.log("Load Complete!" + woodraw);
 	//console.log(localStorage[0]);
-	woodraw = Number(localStorage[0]);
+	list[0] = Number(localStorage[0]);
 }
 
 
