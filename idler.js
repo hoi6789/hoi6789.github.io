@@ -345,7 +345,7 @@ function saveGame(list) {
 
 function loadGame(list) {
 	for(p = 0; p < list.length; p++) {
-		list[p] = localStorage[p];
+		list[p] = Number(localStorage[p]);
 		//console.log(localStorage[p]);
 		//console.log(list[p]);
 		//console.log(woodraw);
