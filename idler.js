@@ -18,6 +18,7 @@ var materials = {
 	sandE: 0,
 	glass: 0
 }
+
 var naviData = 0;
 var EnaviData = 0;
 
@@ -31,11 +32,13 @@ var ts_check = {
 	7: false,
 	8: false
 }
+
 //wood pickaxe
 //check, costwood
 var toolstation1 = {
 	costWood: 30
 };
+
 //wood axe
 //check, costwood, time, queue
 var toolstation2 = {
@@ -43,6 +46,7 @@ var toolstation2 = {
 	timeMod: 3,
 	queueMod: 1
 };
+
 //stone pickaxe
 //check, costwood, coststone, time, queue
 var toolstation3 = {
@@ -51,6 +55,7 @@ var toolstation3 = {
 	timeMod: 3,
 	queueMod: 3
 };
+
 //stone axe
 //check, costwood, coststone, time, queue
 var toolstation4 = {
@@ -59,6 +64,7 @@ var toolstation4 = {
 	timeMod: 2,
 	queueMod: 2
 };
+
 //copper axe
 //check, costwood, costcopper, mult
 var toolstation5 = {
@@ -66,6 +72,7 @@ var toolstation5 = {
 	costCopper: 5,
 	mult: 1.2
 };
+
 //copper pickaxe
 //check, costwood, costcopper, mult
 var toolstation6 = {
@@ -73,12 +80,14 @@ var toolstation6 = {
 	costCopper: 5,
 	mult: 1.2
 };
+
 //copper instruments
 //check, costcopper, mult
 var toolstation7 = {
 	costCopper: 5,
 	mult: 1.2
 };
+
 //copper optics
 //check, costglass, costcopper, mult
 var toolstation8 = {
@@ -86,6 +95,7 @@ var toolstation8 = {
 	costCopper: 5,
 	mult: 1.2
 };
+
 var woodTime = 0;
 var woodQueue = 0;
 var woodTimeMax = 15;
@@ -106,6 +116,7 @@ var sandQueue = 0;
 var sandTimeMax = 20;
 var sandQueueMax = 4;
 var sandClay = 0.6;
+
 //research station
 //count, woodcost, stonecost, prodbonus
 var campsiteResearch1 = [0, 45, 35, 25];
@@ -118,35 +129,47 @@ var rs_check = {
 	5: false,
 	6: false
 }
+
 //fire
 //check, costscience
-var research1 = [0, 10];
+var research1 = {
+	costScience: 10
+};
+
 //exploration
 //check, costscience
-var research2 = [0, 20];
+var research2 = {
+	costScience: 20,
+	coast: 10
+};
 //area, mult, coast
-var exploration = [0, 1, 10];
+var exploredArea = 0;
+//cost, time, sand, clay
 var caravan1 = [10, 100, 50, 50];
+
 //geology
 //check, costscience
 var research3 = [0, 40];
 //coststone, mult, chancecopper, chancetin, chancezinc
-var geology = [50, 50, 45, 15, 10]
+var geology = [50, 50, 45, 15, 10];
+
 //agriculture
 //check, costscience
 var research4 = [0, 70];
+
 //mining
 //check, costscience
 var research5 = [0, 70];
+
 //metallurgy
 //check, costscience
 var research6 = [0, 70];
+
 document.getElementById("explorationzone").setAttribute("hidden", true);
 document.getElementById("coastEzone").setAttribute("hidden", true);
 document.getElementById("naviExploration").setAttribute("hidden", true);
-if (localStorage.saveMaterials) {
-	loadGame();
-}
+
+loadGame();
 saveGame();
 
 function harvestWood() {
