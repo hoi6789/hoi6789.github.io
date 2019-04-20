@@ -404,14 +404,22 @@ setInterval(timer, tickspeed);
 
 function saveGame() {
 	localStorage.saveMaterials = JSON.stringify(materials);
+	localStorage.saveMaterials = JSON.stringify(ts_check);
 	console.log("Save Complete!");
 	//console.log(localStorage[0]);
 }
 
 function loadGame() {
-	var _load_ = localStorage.saveMaterials;
-	var materialsRestore = JSON.parse(_load_);
-	materials = materialsRestore;
+	if(localStorage.saveMaterials) {
+		var _load_ = localStorage.saveMaterials;
+		var materialsRestore = JSON.parse(_load_);
+		Object.assign(materials, materialsRestore);
+	}
+	if(localStorage.saveTS_Check) {
+		var _load_ = localStorage.saveTS_Check;
+		var ts_checkRestore = JSON.parse(_load_);
+		Object.assign(ts_check, ts_checkRestore);
+	}
 	console.log("Load Complete!");
 	//console.log(localStorage[0]);
 
