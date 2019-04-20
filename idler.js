@@ -404,7 +404,7 @@ setInterval(timer, tickspeed);
 
 function saveGame() {
 	localStorage.saveMaterials = JSON.stringify(materials);
-	localStorage.saveMaterials = JSON.stringify(ts_check);
+	localStorage.saveTS_Check = JSON.stringify(ts_check);
 	console.log("Save Complete!");
 	//console.log(localStorage[0]);
 }
