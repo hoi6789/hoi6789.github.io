@@ -414,11 +414,13 @@ function loadGame() {
 		var _load_ = localStorage.saveMaterials;
 		var materialsRestore = JSON.parse(_load_);
 		Object.assign(materials, materialsRestore);
+		console.log("Materials Loaded!");
 	}
 	if(localStorage.saveTS_Check) {
 		var _load_ = localStorage.saveTS_Check;
 		var ts_checkRestore = JSON.parse(_load_);
 		Object.assign(ts_check, ts_checkRestore);
+		console.log("Toolstation Loaded!");
 	}
 	console.log("Load Complete!");
 	//console.log(localStorage[0]);
