@@ -535,13 +535,13 @@ function timer() {
 
 	document.getElementById("tooltipToolstation6").innerHTML = "Increase manual stone production. <hr> <span class='forceleft'>Wood</span> <span class='forceright'> " + toolstation6.costWood + "</span> <br> <span class='forceleft'> Copper </span> <span class='forceright'> " + toolstation6.costCopper + "</span> <br><hr> <span class='attribute'> Stone Production Multiplier: x" + toolstation6.mult + "</span>";
 
-	document.getElementById("tooltipResearch1").innerHTML = "Discover fire. Required for all other research upgrades. <hr> <span class='forceleft'>Science</span> <span class='forceright'> " + research1[1] + "</span> ";
+	document.getElementById("tooltipResearch1").innerHTML = "Discover fire. Required for all other research upgrades. <hr> <span class='forceleft'>Science</span> <span class='forceright'> " + research1.costScience + "</span> ";
 
-	document.getElementById("tooltipResearch2").innerHTML = "Look around you. Discover new things.<hr> <span class='forceleft'>Science</span> <span class='forceright'> " + research2[1] + "</span> <br> <hr> <span class='attribute'>Unlocks: Manpower/Exploration</span>";
+	document.getElementById("tooltipResearch2").innerHTML = "Look around you. Discover new things.<hr> <span class='forceleft'>Science</span> <span class='forceright'> " + research2.costScience + "</span> <br> <hr> <span class='attribute'>Unlocks: Manpower/Exploration</span>";
 
-	document.getElementById("tooltipResearch3").innerHTML = "Find ores in stone. <hr> <span class='forceleft'>Science</span> <span class='forceright'> " + research3[1] + "</span> <br> <hr> <span class='attribute'>Unlocks: Ores/Metals</span>";
+	document.getElementById("tooltipResearch3").innerHTML = "Find ores in stone. <hr> <span class='forceleft'>Science</span> <span class='forceright'> " + research3.costScience + "</span> <br> <hr> <span class='attribute'>Unlocks: Ores/Metals</span>";
 
-	document.getElementById("tooltipResearch4").innerHTML = "Learn how to grow plants. TBA<hr> <span class='forceleft'>Science</span> <span class='forceright'> " + research4[1] + "</span> <br> <hr> <span class='attribute'>Unlocks: Growing Plants</span>"; {
+	document.getElementById("tooltipResearch4").innerHTML = "Learn how to grow plants. TBA<hr> <span class='forceleft'>Science</span> <span class='forceright'> " + research4.costScience + "</span> <br> <hr> <span class='attribute'>Unlocks: Growing Plants</span>"; {
 		
 		//Research Station
 		if (materials.stone >= campsiteResearch1[2] * 0.3) {
@@ -621,7 +621,7 @@ function timer() {
 			}
 		}
 		
-		if (rs_check["1"] = true) {
+		if (rs_check["1"] == true) {
 			document.getElementById("research1").setAttribute("hidden", true);
 			document.getElementById("research2").removeAttribute("hidden");
 			document.getElementById("research3").removeAttribute("hidden");
@@ -633,7 +633,7 @@ function timer() {
 			document.getElementById("naviExploration").style.display = "none";
 		}
 		
-		if (rs_check["2"] = true) {
+		if (rs_check["2"] == true) {
 			document.getElementById("research2").setAttribute("hidden", true);
 			document.getElementById("naviExploration").style.display = "block";
 			document.getElementById("manpowerDisplay").removeAttribute("hidden");
@@ -650,7 +650,7 @@ function timer() {
 		}
 		//Coast
 		
-		if (rs_check["2"] = true) {
+		if (rs_check["2"] == true) {
 			document.getElementById("research3").setAttribute("hidden", true);
 			document.getElementById("copperDisplay").removeAttribute("hidden");
 			document.getElementById("tinDisplay").removeAttribute("hidden");
@@ -664,8 +664,8 @@ function timer() {
 		document.getElementById("tooltipHarvestWood").innerHTML = "<span class='forceleft'> Wood in Queue: </span> <span class='forceright'>" + woodQueue + "</span> <br> <span class='forceleft' > Wood Time: </span> <span class='forceright'>" + woodTime + "</span> <br> <span class='forceleft'> Wood Queue Max: </span> <span class='forceright'>" + woodQueueMax + "</span> <br> <span class='forceleft'> Wood Time Max: </span> <span class='forceright'>" + woodTimeMax + "</span>";
 		document.getElementById("tooltipHarvestStone").innerHTML = "<span class='forceleft'> Stone in Queue: </span> <span class='forceright'>" + stoneQueue + "</span> <br> <span class='forceleft' > Stone Time: </span> <span class='forceright'>" + stoneTime + "</span> <br> <span class='forceleft'> Stone Queue Max: </span> <span class='forceright'>" + stoneQueueMax + "</span> <br> <span class='forceleft'> Stone Time Max: </span> <span class='forceright'>" + stoneTimeMax + "</span>";
 		document.getElementById("tooltipHarvestScience").innerHTML = "<span class='forceleft'> Science in Queue: </span> <span class='forceright'>" + scienceQueue + "</span> <br> <span class='forceleft' > Science Time: </span> <span class='forceright'>" + scienceTime + "</span> <br> <span class='forceleft'> Science Queue Max: </span> <span class='forceright'>" + scienceQueueMax + "</span> <br> <span class='forceleft'> Science Time Max: </span> <span class='forceright'>" + scienceTimeMax + "</span>";
-		document.getElementById("tooltipHarvestOres").innerHTML = "<span class='forceleft'> Stone Cost: </span> <span class='forceright'>" + geology[0] + "</span> <br> <span class='forceleft' > Productivity: </span> <span class='forceright'>" + geology[1] + "</span> <br> <span class='forceleft'> Copper Chance: </span> <span class='forceright'>" + geology[2] + "</span> <br> <span class='forceleft'> Tin Chance: </span> <span class='forceright'>" + geology[3] + "</span> <br> <span class='forceleft'> Zinc Chance: </span> <span class='forceright'>" + geology[4] + "</span>";
-		document.getElementById("tooltipExplore").innerHTML = "<span class='forceleft'> Explored Area: </span> <span class='forceright'>" + exploration[0] + "</span> <br> <span class='forceleft' > Productivity: </span> <span class='forceright'>" + exploration[1] + "</span>";
+		document.getElementById("tooltipHarvestOres").innerHTML = "<span class='forceleft'> Stone Cost: </span> <span class='forceright'>" + geology.costStone + "</span> <br> <span class='forceleft' > Productivity: </span> <span class='forceright'>" + geology.chanceSuccess + "</span> <br> <span class='forceleft'> Copper Chance: </span> <span class='forceright'>" + geology.chanceCopper + "</span> <br> <span class='forceleft'> Tin Chance: </span> <span class='forceright'>" + geology.chanceTin + "</span> <br> <span class='forceleft'> Zinc Chance: </span> <span class='forceright'>" + geology.chanceZinc + "</span>";
+		document.getElementById("tooltipExplore").innerHTML = "<span class='forceleft'> Explored Area: </span> <span class='forceright'>" + materials.exploredarea + "</span> <br> <span class='forceleft' > Productivity: </span> <span class='forceright'>" + exploration[1] + "</span>";
 		document.getElementById("tooltipHarvestManpower").innerHTML = "<span class='forceleft'> Manpower Time: </span> <span class='forceright'>" + manpowerTime + "</span> <br> <span class='forceleft' > Manpower Time Max: </span> <span class='forceright'>" + manpowerTimeMax + "</span>";
 		document.getElementById("tooltipHarvestSand").innerHTML = "<span class='forceleft'> Sand in Queue: </span> <span class='forceright'>" + sandQueue + "</span> <br> <span class='forceleft' > Sand Time: </span> <span class='forceright'>" + sandTime + "</span> <br> <span class='forceleft'> Sand Queue Max: </span> <span class='forceright'>" + sandQueueMax + "</span> <br> <span class='forceleft'> Sand Time Max: </span> <span class='forceright'>" + sandTimeMax + "</span> <br> <span class='forceleft'> Clay Chance: </span> <span class='forceright'>" + sandClay * 100 + "%</span>";
 	}
