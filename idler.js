@@ -6,6 +6,7 @@ var materials = {
 	stone: 0,
 	science: 0,
 	manpower: 0,
+	exploredarea: 0,
 	copperore: 0,
 	copperingot: 0,
 	tinore: 0,
@@ -140,30 +141,51 @@ var research1 = {
 //check, costscience
 var research2 = {
 	costScience: 20,
-	coast: 10
 };
 //area, mult, coast
-var exploredArea = 0;
+var exploration = {
+	coast: 10,
+	mult: 1
+}
 //cost, time, sand, clay
-var caravan1 = [10, 100, 50, 50];
+var caravan1 = {
+	costManpower: 10,
+	time: 100,
+	limitSand: 50,
+	limitClay: 50
+};
 
 //geology
 //check, costscience
-var research3 = [0, 40];
+var research3 = {
+	costScience: 40
+};
 //coststone, mult, chancecopper, chancetin, chancezinc
-var geology = [50, 50, 45, 15, 10];
+var geology = {
+	costStone: 50,
+	chanceSuccess: 50,
+	chanceCopper: 45,
+	chanceTin: 15,
+	chanceZinc: 10
+};
 
 //agriculture
 //check, costscience
-var research4 = [0, 70];
+var research4 = {
+	costScience: 70
+};
 
 //mining
 //check, costscience
-var research5 = [0, 70];
+var research5 = {
+	costScience: 70
+};
 
 //metallurgy
 //check, costscience
-var research6 = [0, 70];
+var research6 = {
+	costScience: 70
+};
 
 document.getElementById("explorationzone").setAttribute("hidden", true);
 document.getElementById("coastEzone").setAttribute("hidden", true);
@@ -201,23 +223,23 @@ function harvestManpower() {
 }
 
 function clickExplore() {
-	exploration[0] += materials.manpower * exploration[1];
+	materials.exploredarea += materials.manpower * exploration["mult"];
 	materials.manpower = 0;
 }
 
 function caravanCoast() {
-	if (materials.manpower >= caravan1[0]) {
+	if (materials.manpower >= caravan1["costManpower"]) {
 		document.getElementById("caravanCoast").setAttribute("disabled", true);
-		if (materials.sandE >= caravan1[2]) {
-			materials.sandE -= caravan1[2];
-			var tempsand = caravan1[2];
+		if (materials.sandE >= caravan1["limitSand"]) {
+			materials.sandE -= caravan1["limitSand"];
+			var tempsand = caravan1["limitSand"];
 		} else {
 			var tempsand = materials.sandE;
 			materials.sandE = 0;
 		}
-		if (materials.clayE >= caravan1[3]) {
-			materials.clayE -= caravan1[3];
-			var tempclay = caravan1[3];
+		if (materials.clayE >= caravan1["limitClay"]) {
+			materials.clayE -= caravan1["limitClay"];
+			var tempclay = caravan1["limitClay"];
 		} else {
 			var tempclay = materials.clayE;
 			materials.clayE = 0;
@@ -226,7 +248,7 @@ function caravanCoast() {
 			materials.sand += tempsand;
 			materials.clay += tempclay;
 			document.getElementById("caravanCoast").removeAttribute("disabled");
-		}, caravan1[1] * tickspeed)
+		}, caravan1.time * tickspeed)
 	}
 }
 
@@ -381,9 +403,9 @@ function clickToolstation8() {
 
 //Fire
 function clickResearch1() {
-	if (materials.science >= research1[1]) {
-		materials.science = materials.science - research1[1];
-		research1[0] = 1;
+	if (materials.science >= research1["costScience"]) {
+		materials.science -= research1["costScience"];
+		rs_check["1"] = true;
 		document.getElementById("research1").setAttribute("hidden", true);
 		document.getElementById("research2").removeAttribute("hidden");
 		document.getElementById("research3").removeAttribute("hidden");
@@ -394,9 +416,9 @@ function clickResearch1() {
 
 //Exploration
 function clickResearch2() {
-	if (materials.science >= research2[1]) {
-		materials.science = materials.science - research2[1];
-		research2[0] = 1;
+	if (materials.science >= research2["costScience"]) {
+		materials.science -= research2["costScience"];
+		rs_check["2"] = true;
 		document.getElementById("research2").setAttribute("hidden", true);
 		document.getElementById("naviExploration").style.display = "block";
 		document.getElementById("manpowerDisplay").removeAttribute("hidden");
@@ -409,9 +431,9 @@ function clickResearch2() {
 
 //Geology
 function clickResearch3() {
-	if (materials.science >= research3[1]) {
-		materials.science -= research3[1];
-		research3[0] = 1;
+	if (materials.science >= research3["costScience"]) {
+		materials.science -= research3["costScience"];
+		rs_check["3"] = true;
 		document.getElementById("research3").setAttribute("hidden", true);
 		document.getElementById("copperDisplay").removeAttribute("hidden");
 		document.getElementById("tinDisplay").removeAttribute("hidden");
@@ -533,6 +555,11 @@ function timer() {
 				document.getElementById("toolstation1").removeAttribute("hidden");
 			}
 		}
+		
+		if (ts_check["1"] == true) {
+			document.getElementById("harvestStone").removeAttribute("hidden");
+			document.getElementById("stoneDisplay").removeAttribute("hidden");
+		}
 		//Wooden Pickaxe
 
 		//Wooden Axe
@@ -589,21 +616,49 @@ function timer() {
 
 		//Fire
 		if (materials.science >= 1) {
-			if (research1[0] != 1) {
+			if (rs_check["1"] != true) {
 				document.getElementById("research1").removeAttribute("hidden");
 			}
 		}
+		
+		if (rs_check["1"] = true) {
+			document.getElementById("research1").setAttribute("hidden", true);
+			document.getElementById("research2").removeAttribute("hidden");
+			document.getElementById("research3").removeAttribute("hidden");
+			document.getElementById("research4").removeAttribute("hidden");
+		}
 		//Fire
 
-		if (research2[0] != 1) {
+		if (rs_check["2"] != true) {
 			document.getElementById("naviExploration").style.display = "none";
 		}
+		
+		if (rs_check["2"] = true) {
+			document.getElementById("research2").setAttribute("hidden", true);
+			document.getElementById("naviExploration").style.display = "block";
+			document.getElementById("manpowerDisplay").removeAttribute("hidden");
+			document.getElementById("harvestManpower").removeAttribute("hidden");
+			document.getElementById("sandDisplay").removeAttribute("hidden");
+			document.getElementById("clayDisplay").removeAttribute("hidden");
+		}
+		
+		
 
 		//Coast
-		if (exploration[0] >= exploration[2]) {
+		if (materials.exploredarea >= exploration.coast) {
 			document.getElementById("EnaviCoast").style.display = "block";
 		}
 		//Coast
+		
+		if (rs_check["2"] = true) {
+			document.getElementById("research3").setAttribute("hidden", true);
+			document.getElementById("copperDisplay").removeAttribute("hidden");
+			document.getElementById("tinDisplay").removeAttribute("hidden");
+			document.getElementById("zincDisplay").removeAttribute("hidden");
+			document.getElementById("harvestOres").removeAttribute("hidden");
+			document.getElementById("smeltCopper").removeAttribute("hidden");
+		}
+		
 
 	} {
 		document.getElementById("tooltipHarvestWood").innerHTML = "<span class='forceleft'> Wood in Queue: </span> <span class='forceright'>" + woodQueue + "</span> <br> <span class='forceleft' > Wood Time: </span> <span class='forceright'>" + woodTime + "</span> <br> <span class='forceleft'> Wood Queue Max: </span> <span class='forceright'>" + woodQueueMax + "</span> <br> <span class='forceleft'> Wood Time Max: </span> <span class='forceright'>" + woodTimeMax + "</span>";
