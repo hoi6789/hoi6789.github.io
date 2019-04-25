@@ -119,7 +119,7 @@ var sandQueueMax = 4;
 var sandClay = 0.6;
 
 var buildings = {
-	research1: 0;
+	research1: 0
 }
 
 //research station
