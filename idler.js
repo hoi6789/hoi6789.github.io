@@ -118,9 +118,17 @@ var sandTimeMax = 20;
 var sandQueueMax = 4;
 var sandClay = 0.6;
 
+var buildings = {
+	research1: 0;
+}
+
 //research station
 //count, woodcost, stonecost, prodbonus
-var campsiteResearch1 = [0, 45, 35, 25];
+var campsiteResearch1 = {
+	costWood: 45,
+	costStone: 35,
+	bonus: 25
+};
 
 var rs_check = {
 	1: false,
@@ -163,7 +171,7 @@ var research3 = {
 //coststone, mult, chancecopper, chancetin, chancezinc
 var geology = {
 	costStone: 50,
-	chanceSuccess: 50,
+	rolls: 50,
 	chanceCopper: 45,
 	chanceTin: 15,
 	chanceZinc: 10
@@ -280,11 +288,11 @@ function clickEnaviCoast() {
 
 //Research Station
 function clickCampsiteResearch1() {
-	if (materials.wood >= campsiteResearch1[1] * Math.pow(1.15, campsiteResearch1[0])) {
-		if (materials.stone >= campsiteResearch1[2] * Math.pow(1.15, campsiteResearch1[0])) {
-			spendWood(campsiteResearch1[1] * Math.pow(1.15, campsiteResearch1[0]));
-			materials.stone = materials.stone - campsiteResearch1[2] * Math.pow(1.15, campsiteResearch1[0]);
-			campsiteResearch1[0]++;
+	if (materials.wood >= campsiteResearch1.costWood * Math.pow(1.15, buildings["research1"])) {
+		if (materials.stone >= campsiteResearch1.costStone * Math.pow(1.15, buildings["research1"])) {
+			spendWood(campsiteResearch1.costWood * Math.pow(1.15, buildings["research1"]));
+			materials.stone -= campsiteResearch1.costStone * Math.pow(1.15, buildings["research1"]);
+			buildings["research1"]++;
 			document.getElementById("harvestScience").removeAttribute("hidden");
 			document.getElementById("scienceDisplay").removeAttribute("hidden");
 		}
@@ -450,6 +458,8 @@ setInterval(timer, tickspeed);
 function saveGame() {
 	localStorage.saveMaterials = JSON.stringify(materials);
 	localStorage.saveTS_Check = JSON.stringify(ts_check);
+	localStorage.saveRS_Check = JSON.stringify(rs_check);
+	localStorage.saveBuildings = JSON.stringify(buildings);
 	console.log("Save Complete!");
 	//console.log(localStorage[0]);
 }
@@ -466,6 +476,18 @@ function loadGame() {
 		var ts_checkRestore = JSON.parse(_load_);
 		Object.assign(ts_check, ts_checkRestore);
 		console.log("Toolstation Loaded!");
+	}
+	if(localStorage.saveBuildings) {
+		var _load_ = localStorage.saveBuildings;
+		var buildingsRestore = JSON.parse(_load_);
+		Object.assign(buildings, buildingsRestore);
+		console.log("Buildings Loaded!");
+	}
+	if(localStorage.saveRS_Check) {
+		var _load_ = localStorage.saveRS_Check;
+		var rs_checkRestore = JSON.parse(_load_);
+		Object.assign(rs_check, rs_checkRestore);
+		console.log("Research Loaded!");
 	}
 	console.log("Load Complete!");
 	//console.log(localStorage[0]);
@@ -613,6 +635,11 @@ function timer() {
 			woodQueueMax = woodQueueMax + toolstation.queueMod;
 		}
 		//Copper Axe
+		
+		if(buildings["research1"] > 0) {
+			document.getElementById("harvestScience").removeAttribute("hidden");
+			document.getElementById("scienceDisplay").removeAttribute("hidden");
+		}
 
 		//Fire
 		if (materials.science >= 1) {
@@ -664,8 +691,8 @@ function timer() {
 		document.getElementById("tooltipHarvestWood").innerHTML = "<span class='forceleft'> Wood in Queue: </span> <span class='forceright'>" + woodQueue + "</span> <br> <span class='forceleft' > Wood Time: </span> <span class='forceright'>" + woodTime + "</span> <br> <span class='forceleft'> Wood Queue Max: </span> <span class='forceright'>" + woodQueueMax + "</span> <br> <span class='forceleft'> Wood Time Max: </span> <span class='forceright'>" + woodTimeMax + "</span>";
 		document.getElementById("tooltipHarvestStone").innerHTML = "<span class='forceleft'> Stone in Queue: </span> <span class='forceright'>" + stoneQueue + "</span> <br> <span class='forceleft' > Stone Time: </span> <span class='forceright'>" + stoneTime + "</span> <br> <span class='forceleft'> Stone Queue Max: </span> <span class='forceright'>" + stoneQueueMax + "</span> <br> <span class='forceleft'> Stone Time Max: </span> <span class='forceright'>" + stoneTimeMax + "</span>";
 		document.getElementById("tooltipHarvestScience").innerHTML = "<span class='forceleft'> Science in Queue: </span> <span class='forceright'>" + scienceQueue + "</span> <br> <span class='forceleft' > Science Time: </span> <span class='forceright'>" + scienceTime + "</span> <br> <span class='forceleft'> Science Queue Max: </span> <span class='forceright'>" + scienceQueueMax + "</span> <br> <span class='forceleft'> Science Time Max: </span> <span class='forceright'>" + scienceTimeMax + "</span>";
-		document.getElementById("tooltipHarvestOres").innerHTML = "<span class='forceleft'> Stone Cost: </span> <span class='forceright'>" + geology.costStone + "</span> <br> <span class='forceleft' > Productivity: </span> <span class='forceright'>" + geology.chanceSuccess + "</span> <br> <span class='forceleft'> Copper Chance: </span> <span class='forceright'>" + geology.chanceCopper + "</span> <br> <span class='forceleft'> Tin Chance: </span> <span class='forceright'>" + geology.chanceTin + "</span> <br> <span class='forceleft'> Zinc Chance: </span> <span class='forceright'>" + geology.chanceZinc + "</span>";
-		document.getElementById("tooltipExplore").innerHTML = "<span class='forceleft'> Explored Area: </span> <span class='forceright'>" + materials.exploredarea + "</span> <br> <span class='forceleft' > Productivity: </span> <span class='forceright'>" + exploration[1] + "</span>";
+		document.getElementById("tooltipHarvestOres").innerHTML = "<span class='forceleft'> Stone Cost: </span> <span class='forceright'>" + geology.costStone + "</span> <br> <span class='forceleft' > Productivity: </span> <span class='forceright'>" + geology.rolls + "</span> <br> <span class='forceleft'> Copper Chance: </span> <span class='forceright'>" + geology.chanceCopper + "</span> <br> <span class='forceleft'> Tin Chance: </span> <span class='forceright'>" + geology.chanceTin + "</span> <br> <span class='forceleft'> Zinc Chance: </span> <span class='forceright'>" + geology.chanceZinc + "</span>";
+		document.getElementById("tooltipExplore").innerHTML = "<span class='forceleft'> Explored Area: </span> <span class='forceright'>" + materials.exploredarea + "</span> <br> <span class='forceleft' > Productivity: </span> <span class='forceright'>" + exploration.mult + "</span>";
 		document.getElementById("tooltipHarvestManpower").innerHTML = "<span class='forceleft'> Manpower Time: </span> <span class='forceright'>" + manpowerTime + "</span> <br> <span class='forceleft' > Manpower Time Max: </span> <span class='forceright'>" + manpowerTimeMax + "</span>";
 		document.getElementById("tooltipHarvestSand").innerHTML = "<span class='forceleft'> Sand in Queue: </span> <span class='forceright'>" + sandQueue + "</span> <br> <span class='forceleft' > Sand Time: </span> <span class='forceright'>" + sandTime + "</span> <br> <span class='forceleft'> Sand Queue Max: </span> <span class='forceright'>" + sandQueueMax + "</span> <br> <span class='forceleft'> Sand Time Max: </span> <span class='forceright'>" + sandTimeMax + "</span> <br> <span class='forceleft'> Clay Chance: </span> <span class='forceright'>" + sandClay * 100 + "%</span>";
 	}
@@ -679,8 +706,8 @@ function timer() {
 			woodTime++;
 			if (woodTime >= woodTimeMax) {
 				var woodmult = 1;
-				if (toolstation5[0] == 1) {
-					woodmult *= toolstation5[3];
+				if (ts_check["5"] == 1) {
+					woodmult *= toolstation5.mult;
 				}
 				woodTime = 0;
 				materials.woodraw += woodmult;
@@ -698,7 +725,7 @@ function timer() {
 			if (stoneTime >= stoneTimeMax) {
 				stoneTime = 0;
 				materials.stone++;
-				if (research3[0] == 1) {
+				if (rs_check["3"] == 1) {
 					var natcopper = (Math.random());
 					if (natcopper >= 0.9) {
 						materials.copperore++;
@@ -717,7 +744,7 @@ function timer() {
 			scienceTime++;
 			if (scienceTime >= scienceTimeMax) {
 				scienceTime = 0;
-				var scienceprodtemp = (Math.random() * (3 * (campsiteResearch1[0] * ((campsiteResearch1[3] / 100) + 1))));
+				var scienceprodtemp = (Math.random() * (3 * (buildings["research1"] * ((campsiteResearch1.bonus / 100) + 1))));
 				materials.science += scienceprodtemp;
 				scienceQueue--;
 			}
@@ -726,27 +753,27 @@ function timer() {
 		scienceQueueMax = 3;
 
 		if (oresQueue > 0) {
-			if (materials.stone >= geology[0]) {
-				for (i = 0; i < geology[1]; i++) {
+			if (materials.stone >= geology.costStone) {
+				for (i = 0; i < geology.rolls; i++) {
 					var geocopper = Math.random();
-					if (geocopper <= (geology[2] / 100)) {
+					if (geocopper <= (geology.chanceCopper / 100)) {
 						materials.copperore++;
 					}
 					var geotin = Math.random();
-					if (geotin <= (geology[3] / 100)) {
+					if (geotin <= (geology.chanceTin / 100)) {
 						materials.tinore++;
 					}
 					var geozinc = Math.random();
-					if (geozinc <= (geology[4] / 100)) {
+					if (geozinc <= (geology.chanceZinc / 100)) {
 						materials.zincore++;
 					}
 				}
 				oresQueue--
-				materials.stone -= geology[0];
+				materials.stone -= geology.costStone;
 			}
 		}
-		if (research2[0] == 1) {
-			manpowerTime++
+		if (rs_check["2"] == true) {
+			manpowerTime++;
 			if (manpowerTime >= manpowerTimeMax) {
 				materials.manpower++;
 				manpowerTime = 0;
