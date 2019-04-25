@@ -1,3 +1,8 @@
-v. Indev 0.1 
+v. indev 0.2
+4/24/2019
+saving implemented
+massive internal rewrites
+
+v. indev 0.1 
 4/13/2019
-Release Version
+release version
