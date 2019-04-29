@@ -101,17 +101,21 @@ var woodTime = 0;
 var woodQueue = 0;
 var woodTimeMax = 15;
 var woodQueueMax = 5;
+var woodmult = 1;
 var stoneTime = 0;
 var stoneQueue = 0;
 var stoneTimeMax = 15;
 var stoneQueueMax = 5;
+var stonemult = 1;
 var scienceTime = 0;
 var scienceQueue = 0;
 var scienceTimeMax = 25;
 var scienceQueueMax = 3;
+var sciencemult = 1;
 var oresQueue = 0;
 var manpowerTime = 0;
 var manpowerTimeMax = 100;
+var explorationmult = 1;
 var sandTime = 0;
 var sandQueue = 0;
 var sandTimeMax = 20;
@@ -152,8 +156,7 @@ var research2 = {
 };
 //area, mult, coast
 var exploration = {
-	coast: 10,
-	mult: 1
+	coast: 10
 }
 //cost, time, sand, clay
 var caravan1 = {
@@ -231,7 +234,7 @@ function harvestManpower() {
 }
 
 function clickExplore() {
-	materials.exploredarea += materials.manpower * exploration["mult"];
+	materials.exploredarea += materials.manpower * explorationmult;
 	materials.manpower = 0;
 }
 
@@ -556,6 +559,10 @@ function timer() {
 	document.getElementById("tooltipToolstation5").innerHTML = "Increase manual wood production. <hr> <span class='forceleft'>Wood</span> <span class='forceright'> " + toolstation5.costWood + "</span> <br> <span class='forceleft'> Copper </span> <span class='forceright'> " + toolstation5.costCopper + "</span> <br><hr> <span class='attribute'> Wood Production Multiplier: x" + toolstation5.mult + "</span>";
 
 	document.getElementById("tooltipToolstation6").innerHTML = "Increase manual stone production. <hr> <span class='forceleft'>Wood</span> <span class='forceright'> " + toolstation6.costWood + "</span> <br> <span class='forceleft'> Copper </span> <span class='forceright'> " + toolstation6.costCopper + "</span> <br><hr> <span class='attribute'> Stone Production Multiplier: x" + toolstation6.mult + "</span>";
+	
+	document.getElementById("tooltipToolstation7").innerHTML = "Increase manual stone production. <hr> <span class='forceleft'>Copper </span> <span class='forceright'> " + toolstation7.costCopper + "</span> <br><hr> <span class='attribute'> Science Production Multiplier: x" + toolstation7.mult + "</span>";
+	
+	document.getElementById("tooltipToolstation8").innerHTML = "Increase manual stone production. <hr> <span class='forceleft'>Glass</span> <span class='forceright'> " + toolstation8.costGlass + "</span> <br> <span class='forceleft'> Copper </span> <span class='forceright'> " + toolstation8.costCopper + "</span> <br><hr> <span class='attribute'> Exploration Multiplier: x" + toolstation8.mult + "</span>";
 
 	document.getElementById("tooltipResearch1").innerHTML = "Discover fire. Required for all other research upgrades. <hr> <span class='forceleft'>Science</span> <span class='forceright'> " + research1.costScience + "</span> ";
 
@@ -631,10 +638,45 @@ function timer() {
 		}
 
 		if (ts_check["5"] == true) {
-			woodTimeMax = woodTimeMax - toolstation5.timeMod;
-			woodQueueMax = woodQueueMax + toolstation.queueMod;
+			woodmult *= toolstation5.mult;
 		}
 		//Copper Axe
+		
+		//Copper Pickaxe
+		if (materials.copperingot >= toolstation6.costCopper * 0.3) {
+			if (ts_check["6"] != true) {
+				document.getElementById("toolstation6").removeAttribute("hidden");
+			}
+		}
+
+		if (ts_check["6"] == true) {
+			stonemult *= toolstation6.mult;
+		}
+		//Copper Pickaxe
+		
+		//Copper Instruments
+		if (materials.copperingot >= toolstation7.costCopper * 0.3) {
+			if (ts_check["7"] != true) {
+				document.getElementById("toolstation7").removeAttribute("hidden");
+			}
+		}
+
+		if (ts_check["7"] == true) {
+			sciencemult *= toolstation7.mult;
+		}
+		//Copper Instruments
+		
+		//Copper Sights
+		if (materials.copperingot >= toolstation8.costCopper * 0.3) {
+			if (ts_check["8"] != true) {
+				document.getElementById("toolstation8").removeAttribute("hidden");
+			}
+		}
+
+		if (ts_check["8"] == true) {
+			explorationmult *= toolstation8.mult;
+		}
+		//Copper Sights
 		
 		if(buildings["research1"] > 0) {
 			document.getElementById("harvestScience").removeAttribute("hidden");
@@ -677,7 +719,7 @@ function timer() {
 		}
 		//Coast
 		
-		if (rs_check["2"] == true) {
+		if (rs_check["3"] == true) {
 			document.getElementById("research3").setAttribute("hidden", true);
 			document.getElementById("copperDisplay").removeAttribute("hidden");
 			document.getElementById("tinDisplay").removeAttribute("hidden");
@@ -705,10 +747,7 @@ function timer() {
 			}
 			woodTime++;
 			if (woodTime >= woodTimeMax) {
-				var woodmult = 1;
-				if (ts_check["5"] == 1) {
-					woodmult *= toolstation5.mult;
-				}
+
 				woodTime = 0;
 				materials.woodraw += woodmult;
 				woodQueue--;
@@ -716,6 +755,7 @@ function timer() {
 		}
 		woodTimeMax = 15;
 		woodQueueMax = 5;
+		woodmult = 1;
 
 		if (stoneQueue > 0) {
 			if (stoneQueue > stoneQueueMax) {
@@ -724,7 +764,7 @@ function timer() {
 			stoneTime++;
 			if (stoneTime >= stoneTimeMax) {
 				stoneTime = 0;
-				materials.stone++;
+				materials.stone += stonemult;
 				if (rs_check["3"] == 1) {
 					var natcopper = (Math.random());
 					if (natcopper >= 0.9) {
@@ -736,6 +776,7 @@ function timer() {
 		}
 		stoneTimeMax = 15;
 		stoneQueueMax = 5;
+		stonemult = 1;
 
 		if (scienceQueue > 0) {
 			if (scienceQueue > scienceQueueMax) {
@@ -745,12 +786,14 @@ function timer() {
 			if (scienceTime >= scienceTimeMax) {
 				scienceTime = 0;
 				var scienceprodtemp = (Math.random() * (3 * (buildings["research1"] * ((campsiteResearch1.bonus / 100) + 1))));
+				scienceprodtemp *= sciencemult;
 				materials.science += scienceprodtemp;
 				scienceQueue--;
 			}
 		}
 		scienceTimeMax = 25;
 		scienceQueueMax = 3;
+		sciencemult = 1;
 
 		if (oresQueue > 0) {
 			if (materials.stone >= geology.costStone) {
@@ -780,6 +823,7 @@ function timer() {
 			}
 		}
 		manpowerTimeMax = 100;
+		explorationmult = 1;
 
 		if (sandQueue > 0) {
 			if (sandQueue > sandQueueMax) {
