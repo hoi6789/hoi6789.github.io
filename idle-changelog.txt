@@ -1,3 +1,7 @@
+v. indev 0.2.1
+4/28/2019
+added 3 unused toolstation upgrades
+
 v. indev 0.2
 4/24/2019
 saving implemented
