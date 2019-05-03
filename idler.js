@@ -240,6 +240,7 @@ function clickExplore() {
 
 function caravanCoast() {
 	if (materials.manpower >= caravan1["costManpower"]) {
+		materials.manpower -= caravan1.costManpower;
 		document.getElementById("caravanCoast").setAttribute("disabled", true);
 		if (materials.sandE >= caravan1["limitSand"]) {
 			materials.sandE -= caravan1["limitSand"];
@@ -402,9 +403,9 @@ function clickToolstation7() {
 //Copper Sights
 function clickToolstation8() {
 	if (materials.glass >= toolstation8.costGlass) {
-		if (materials.copper >= toolstation8.costCopper) {
+		if (materials.copperingot >= toolstation8.costCopper) {
 			materials.glass -= toolstation8.costGlass;
-			materials.copper -= toolstation8.costCopper;
+			materials.copperingot -= toolstation8.costCopper;
 			ts_check["8"] = true;
 			document.getElementById("toolstation8").setAttribute("hidden", true);
 		}
@@ -531,6 +532,7 @@ function timer() {
 	document.getElementById("clayDisplayE").innerHTML = "Clay: " + materials.clayE.toFixed(3);
 	document.getElementById("sandDisplay").innerHTML = "Sand: " + materials.sand.toFixed(3);
 	document.getElementById("clayDisplay").innerHTML = "Clay: " + materials.clay.toFixed(3);
+	document.getElementById("tooltipcaravanCoast").innerHTML = tt_gen(["Manpower", caravan1.costManpower, "Time", caravan1.time, "Sand Capacity", caravan1.limitSand, "Clay Capacity", caravan1.limitClay]);
 
 	if (naviData == 0) {
 		document.getElementById("naviCampsite").setAttribute("class", "active");
@@ -573,7 +575,7 @@ function timer() {
 	document.getElementById("tooltipResearch4").innerHTML = "Learn how to grow plants. TBA<hr> <span class='forceleft'>Science</span> <span class='forceright'> " + research4.costScience + "</span> <br> <hr> <span class='attribute'>Unlocks: Growing Plants</span>"; {
 		
 		//Research Station
-		if (materials.stone >= campsiteResearch1[2] * 0.3) {
+		if (materials.stone >= campsiteResearch1.costStone * 0.3) {
 			document.getElementById("campsiteResearch1").removeAttribute("hidden");
 		}
 		//Research Station
@@ -795,8 +797,8 @@ function timer() {
 		scienceQueueMax = 3;
 		sciencemult = 1;
 
-		if (oresQueue > 0) {
-			if (materials.stone >= geology.costStone) {
+		if (materials.stone >= geology.costStone) {
+			if (oresQueue > 0) {
 				for (i = 0; i < geology.rolls; i++) {
 					var geocopper = Math.random();
 					if (geocopper <= (geology.chanceCopper / 100)) {
@@ -815,6 +817,7 @@ function timer() {
 				materials.stone -= geology.costStone;
 			}
 		}
+		
 		if (rs_check["2"] == true) {
 			manpowerTime++;
 			if (manpowerTime >= manpowerTimeMax) {
