@@ -115,6 +115,7 @@ var sciencemult = 1;
 var oresQueue = 0;
 var manpowerTime = 0;
 var manpowerTimeMax = 100;
+var explorationQueue = 0;
 var explorationmult = 1;
 var sandTime = 0;
 var sandQueue = 0;
@@ -231,11 +232,6 @@ function harvestOres() {
 
 function harvestManpower() {
 	manpowerTime++;
-}
-
-function clickExplore() {
-	materials.exploredarea += materials.manpower * explorationmult;
-	materials.manpower = 0;
 }
 
 function caravanCoast() {
@@ -498,10 +494,15 @@ function loadGame() {
 
 }
 
+function clickExplore() {
+	explorationQueue++;
+}
 
 
 function timer() {
 	saveGame();
+	
+	
 
 	function tt_gen(data) {
 		var output = "<span class='tooltiptext'> <span class='forceleft'> ";
@@ -520,6 +521,46 @@ function timer() {
 		output += "</span> </span>";
 		return output;
 	}
+	function tt_gen_alt(data) {
+		var output = "<span class='forceleft'> ";
+		output += data[0];
+		output += " </span> <span class='forceright'>";
+		output += data[1];
+		for (i = 2; i < data.length; i++) {
+			if (i % 2 == 0) {
+				output += "</span> <br> <span class='forceleft'>";
+				output += data[i];
+			} else {
+				output += "</span> <span class='forceright'>";
+				output += data[i];
+			}
+		}
+		output += "</span>";
+		return output;
+	}
+	function tt_gen_shiny(data, attr) {
+		var output = "";
+		output += data[0];
+		output += "<hr> <span class='forceleft'>";
+		output += data[1];
+		for (i = 2; i < data.length; i++) {
+			if (i % 2 == 0) {
+				output += "</span> <span class='forceright'>";
+				output += data[i];
+			} else {
+				output += "</span> <br> <span class='forceleft'>";
+				output += data[i];
+			}
+		}
+		output += "</span> <br><hr> <span class='attribute'>";
+		for(i = 0; i < attr.length; i++) {
+			output += attr[i];
+			output += "</span> <br> <span class='attribute'>"
+		}
+		output += "</span>"
+		return output;
+	}
+	
 	materials.wood = materials.woodraw + materials.woodcut;
 	document.getElementById("woodDisplay").innerHTML = "Wood: " + materials.wood.toFixed(3) + tt_gen(["Timber", materials.woodraw.toFixed(3), "Lumber", materials.woodcut.toFixed(3)]);
 	document.getElementById("stoneDisplay").innerHTML = "Stone: " + materials.stone.toFixed(3);
@@ -548,34 +589,42 @@ function timer() {
 
 	document.getElementById("campsiteResearch1").innerHTML = "Research Station (" + buildings.research1 + ")";
 
-	document.getElementById("tooltipCampsiteResearch1").innerHTML = "Allows you to conduct research. <hr> <span class='forceleft'>Wood</span> <span class='forceright'> " + (campsiteResearch1.costWood * Math.pow(1.15, buildings.research1)).toFixed(3) + "</span> <br> <span class='forceleft'> Stone </span> <span class='forceright'> " + (campsiteResearch1.costStone * Math.pow(1.15, buildings.research1)).toFixed(3) + "</span> <br><hr> <span class='attribute'> Science Bonus: " + campsiteResearch1.bonus + "%</span>";
+	document.getElementById("tooltipCampsiteResearch1").innerHTML = tt_gen_shiny(["Allows you to conduct research.", "Wood", (campsiteResearch1.costWood * Math.pow(1.15, buildings.research1)).toFixed(3), "Stone", (campsiteResearch1.costStone * Math.pow(1.15, buildings.research1)).toFixed(3)], ["Science Bonus: " + campsiteResearch1.bonus + "%"]);
+	/*"Allows you to conduct research. 
+	<hr> <span class='forceleft'>Wood</span> <span class='forceright'> " + 
+	(campsiteResearch1.costWood * Math.pow(1.15, buildings.research1)).toFixed(3) + 
+	"</span> <br> <span class='forceleft'> Stone </span> <span class='forceright'> " 
+	+ (campsiteResearch1.costStone * Math.pow(1.15, buildings.research1)).toFixed(3) + 
+	"</span> <br><hr> <span class='attribute'> Science Bonus: " + campsiteResearch1.bonus + "%</span>";*/
 
-	document.getElementById("tooltipToolstation1").innerHTML = "Allows you to harvest stone. <hr> <span class='forceleft'>Wood</span> <span class='forceright'> " + toolstation1.costWood + "</span> ";
+	document.getElementById("tooltipToolstation1").innerHTML = tt_gen_shiny(["Allows you to harvest stone.", "Wood", toolstation1.costWood], []);
 
-	document.getElementById("tooltipToolstation2").innerHTML = "Harvest wood faster. <hr> <span class='forceleft'>Wood</span> <span class='forceright'> " + toolstation2.costWood + "</span> <br> <hr> <span class='attribute'> Wood Time Max: -" + toolstation2.timeMod + "</span> <br> <span class='attribute'> Wood Queue Max: +" + toolstation2.queueMod + "</span>";
+	document.getElementById("tooltipToolstation2").innerHTML = tt_gen_shiny(["Harvest wood faster.", "Wood", toolstation2.costWood], ["Wood Time Max: -" + toolstation2.timeMod, "Wood Queue Max: +" + toolstation2.queueMod]);
 
-	document.getElementById("tooltipToolstation3").innerHTML = "Harvest stone faster. <hr> <span class='forceleft'>Wood</span> <span class='forceright'> " + toolstation3.costWood + "</span> <br> <span class='forceleft'> Stone </span> <span class='forceright'> " + toolstation3.costStone + "</span> <br><hr> <span class='attribute'> Stone Time Max: -" + toolstation3.timeMod + "</span> <br> <span class='attribute'> Stone Queue Max: +" + toolstation3.queueMod + "</span>";
+	document.getElementById("tooltipToolstation3").innerHTML = tt_gen_shiny(["Harvest stone faster.", "Wood", toolstation3.costWood, "Stone", toolstation3.costStone], ["Stone Time Max: -" + toolstation3.timeMod, "Stone Queue Max: +" + toolstation3.queueMod]);
 
-	document.getElementById("tooltipToolstation4").innerHTML = "Harvest wood faster. <hr> <span class='forceleft'>Wood</span> <span class='forceright'> " + toolstation4.costWood + "</span> <br> <span class='forceleft'> Stone </span> <span class='forceright'> " + toolstation4.costStone + "</span> <br><hr> <span class='attribute'> Wood Time Max: -" + toolstation4.timeMod + "</span> <br> <span class='attribute'> Wood Queue Max: +" + toolstation4.queueMod + "</span>";
+	document.getElementById("tooltipToolstation4").innerHTML = tt_gen_shiny(["Harvest wood faster.", "Wood", toolstation4.costWood, "Stone", toolstation4.costStone], ["Wood Time Max: -" + toolstation4.timeMod, "Wood Queue Max: +" + toolstation4.queueMod]);
 
-	document.getElementById("tooltipToolstation5").innerHTML = "Increase manual wood production. <hr> <span class='forceleft'>Wood</span> <span class='forceright'> " + toolstation5.costWood + "</span> <br> <span class='forceleft'> Copper </span> <span class='forceright'> " + toolstation5.costCopper + "</span> <br><hr> <span class='attribute'> Wood Production Multiplier: x" + toolstation5.mult + "</span>";
+	document.getElementById("tooltipToolstation5").innerHTML = tt_gen_shiny(["Increase manual wood production.", "Wood", toolstation5.costWood, "Copper", toolstation5.costCopper], ["Wood Production Multiplier: x" + toolstation5.mult]);
 
-	document.getElementById("tooltipToolstation6").innerHTML = "Increase manual stone production. <hr> <span class='forceleft'>Wood</span> <span class='forceright'> " + toolstation6.costWood + "</span> <br> <span class='forceleft'> Copper </span> <span class='forceright'> " + toolstation6.costCopper + "</span> <br><hr> <span class='attribute'> Stone Production Multiplier: x" + toolstation6.mult + "</span>";
+	document.getElementById("tooltipToolstation6").innerHTML = tt_gen_shiny(["Increase manual stone production.", "Wood", toolstation6.costWood, "Copper", toolstation6.costCopper], ["Stone Production Multiplier: x" + toolstation6.mult]);
 	
-	document.getElementById("tooltipToolstation7").innerHTML = "Increase manual science production. <hr> <span class='forceleft'>Copper </span> <span class='forceright'> " + toolstation7.costCopper + "</span> <br><hr> <span class='attribute'> Science Production Multiplier: x" + toolstation7.mult + "</span>";
+	document.getElementById("tooltipToolstation7").innerHTML = tt_gen_shiny(["Increase manual science production.", "Copper", toolstation7.costCopper], ["Science Production Multiplier: x" + toolstation7.mult]);
 	
-	document.getElementById("tooltipToolstation8").innerHTML = "Increase manual manpower production. <hr> <span class='forceleft'>Glass</span> <span class='forceright'> " + toolstation8.costGlass + "</span> <br> <span class='forceleft'> Copper </span> <span class='forceright'> " + toolstation8.costCopper + "</span> <br><hr> <span class='attribute'> Exploration Multiplier: x" + toolstation8.mult + "</span>";
+	document.getElementById("tooltipToolstation8").innerHTML = tt_gen_shiny(["Increase the exploration multiplier.", "Glass", toolstation8.costGlass, "Copper", toolstation8.costCopper], ["Exploration Multiplier: x" + toolstation8.mult]);
 
-	document.getElementById("tooltipResearch1").innerHTML = "Discover fire. Required for all other research upgrades. <hr> <span class='forceleft'>Science</span> <span class='forceright'> " + research1.costScience + "</span> ";
+	document.getElementById("tooltipResearch1").innerHTML = tt_gen_shiny(["Discover fire. Required for all other research upgrades.", "Science", research1.costScience], []);
 
-	document.getElementById("tooltipResearch2").innerHTML = "Look around you. Discover new things.<hr> <span class='forceleft'>Science</span> <span class='forceright'> " + research2.costScience + "</span> <br> <hr> <span class='attribute'>Unlocks: Manpower/Exploration</span>";
+	document.getElementById("tooltipResearch2").innerHTML = tt_gen_shiny(["Look around you. Discover new things.", "Science", research2.costScience], ["Unlocks: Manpower/Exploration"]);
 
-	document.getElementById("tooltipResearch3").innerHTML = "Find ores in stone. <hr> <span class='forceleft'>Science</span> <span class='forceright'> " + research3.costScience + "</span> <br> <hr> <span class='attribute'>Unlocks: Ores/Metals</span>";
+	document.getElementById("tooltipResearch3").innerHTML = tt_gen_shiny(["Find ores in stone.", "Science", research3.costScience], ["Unlocks: Ores/Metals"]);
 
-	document.getElementById("tooltipResearch4").innerHTML = "Learn how to grow plants. TBA<hr> <span class='forceleft'>Science</span> <span class='forceright'> " + research4.costScience + "</span> <br> <hr> <span class='attribute'>Unlocks: Growing Plants</span>"; {
+	document.getElementById("tooltipResearch4").innerHTML = tt_gen_shiny(["Learn how to grow plants. TBA", "Science", research4.costScience], ["Unlocks: Growing Plants"]);
+	
+	{
 		
 		//Research Station
-		if (materials.stone >= campsiteResearch1.costStone * 0.3) {
+		if (materials.stone >= campsiteResearch1.costStone * 0.3 || buildings.research1 > 0) {
 			document.getElementById("campsiteResearch1").removeAttribute("hidden");
 		}
 		//Research Station
@@ -732,13 +781,13 @@ function timer() {
 		
 
 	} {
-		document.getElementById("tooltipHarvestWood").innerHTML = "<span class='forceleft'> Wood in Queue: </span> <span class='forceright'>" + woodQueue + "</span> <br> <span class='forceleft' > Wood Time: </span> <span class='forceright'>" + woodTime + "</span> <br> <span class='forceleft'> Wood Queue Max: </span> <span class='forceright'>" + woodQueueMax + "</span> <br> <span class='forceleft'> Wood Time Max: </span> <span class='forceright'>" + woodTimeMax + "</span>";
-		document.getElementById("tooltipHarvestStone").innerHTML = "<span class='forceleft'> Stone in Queue: </span> <span class='forceright'>" + stoneQueue + "</span> <br> <span class='forceleft' > Stone Time: </span> <span class='forceright'>" + stoneTime + "</span> <br> <span class='forceleft'> Stone Queue Max: </span> <span class='forceright'>" + stoneQueueMax + "</span> <br> <span class='forceleft'> Stone Time Max: </span> <span class='forceright'>" + stoneTimeMax + "</span>";
-		document.getElementById("tooltipHarvestScience").innerHTML = "<span class='forceleft'> Science in Queue: </span> <span class='forceright'>" + scienceQueue + "</span> <br> <span class='forceleft' > Science Time: </span> <span class='forceright'>" + scienceTime + "</span> <br> <span class='forceleft'> Science Queue Max: </span> <span class='forceright'>" + scienceQueueMax + "</span> <br> <span class='forceleft'> Science Time Max: </span> <span class='forceright'>" + scienceTimeMax + "</span>";
-		document.getElementById("tooltipHarvestOres").innerHTML = "<span class='forceleft'> Stone Cost: </span> <span class='forceright'>" + geology.costStone + "</span> <br> <span class='forceleft' > Productivity: </span> <span class='forceright'>" + geology.rolls + "</span> <br> <span class='forceleft'> Copper Chance: </span> <span class='forceright'>" + geology.chanceCopper + "</span> <br> <span class='forceleft'> Tin Chance: </span> <span class='forceright'>" + geology.chanceTin + "</span> <br> <span class='forceleft'> Zinc Chance: </span> <span class='forceright'>" + geology.chanceZinc + "</span>";
-		document.getElementById("tooltipExplore").innerHTML = "<span class='forceleft'> Explored Area: </span> <span class='forceright'>" + materials.exploredarea + "</span> <br> <span class='forceleft' > Productivity: </span> <span class='forceright'>" + exploration.mult + "</span>";
-		document.getElementById("tooltipHarvestManpower").innerHTML = "<span class='forceleft'> Manpower Time: </span> <span class='forceright'>" + manpowerTime + "</span> <br> <span class='forceleft' > Manpower Time Max: </span> <span class='forceright'>" + manpowerTimeMax + "</span>";
-		document.getElementById("tooltipHarvestSand").innerHTML = "<span class='forceleft'> Sand in Queue: </span> <span class='forceright'>" + sandQueue + "</span> <br> <span class='forceleft' > Sand Time: </span> <span class='forceright'>" + sandTime + "</span> <br> <span class='forceleft'> Sand Queue Max: </span> <span class='forceright'>" + sandQueueMax + "</span> <br> <span class='forceleft'> Sand Time Max: </span> <span class='forceright'>" + sandTimeMax + "</span> <br> <span class='forceleft'> Clay Chance: </span> <span class='forceright'>" + sandClay * 100 + "%</span>";
+		document.getElementById("tooltipHarvestWood").innerHTML = tt_gen_alt(["Wood in Queue", woodQueue, "Wood Time", woodTime, "Wood Queue Max", woodQueueMax, "Wood Time Max", woodTimeMax]);
+		document.getElementById("tooltipHarvestStone").innerHTML = tt_gen_alt(["Stone in Queue", stoneQueue, "Stone Time", stoneTime, "Stone Queue Max", stoneQueueMax, "Stone Time Max", stoneTimeMax]);
+		document.getElementById("tooltipHarvestScience").innerHTML = tt_gen_alt(["Science in Queue", scienceQueue, "Science Time", scienceTime, "Science Queue Max", scienceQueueMax, "Science Time Max", scienceTimeMax]);
+		document.getElementById("tooltipHarvestOres").innerHTML = tt_gen_alt(["Stone Cost", geology.costStone, "Productivity", geology.rolls, "Copper Chance", geology.chanceCopper, "Tin Chance", geology.chanceTin, "Zinc Chance", geology.chanceZinc]);
+		document.getElementById("tooltipExplore").innerHTML = tt_gen_alt(["Explored Area", materials.exploredarea.toFixed(3), "Productivity", explorationmult]);
+		document.getElementById("tooltipHarvestManpower").innerHTML = tt_gen_alt(["Manpower Time", manpowerTime, "Manpower Time Max", manpowerTimeMax]);
+		document.getElementById("tooltipHarvestSand").innerHTML = tt_gen_alt(["Sand in Queue", sandQueue, "Sand Time", sandTime, "Sand Queue Max", sandQueueMax, "Sand Time Max", sandTimeMax, "Clay Chance", sandClay * 100]);
 	}
 
 
@@ -825,6 +874,13 @@ function timer() {
 				manpowerTime = 0;
 			}
 		}
+		
+		if(explorationQueue > 0) {
+			materials.exploredarea += (materials.manpower * explorationmult);
+			materials.manpower = 0;
+			explorationQueue--
+		}
+		
 		manpowerTimeMax = 100;
 		explorationmult = 1;
 

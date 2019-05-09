@@ -1,3 +1,9 @@
+v. indev 0.2.2
+5/8/2019
+internal rewrites
+fixed copper optics
+swapped wood pick and axe
+
 v. indev 0.2.1
 4/28/2019
 added 3 unused toolstation upgrades
