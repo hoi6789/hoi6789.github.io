@@ -1,3 +1,11 @@
+v. indev 0.3
+6/12/2019
+updated visuals slightly
+added smelters and metallurgy research
+added storage limits
+added storage buildings
+added organization research
+
 v. indev 0.2.2
 5/8/2019
 internal rewrites

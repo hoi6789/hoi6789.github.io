@@ -22,6 +22,16 @@ var materials = {
 
 var naviData = 0;
 var EnaviData = 0;
+var naviSmelter = 0;
+
+var configSmelter = {
+	apply: true,
+	active: 0,
+	copper: 0,
+	tin: 0,
+	zinc: 0,
+	sand: 0
+}
 
 var ts_check = {
 	1: false,
@@ -102,16 +112,19 @@ var woodQueue = 0;
 var woodTimeMax = 15;
 var woodQueueMax = 5;
 var woodmult = 1;
+var woodStorage = 50;
 var stoneTime = 0;
 var stoneQueue = 0;
 var stoneTimeMax = 15;
 var stoneQueueMax = 5;
 var stonemult = 1;
+var stoneStorage = 50;
 var scienceTime = 0;
 var scienceQueue = 0;
 var scienceTimeMax = 25;
 var scienceQueueMax = 3;
-var sciencemult = 1;
+var sciencemult = 0;
+var scienceStorage = 0;
 var oresQueue = 0;
 var manpowerTime = 0;
 var manpowerTimeMax = 100;
@@ -122,17 +135,56 @@ var sandQueue = 0;
 var sandTimeMax = 20;
 var sandQueueMax = 4;
 var sandClay = 0.6;
+var copperOreStorage = 50;
+var tinOreStorage = 50;
+var zincOreStorage = 50;
+var copperIngotStorage = 10;
+var tinIngotStorage = 10;
+var zincIngotStorage = 10;
 
 var buildings = {
-	research1: 0
+	storage1: 0,
+	storage2: 0,
+	research1: 0,
+	smelter: 0
 }
 
+//crate
+var campsiteStorage1 = {
+	costWood: 25,
+	costStone: 25,
+	storageWood: 25,
+	storageStone: 25,
+	storageCopperOre: 10,
+	storageTinOre: 10,
+	storageZincOre: 10
+};
+
+var campsiteStorage2 = {
+	costWood: 60,
+	costStone: 60,
+	storageWood: 50,
+	storageStone: 50,
+	storageCopperOre: 25,
+	storageTinOre: 25,
+	storageZincOre: 25,
+	storageCopperIngot: 5,
+	storageTinIngot: 5,
+	storageZincIngot: 5
+};
+
 //research station
-//count, woodcost, stonecost, prodbonus
 var campsiteResearch1 = {
 	costWood: 45,
 	costStone: 35,
-	bonus: 25
+	storageScience: 25,
+	bonus: 10
+};
+
+//smelter
+var campsiteSmelter = {
+	costStone: 30,
+	costCopper: 5
 };
 
 var rs_check = {
@@ -141,7 +193,8 @@ var rs_check = {
 	3: false,
 	4: false,
 	5: false,
-	6: false
+	6: false,
+	7: false
 }
 
 //fire
@@ -184,19 +237,47 @@ var geology = {
 //agriculture
 //check, costscience
 var research4 = {
-	costScience: 70
+	costScience: 150
 };
 
 //mining
 //check, costscience
 var research5 = {
-	costScience: 70
+	costScience: 150
 };
 
 //metallurgy
 //check, costscience
 var research6 = {
-	costScience: 70
+	costScience: 100
+};
+var metallurgy = {
+	copper: {
+		costOre: 0.015,
+		costWood: 0.02,
+		output: 0.003
+	},
+	tin: {
+		costOre: 0.01,
+		costWood: 0.03,
+		output: 0.0015
+	},
+	zinc: {
+		costOre: 0.01,
+		costWood: 0.03,
+		output: 0.0015
+	},
+	sand: {
+		costOre: 0.05,
+		costWood: 0.025,
+		output: 0.025
+	},
+}
+
+//organization
+//check, costscience
+var research7 = {
+	costScience: 100
 };
 
 document.getElementById("explorationzone").setAttribute("hidden", true);
@@ -278,6 +359,16 @@ function clickNaviExploration() {
 }
 //Navi Exploration
 
+//Navi Smelter
+function clickNaviSmelter() {
+	if(naviSmelter == 0) {
+		naviSmelter = 1;
+	} else if(naviSmelter == 1){
+		naviSmelter = 0;
+	}
+}
+//Navi Smelter
+
 //ENavi Coast
 function clickEnaviCoast() {
 	EnaviData = 0;
@@ -285,6 +376,28 @@ function clickEnaviCoast() {
 	document.getElementById("coastEzone").removeAttribute("hidden");
 }
 //ENavi Coast
+
+//Crate
+function clickCampsiteStorage1() {
+	if (materials.wood >= campsiteStorage1.costWood * Math.pow(1.25, buildings["storage1"])) {
+		if (materials.stone >= campsiteStorage1.costStone * Math.pow(1.25, buildings["storage1"])) {
+			spendWood(campsiteStorage1.costWood * Math.pow(1.25, buildings["storage1"]));
+			materials.stone -= campsiteStorage1.costStone * Math.pow(1.25, buildings["storage1"]);
+			buildings["storage1"]++;
+		}
+	}
+}
+
+//Storehouse
+function clickCampsiteStorage2() {
+	if (materials.wood >= campsiteStorage2.costWood * Math.pow(1.25, buildings["storage2"])) {
+		if (materials.stone >= campsiteStorage2.costStone * Math.pow(1.25, buildings["storage2"])) {
+			spendWood(campsiteStorage2.costWood * Math.pow(1.25, buildings["storage2"]));
+			materials.stone -= campsiteStorage2.costStone * Math.pow(1.25, buildings["storage2"]);
+			buildings["storage2"]++;
+		}
+	}
+}
 
 //Research Station
 function clickCampsiteResearch1() {
@@ -299,6 +412,71 @@ function clickCampsiteResearch1() {
 	}
 }
 //Research Station
+
+//Smelter
+function clickCampsiteSmelter() {
+	if (materials.copperingot >= campsiteSmelter.costCopper * Math.pow(1.15, buildings["smelter"])) {
+		if (materials.stone >= campsiteSmelter.costStone * Math.pow(1.15, buildings["smelter"])) {
+			materials.copperingot -= campsiteSmelter.costCopper * Math.pow(1.15, buildings["smelter"]);
+			materials.stone -= campsiteSmelter.costStone * Math.pow(1.15, buildings["smelter"]);
+			buildings["smelter"]++;
+
+		}
+	}
+}
+
+function clickSmelterMode() {
+	if(configSmelter.apply == true) {
+		configSmelter.apply = false;
+	} else {
+		configSmelter.apply = true;
+	}
+}
+
+function clickSmelterCopper() {
+	if(configSmelter.apply == true && configSmelter.active > 0) {
+		configSmelter.copper++;
+		configSmelter.active--;
+	} 
+	if(configSmelter.apply == false && configSmelter.copper > 0) {
+		configSmelter.copper--;
+		configSmelter.active++;
+	}
+}
+
+function clickSmelterTin() {
+	if(configSmelter.apply == true && configSmelter.active > 0) {
+		configSmelter.tin++;
+		configSmelter.active--;
+	} 
+	if(configSmelter.apply == false && configSmelter.tin > 0) {
+		configSmelter.tin--;
+		configSmelter.active++;
+	}
+}
+
+function clickSmelterZinc() {
+	if(configSmelter.apply == true && configSmelter.active > 0) {
+		configSmelter.zinc++;
+		configSmelter.active--;
+	} 
+	if(configSmelter.apply == false && configSmelter.zinc > 0) {
+		configSmelter.zinc--;
+		configSmelter.active++;
+	}
+}
+
+function clickSmelterSand() {
+	if(configSmelter.apply == true && configSmelter.active > 0) {
+		configSmelter.sand++;
+		configSmelter.active--;
+	} 
+	if(configSmelter.apply == false && configSmelter.sand > 0) {
+		configSmelter.sand--;
+		configSmelter.active++;
+	}
+}
+//Smelter
 
 //Smelt Copper
 function clickSmeltCopper() {
@@ -417,7 +595,8 @@ function clickResearch1() {
 		document.getElementById("research1").setAttribute("hidden", true);
 		document.getElementById("research2").removeAttribute("hidden");
 		document.getElementById("research3").removeAttribute("hidden");
-		document.getElementById("research4").removeAttribute("hidden");
+		document.getElementById("research6").removeAttribute("hidden");
+		document.getElementById("research7").removeAttribute("hidden");
 	}
 }
 //Fire
@@ -452,6 +631,26 @@ function clickResearch3() {
 }
 //Geology
 
+//Metallurgy
+function clickResearch6() {
+	if (materials.science >= research6["costScience"]) {
+		materials.science -= research6["costScience"];
+		rs_check["6"] = true;
+		document.getElementById("research6").setAttribute("hidden", true);
+	}
+}
+//Metallurgy
+
+//Organization
+function clickResearch7() {
+	if (materials.science >= research7["costScience"]) {
+		materials.science -= research7["costScience"];
+		rs_check["7"] = true;
+		document.getElementById("research7").setAttribute("hidden", true);
+	}
+}
+//Organization
+
 
 setInterval(timer, tickspeed);
 
@@ -461,7 +660,6 @@ function saveGame() {
 	localStorage.saveRS_Check = JSON.stringify(rs_check);
 	localStorage.saveBuildings = JSON.stringify(buildings);
 	console.log("Save Complete!");
-	//console.log(localStorage[0]);
 }
 
 function loadGame() {
@@ -490,7 +688,7 @@ function loadGame() {
 		console.log("Research Loaded!");
 	}
 	console.log("Load Complete!");
-	//console.log(localStorage[0]);
+
 
 }
 
@@ -502,7 +700,57 @@ function clickExplore() {
 function timer() {
 	saveGame();
 	
+	configSmelter.active = buildings.smelter - configSmelter.copper - configSmelter.tin - configSmelter.zinc;
 	
+	woodStorage += buildings.storage1 * campsiteStorage1.storageWood;
+	stoneStorage += buildings.storage1 * campsiteStorage1.storageStone;
+	woodStorage += buildings.storage2 * campsiteStorage2.storageWood;
+	stoneStorage += buildings.storage2 * campsiteStorage2.storageStone;
+	scienceStorage += buildings.research1 * campsiteResearch1.storageScience;
+	copperOreStorage += buildings.storage1 * campsiteStorage1.storageCopperOre;
+	tinOreStorage += buildings.storage1 * campsiteStorage1.storageTinOre;
+	zincOreStorage += buildings.storage1 * campsiteStorage1.storageZincOre;
+	copperOreStorage += buildings.storage2 * campsiteStorage2.storageCopperOre;
+	tinOreStorage += buildings.storage2 * campsiteStorage2.storageTinOre;
+	zincOreStorage += buildings.storage2 * campsiteStorage2.storageZincOre;
+	copperIngotStorage += buildings.storage2 * campsiteStorage2.storageCopperIngot;
+	tinIngotStorage += buildings.storage2 * campsiteStorage2.storageTinIngot;
+	zincIngotStorage += buildings.storage2 * campsiteStorage2.storageZincIngot;
+	
+	
+	if(materials.woodraw >= woodStorage) {
+		materials.woodraw = woodStorage;
+	}
+	if(materials.stone >= stoneStorage) {
+		materials.stone = stoneStorage;
+	}
+	if(materials.science >= scienceStorage) {
+		materials.science = scienceStorage;
+	}
+	
+	if(materials.copperore >= copperOreStorage) {
+		materials.copperore = copperOreStorage;
+	}
+	
+	if(materials.copperingot >= copperIngotStorage) {
+		materials.copperingot = copperIngotStorage;
+	}
+	
+	if(materials.tinore >= tinOreStorage) {
+		materials.tinore = tinOreStorage;
+	}
+	
+	if(materials.tiningot >= tinIngotStorage) {
+		materials.tiningot = tinIngotStorage;
+	}
+	
+	if(materials.zincore >= zincOreStorage) {
+		materials.zincore = zincOreStorage;
+	}
+	
+	if(materials.zincingot >= zincIngotStorage) {
+		materials.zincingot = zincIngotStorage;
+	}
 
 	function tt_gen(data) {
 		var output = "<span class='tooltiptext'> <span class='forceleft'> ";
@@ -562,18 +810,20 @@ function timer() {
 	}
 	
 	materials.wood = materials.woodraw + materials.woodcut;
-	document.getElementById("woodDisplay").innerHTML = "Wood: " + materials.wood.toFixed(3) + tt_gen(["Timber", materials.woodraw.toFixed(3), "Lumber", materials.woodcut.toFixed(3)]);
-	document.getElementById("stoneDisplay").innerHTML = "Stone: " + materials.stone.toFixed(3);
-	document.getElementById("scienceDisplay").innerHTML = "Science: " + materials.science.toFixed(3);
-	document.getElementById("copperDisplay").innerHTML = "Copper: " + materials.copperingot.toFixed(3) + tt_gen(["Copper Ingots", materials.copperingot.toFixed(3), "Copper Ore", materials.copperore.toFixed(3)]);
-	document.getElementById("tinDisplay").innerHTML = "Tin: " + materials.tiningot.toFixed(3) + tt_gen(["Tin Ingots", materials.tiningot.toFixed(3), "Tin Ore", materials.tinore.toFixed(3)]);
-	document.getElementById("zincDisplay").innerHTML = "Zinc: " + materials.zincingot.toFixed(3) + tt_gen(["Zinc Ingots", materials.zincingot.toFixed(3), "Zinc Ore", materials.zincore.toFixed(3)]);
+	document.getElementById("woodDisplay").innerHTML = "Wood: " + materials.wood.toFixed(3) + tt_gen(["Timber", materials.woodraw.toFixed(3) + "/" + woodStorage, "Lumber", materials.woodcut.toFixed(3)]);
+	document.getElementById("stoneDisplay").innerHTML = "Stone: " + materials.stone.toFixed(3) + "/" + stoneStorage;
+	document.getElementById("scienceDisplay").innerHTML = "Science: " + materials.science.toFixed(3) + "/" + scienceStorage;
+	document.getElementById("copperDisplay").innerHTML = "Copper: " + materials.copperingot.toFixed(3) + tt_gen(["Copper Ingots", materials.copperingot.toFixed(3) + "/" + copperIngotStorage, "Copper Ore", materials.copperore.toFixed(3) + "/" + copperOreStorage]);
+	document.getElementById("tinDisplay").innerHTML = "Tin: " + materials.tiningot.toFixed(3) + tt_gen(["Tin Ingots", materials.tiningot.toFixed(3) + "/" + tinIngotStorage, "Tin Ore", materials.tinore.toFixed(3) + "/" + tinOreStorage]);
+	document.getElementById("zincDisplay").innerHTML = "Zinc: " + materials.zincingot.toFixed(3) + tt_gen(["Zinc Ingots", materials.zincingot.toFixed(3) + "/" + zincIngotStorage, "Zinc Ore", materials.zincore.toFixed(3) + "/" + zincOreStorage]);
 	document.getElementById("manpowerDisplay").innerHTML = "Manpower: " + materials.manpower.toFixed(3);
 	document.getElementById("sandDisplayE").innerHTML = "Sand: " + materials.sandE.toFixed(3);
 	document.getElementById("clayDisplayE").innerHTML = "Clay: " + materials.clayE.toFixed(3);
-	document.getElementById("sandDisplay").innerHTML = "Sand: " + materials.sand.toFixed(3);
+	document.getElementById("sandDisplay").innerHTML = "Sand: " + materials.sand.toFixed(3) + tt_gen(["Glass", materials.glass.toFixed(3)]);
 	document.getElementById("clayDisplay").innerHTML = "Clay: " + materials.clay.toFixed(3);
-	document.getElementById("tooltipcaravanCoast").innerHTML = tt_gen(["Manpower", caravan1.costManpower, "Time", caravan1.time, "Sand Capacity", caravan1.limitSand, "Clay Capacity", caravan1.limitClay]);
+	var score = (materials.tiningot / 3) * (materials.zincingot / 2) * (materials.exploredarea / 4);
+	document.getElementById("diagnostic").innerHTML = "Score: " + score.toFixed(3);
+	document.getElementById("tooltipCaravanCoast").innerHTML = tt_gen_alt(["Manpower", caravan1.costManpower, "Time", caravan1.time, "Sand Capacity", caravan1.limitSand, "Clay Capacity", caravan1.limitClay]);
 
 	if (naviData == 0) {
 		document.getElementById("naviCampsite").setAttribute("class", "active");
@@ -581,21 +831,74 @@ function timer() {
 	if (naviData == 1) {
 		document.getElementById("naviExploration").setAttribute("class", "active");
 	}
+	if (naviSmelter == 1) {
+		document.getElementById("naviSmelter").setAttribute("class", "active");
+		document.getElementById("smelterzone").removeAttribute("hidden");
+	}
+	if (naviSmelter == 0) {
+		document.getElementById("naviSmelter").removeAttribute("class");
+		document.getElementById("smelterzone").setAttribute("hidden", true);
+	
+	}
 	if (EnaviData == 0) {
 		document.getElementById("EnaviCoast").setAttribute("class", "activeE");
 	}
 
 	document.getElementById("tooltipSmeltCopper").innerHTML = "<span class='forceleft'> Copper Ore Cost: </span> <span class='forceright'>" + "10" + "</span> <br> <span class='forceleft' > Clay Cost: </span> <span class='forceright'>" + "10" + "</span>";
 
+	document.getElementById("campsiteStorage1").innerHTML = "Storage Crate (" + buildings.storage1 + ")";
+	document.getElementById("campsiteStorage2").innerHTML = "Storehouse (" + buildings.storage2 + ")";
+	document.getElementById("tooltipCampsiteStorage1").innerHTML = tt_gen_shiny(["Stores your resources.", "Wood", (campsiteStorage1.costWood * Math.pow(1.25, buildings.storage1)).toFixed(3), "Stone", (campsiteStorage1.costStone * Math.pow(1.25, buildings.storage1)).toFixed(3)], ["Wood Storage: " + campsiteStorage1.storageWood, "Stone Storage: " + campsiteStorage1.storageStone]);
+	document.getElementById("tooltipCampsiteStorage2").innerHTML = tt_gen_shiny(["Stores your resources.", "Wood", (campsiteStorage2.costWood * Math.pow(1.25, buildings.storage2)).toFixed(3), "Stone", (campsiteStorage2.costStone * Math.pow(1.25, buildings.storage2)).toFixed(3)], ["Wood Storage: " + campsiteStorage2.storageWood, "Stone Storage: " + campsiteStorage2.storageStone]);
 	document.getElementById("campsiteResearch1").innerHTML = "Research Station (" + buildings.research1 + ")";
 
-	document.getElementById("tooltipCampsiteResearch1").innerHTML = tt_gen_shiny(["Allows you to conduct research.", "Wood", (campsiteResearch1.costWood * Math.pow(1.15, buildings.research1)).toFixed(3), "Stone", (campsiteResearch1.costStone * Math.pow(1.15, buildings.research1)).toFixed(3)], ["Science Bonus: " + campsiteResearch1.bonus + "%"]);
-	/*"Allows you to conduct research. 
-	<hr> <span class='forceleft'>Wood</span> <span class='forceright'> " + 
-	(campsiteResearch1.costWood * Math.pow(1.15, buildings.research1)).toFixed(3) + 
-	"</span> <br> <span class='forceleft'> Stone </span> <span class='forceright'> " 
-	+ (campsiteResearch1.costStone * Math.pow(1.15, buildings.research1)).toFixed(3) + 
-	"</span> <br><hr> <span class='attribute'> Science Bonus: " + campsiteResearch1.bonus + "%</span>";*/
+	document.getElementById("tooltipCampsiteResearch1").innerHTML = tt_gen_shiny(["Allows you to conduct research.", "Wood", (campsiteResearch1.costWood * Math.pow(1.15, buildings.research1)).toFixed(3), "Stone", (campsiteResearch1.costStone * Math.pow(1.15, buildings.research1)).toFixed(3)], ["Science Bonus: " + campsiteResearch1.bonus + "%", "Science Storage: " + campsiteResearch1.storageScience]);
+	
+	document.getElementById("campsiteSmelter").innerHTML = "Smelter (" + buildings.smelter + ")";
+	
+	if(configSmelter.apply == false) {
+		document.getElementById("smelterMode").innerHTML = "Mode: Remove";
+	} else {
+		document.getElementById("smelterMode").innerHTML = "Mode: Apply";
+	}
+	
+	document.getElementById("smelterCopper").innerHTML = "Copper (" + configSmelter.copper + ")";
+	document.getElementById("tooltipsmelterCopper").innerHTML = tt_gen_alt(["Copper Ore Cost", metallurgy.copper.costOre, "Wood Cost", metallurgy.copper.costWood, "Copper Production", metallurgy.copper.output]);
+	
+	document.getElementById("smelterTin").innerHTML = "Tin (" + configSmelter.tin + ")";
+	document.getElementById("tooltipsmelterTin").innerHTML = tt_gen_alt(["Tin Ore Cost", metallurgy.tin.costOre, "Wood Cost", metallurgy.tin.costWood, "Tin Production", metallurgy.tin.output]);
+	
+	document.getElementById("smelterZinc").innerHTML = "Zinc (" + configSmelter.zinc + ")";
+	document.getElementById("tooltipsmelterZinc").innerHTML = tt_gen_alt(["Zinc Ore Cost", metallurgy.zinc.costOre, "Wood Cost", metallurgy.zinc.costWood, "Zinc Production", metallurgy.zinc.output]);
+	
+	document.getElementById("smelterSand").innerHTML = "Sand (" + configSmelter.sand + ")";
+	document.getElementById("tooltipsmelterSand").innerHTML = tt_gen_alt(["Sand Cost", metallurgy.sand.costOre, "Wood Cost", metallurgy.sand.costWood, "Glass Production", metallurgy.sand.output]);
+	
+	if(materials.copperore > configSmelter.copper * metallurgy.copper.costOre && materials.wood > configSmelter.copper * metallurgy.copper.costWood) {
+		materials.copperore -= configSmelter.copper * metallurgy.copper.costOre;
+		spendWood(configSmelter.copper * metallurgy.copper.costWood);
+		materials.copperingot += configSmelter.copper * metallurgy.copper.output;
+	}
+	
+	if(materials.tinore > configSmelter.tin * metallurgy.tin.costOre && materials.wood > configSmelter.tin * metallurgy.tin.costWood) {
+		materials.tinore -= configSmelter.tin * metallurgy.tin.costOre;
+		spendWood(configSmelter.tin * metallurgy.tin.costWood);
+		materials.tiningot += configSmelter.tin * metallurgy.tin.output;
+	}
+	
+	if(materials.zincore > configSmelter.zinc * metallurgy.zinc.costOre && materials.wood > configSmelter.zinc * metallurgy.zinc.costWood) {
+		materials.zincore -= configSmelter.zinc * metallurgy.zinc.costOre;
+		spendWood(configSmelter.zinc * metallurgy.zinc.costWood);
+		materials.zincingot += configSmelter.zinc * metallurgy.zinc.output;
+	}
+	
+	if(materials.sand > configSmelter.sand * metallurgy.sand.costOre && materials.wood > configSmelter.sand * metallurgy.sand.costWood) {
+		materials.sand -= configSmelter.sand * metallurgy.sand.costOre;
+		spendWood(configSmelter.sand * metallurgy.sand.costWood);
+		materials.glass += configSmelter.sand * metallurgy.sand.output;
+	}
+	
+	document.getElementById("tooltipCampsiteSmelter").innerHTML = tt_gen_shiny(["Smelt materials into other ones.", "Stone", (campsiteSmelter.costStone * Math.pow(1.15, buildings.smelter)).toFixed(3), "Copper", (campsiteSmelter.costCopper * Math.pow(1.15, buildings.smelter)).toFixed(3)], []);
 
 	document.getElementById("tooltipToolstation1").innerHTML = tt_gen_shiny(["Allows you to harvest stone.", "Wood", toolstation1.costWood], []);
 
@@ -621,7 +924,22 @@ function timer() {
 
 	document.getElementById("tooltipResearch4").innerHTML = tt_gen_shiny(["Learn how to grow plants. TBA", "Science", research4.costScience], ["Unlocks: Growing Plants"]);
 	
+	document.getElementById("tooltipResearch6").innerHTML = tt_gen_shiny(["Smelt materials into different forms.", "Science", research6.costScience], ["Unlocks: Smelters"]);
+	
+	document.getElementById("tooltipResearch7").innerHTML = tt_gen_shiny(["Unlock better ways to store items.", "Science", research7.costScience], ["Unlocks: Storehouses"]);
+	
 	{
+		//Crate
+		if (materials.wood >= campsiteStorage1.costWood * 0.3 || buildings.storage1 > 0) {
+			document.getElementById("campsiteStorage1").removeAttribute("hidden");
+		}
+		//Crate
+		
+		//Storehouse
+		if (materials.wood >= campsiteStorage2.costWood * 0.3 || buildings.storage2 > 0) {
+			document.getElementById("campsiteStorage2").removeAttribute("hidden");
+		}
+		//Storehouse
 		
 		//Research Station
 		if (materials.stone >= campsiteResearch1.costStone * 0.3 || buildings.research1 > 0) {
@@ -639,6 +957,8 @@ function timer() {
 		if (ts_check["1"] == true) {
 			document.getElementById("harvestStone").removeAttribute("hidden");
 			document.getElementById("stoneDisplay").removeAttribute("hidden");
+			document.getElementById("toolstation1").parentElement.setAttribute("hidden", true);
+			document.getElementById("toolstation1").setAttribute("hidden", true);
 		}
 		//Wooden Pickaxe
 
@@ -652,6 +972,9 @@ function timer() {
 		if (ts_check["2"] == true) {
 			woodTimeMax = woodTimeMax - toolstation2.timeMod;
 			woodQueueMax = woodQueueMax + toolstation2.queueMod;
+			document.getElementById("toolstation2").parentElement.setAttribute("hidden", true);
+			document.getElementById("toolstation2").setAttribute("hidden", true);
+			
 		}
 		//Wooden Axe
 
@@ -665,6 +988,8 @@ function timer() {
 		if (ts_check["3"] == true) {
 			stoneTimeMax = stoneTimeMax - toolstation3.timeMod;
 			stoneQueueMax = stoneQueueMax + toolstation3.queueMod;
+			document.getElementById("toolstation3").parentElement.setAttribute("hidden", true);
+			document.getElementById("toolstation3").setAttribute("hidden", true);
 		}
 		//Stone Pickaxe
 
@@ -678,6 +1003,8 @@ function timer() {
 		if (ts_check["4"] == true) {
 			woodTimeMax = woodTimeMax - toolstation4.timeMod;
 			woodQueueMax = woodQueueMax + toolstation4.queueMod;
+			document.getElementById("toolstation4").parentElement.setAttribute("hidden", true);
+			document.getElementById("toolstation4").setAttribute("hidden", true);
 		}
 		//Stone Axe
 
@@ -690,6 +1017,8 @@ function timer() {
 
 		if (ts_check["5"] == true) {
 			woodmult *= toolstation5.mult;
+			document.getElementById("toolstation5").parentElement.setAttribute("hidden", true);
+			document.getElementById("toolstation5").setAttribute("hidden", true);
 		}
 		//Copper Axe
 		
@@ -702,6 +1031,8 @@ function timer() {
 
 		if (ts_check["6"] == true) {
 			stonemult *= toolstation6.mult;
+			document.getElementById("toolstation6").parentElement.setAttribute("hidden", true);
+			document.getElementById("toolstation6").setAttribute("hidden", true);
 		}
 		//Copper Pickaxe
 		
@@ -714,6 +1045,8 @@ function timer() {
 
 		if (ts_check["7"] == true) {
 			sciencemult *= toolstation7.mult;
+			document.getElementById("toolstation7").parentElement.setAttribute("hidden", true);
+			document.getElementById("toolstation7").setAttribute("hidden", true);
 		}
 		//Copper Instruments
 		
@@ -726,6 +1059,8 @@ function timer() {
 
 		if (ts_check["8"] == true) {
 			explorationmult *= toolstation8.mult;
+			document.getElementById("toolstation8").parentElement.setAttribute("hidden", true);
+			document.getElementById("toolstation8").setAttribute("hidden", true);
 		}
 		//Copper Sights
 		
@@ -742,10 +1077,10 @@ function timer() {
 		}
 		
 		if (rs_check["1"] == true) {
-			document.getElementById("research1").setAttribute("hidden", true);
+			document.getElementById("research1").parentElement.setAttribute("hidden", true);
 			document.getElementById("research2").removeAttribute("hidden");
 			document.getElementById("research3").removeAttribute("hidden");
-			document.getElementById("research4").removeAttribute("hidden");
+			
 		}
 		//Fire
 
@@ -754,6 +1089,7 @@ function timer() {
 		}
 		
 		if (rs_check["2"] == true) {
+			document.getElementById("research2").parentElement.setAttribute("hidden", true);
 			document.getElementById("research2").setAttribute("hidden", true);
 			document.getElementById("naviExploration").style.display = "block";
 			document.getElementById("manpowerDisplay").removeAttribute("hidden");
@@ -770,15 +1106,47 @@ function timer() {
 		}
 		//Coast
 		
+		//Geology
 		if (rs_check["3"] == true) {
+			document.getElementById("research3").parentElement.setAttribute("hidden", true);
 			document.getElementById("research3").setAttribute("hidden", true);
 			document.getElementById("copperDisplay").removeAttribute("hidden");
 			document.getElementById("tinDisplay").removeAttribute("hidden");
 			document.getElementById("zincDisplay").removeAttribute("hidden");
 			document.getElementById("harvestOres").removeAttribute("hidden");
 			document.getElementById("smeltCopper").removeAttribute("hidden");
+			document.getElementById("research7").removeAttribute("hidden");
+			document.getElementById("research6").removeAttribute("hidden");
+		}
+		//Geology
+		
+		//Metallurgy
+		if (rs_check["6"] != true) {
+			document.getElementById("naviSmelter").style.display = "none";
 		}
 		
+		if (rs_check["6"] == true) {
+			document.getElementById("research6").parentElement.setAttribute("hidden", true);
+			document.getElementById("research6").setAttribute("hidden", true);
+			document.getElementById("campsiteSmelter").removeAttribute("hidden");
+			document.getElementById("naviSmelter").removeAttribute("hidden");
+			document.getElementById("naviSmelter").style.display = "block";
+		}
+		//Metallurgy
+		
+		//Organization
+		if (rs_check["7"] != true) {
+			document.getElementById("campsiteStorage2").setAttribute("hidden", true);
+		}
+		
+		if (rs_check["7"] == true) {
+			document.getElementById("research7").parentElement.setAttribute("hidden", true);
+			document.getElementById("research7").setAttribute("hidden", true);
+			document.getElementById("campsiteStorage2").removeAttribute("hidden");
+		}
+		//Organization
+		
+
 
 	} {
 		document.getElementById("tooltipHarvestWood").innerHTML = tt_gen_alt(["Wood in Queue", woodQueue, "Wood Time", woodTime, "Wood Queue Max", woodQueueMax, "Wood Time Max", woodTimeMax]);
@@ -804,9 +1172,6 @@ function timer() {
 				woodQueue--;
 			}
 		}
-		woodTimeMax = 15;
-		woodQueueMax = 5;
-		woodmult = 1;
 
 		if (stoneQueue > 0) {
 			if (stoneQueue > stoneQueueMax) {
@@ -825,9 +1190,6 @@ function timer() {
 				stoneQueue--;
 			}
 		}
-		stoneTimeMax = 15;
-		stoneQueueMax = 5;
-		stonemult = 1;
 
 		if (scienceQueue > 0) {
 			if (scienceQueue > scienceQueueMax) {
@@ -842,9 +1204,6 @@ function timer() {
 				scienceQueue--;
 			}
 		}
-		scienceTimeMax = 25;
-		scienceQueueMax = 3;
-		sciencemult = 1;
 
 		if (materials.stone >= geology.costStone) {
 			if (oresQueue > 0) {
@@ -880,9 +1239,6 @@ function timer() {
 			materials.manpower = 0;
 			explorationQueue--
 		}
-		
-		manpowerTimeMax = 100;
-		explorationmult = 1;
 
 		if (sandQueue > 0) {
 			if (sandQueue > sandQueueMax) {
@@ -900,8 +1256,35 @@ function timer() {
 				sandQueue--;
 			}
 		}
+	}
+	
+	{
+		woodTimeMax = 15;
+		woodQueueMax = 5;
+		woodmult = 1;
+		woodStorage = 100;
+		stoneTimeMax = 15;
+		stoneQueueMax = 5;
+		stonemult = 1;
+		stoneStorage = 100;
+		scienceTimeMax = 25;
+		scienceQueueMax = 3;
+		sciencemult = 1;
+		scienceStorage = 0;
+		manpowerTimeMax = 100;
+		explorationmult = 1;
 		sandTimeMax = 20;
 		sandQueueMax = 4;
+		sandClay = 0.6;
+		woodStorage = 50;
+		stoneStorage = 50;
+		scienceStorage = 0;
+		 copperOreStorage = 50;
+ tinOreStorage = 50;
+ zincOreStorage = 50;
+copperIngotStorage = 10;
+tinIngotStorage = 10;
+zincIngotStorage = 10;
 	}
 }
 

@@ -9,7 +9,7 @@ Quality bug-free code
 <head>
       <link rel="stylesheet" type="text/css" href="idler.css">
 </head
-<body onload="loadGame([woodraw,woodcut,stone,science,copperore,copperingot,tinore,tiningot,zincore,zincingot,manpower,clay,clayE,sand,sandE,glass,toolstation1[0],toolstation2[0],toolstation3[0],toolstation4[0],toolstation5[0],toolstation6[0],toolstation7[0],toolstation8[0],campsiteResearch1[0],research1[0],research2[0],research3[0],research4[0],research5[0],research6[0]])">
+<body>
 
 
   <font size="2">
@@ -21,8 +21,12 @@ Quality bug-free code
 		</ul>
 		<br>
 		<br>
+			<br>
+				<hr/>
+			<div class="row">
+				<div class="columnsmall">
 			<div class="tooltipbr">
-    <p id="woodDisplay"onclick="loadGame([woodraw,woodcut,stone,science,copperore,copperingot,tinore,tiningot,zincore,zincingot,manpower,clay,clayE,sand,sandE,glass,toolstation1[0],toolstation2[0],toolstation3[0],toolstation4[0],toolstation5[0],toolstation6[0],toolstation7[0],toolstation8[0],campsiteResearch1[0],research1[0],research2[0],research3[0],research4[0],research5[0],research6[0]])">
+    <p id="woodDisplay">
 			Wood <span class="tooltiptext"> no u </span>
     </p>
 				</div>
@@ -67,8 +71,10 @@ Quality bug-free code
 		</p>
 									</div>
 		<p id="diagnostic">
-			Diagnostic Information
+			Score
 		</p>
+					</div>
+				<div class="column">
 	<div class="zone" id="campsitezone">
 		<h2>Campsite</h2>
 		<!-- Wood -->
@@ -113,12 +119,33 @@ Quality bug-free code
 		</div>
 		<!-- Manpower -->
 		
+		<!-- Crate -->
+		<div class="tooltip">
+    <button hidden onclick="clickCampsiteStorage1()" id="campsiteStorage1"><font size="2">Crate</font></button>
+		<span class="tooltiptext" id="tooltipCampsiteStorage1">increases wood/stone storage</span>
+		</div>
+		<!-- Crate -->
+		
+		<!-- Storehouse -->
+		<div class="tooltip">
+    <button hidden onclick="clickCampsiteStorage2()" id="campsiteStorage2"><font size="2">Storehouse</font></button>
+		<span class="tooltiptext" id="tooltipCampsiteStorage2">increases wood/stone storage</span>
+		</div>
+		<!-- Storehouse -->
+		
 		<!-- Research Station -->
 		<div class="tooltip">
     <button hidden onclick="clickCampsiteResearch1()" id="campsiteResearch1"><font size="2">Research Station</font></button>
 		<span class="tooltiptext" id="tooltipCampsiteResearch1">Allows you to conduct research. The more the better!</span>
 		</div>
 		<!-- Research Station -->
+		
+		<!-- Smelter -->
+		<div class="tooltip">
+    <button hidden onclick="clickCampsiteSmelter()" id="campsiteSmelter"><font size="2">Smelter</font></button>
+		<span class="tooltiptext" id="tooltipCampsiteSmelter">Uses Wood to smelt ores.</span>
+		</div>
+		<!-- Smelter -->
 		
 		<!-- Smelt Copper -->
 		<div class="tooltip">
@@ -127,6 +154,9 @@ Quality bug-free code
 		</div>
 		<!-- Smelt Copper -->
 		
+	<br/>
+		<br/>
+		<br/>
     <h2>Toolstation</h2>
 		
 		<!-- Wooden Axe -->
@@ -208,6 +238,20 @@ Quality bug-free code
 		</div>
 		<!-- Geology -->
 		
+		<!-- Metallurgy -->
+		<div class="tooltip">
+    <button hidden onclick="clickResearch6()" id="research6"><font size="2">Metallurgy</font></button>
+		<span class="tooltiptext" id="tooltipResearch6">Smelt materials into different forms. Cost: 120 Science</span>
+		</div>
+		<!-- Metallurgy -->
+		
+		<!-- Organization -->
+		<div class="tooltip">
+    <button hidden onclick="clickResearch7()" id="research7"><font size="2">Organization</font></button>
+		<span class="tooltiptext" id="tooltipResearch7">Smelt materials into different forms. Cost: 120 Science</span>
+		</div>
+		<!-- Organization -->
+		
 		<!-- Agriculture -->
 		<div class="tooltip">
     <button hidden onclick="clickResearch4()" id="research4"><font size="2">Agriculture</font></button>
@@ -221,13 +265,6 @@ Quality bug-free code
 		<span class="tooltiptext" id="tooltipResearch5">Better digging techniques. Could boost stone production. Cost: 90 Science</span>
 		</div>
 		<!-- Mining -->
-		
-		<!-- Metallurgy -->
-		<div class="tooltip">
-    <button hidden onclick="clickResearch6()" id="research6"><font size="2">Agriculture</font></button>
-		<span class="tooltiptext" id="tooltipResearch6">Smelt materials into different forms. Cost: 120 Science</span>
-		</div>
-		<!-- Metallurgy -->
 		</div>
 	<div class="zone" id="explorationzone">
 		<h2> Explore</h2>
@@ -260,10 +297,56 @@ Quality bug-free code
 		</div>
 			<div class="tooltip">
     <button onclick="caravanCoast()" id="caravanCoast">Send Caravan</button>
-			<span class="tooltiptext" id="tooltipcaravanCoast">what do we want? low flying aeroplane noises! when do we want it? neeeoooowww</span>
+			<span class="tooltiptext" id="tooltipCaravanCoast">what do we want? low flying aeroplane noises! when do we want it? neeeoooowww</span>
 		</div>
 		</div>
+			</div>
 	</div>
+			
+			
+			<div class="columnsmall">
+		<ul>
+			<li><a hidden href="#" id="naviSmelter" onclick="clickNaviSmelter()">Smelter Configuration</a></li>
+		</ul>
+		<div class="zone" id="smelterzone">
+			<!-- Smelter Mode -->
+			<div class="tooltip">
+				<button onclick="clickSmelterMode()" id="smelterMode"><font size="2">Mode: xxx</font></button>
+			</div>
+			<!-- Smelter Mode -->
+			
+			<!-- Smelt Copper -->
+			<div class="tooltip">
+				<button onclick="clickSmelterCopper()" id="smelterCopper"><font size="2">Copper</font></button>
+				<span class="tooltiptext" id="tooltipsmelterCopper">Extract Copper from ore.</span>
+			</div>
+			<!-- Smelt Copper -->
+			
+			<!-- Smelt Tin -->
+			<div class="tooltip">
+				<button onclick="clickSmelterTin()" id="smelterTin"><font size="2">Tin</font></button>
+				<span class="tooltiptext" id="tooltipsmelterTin">Extract Tin from ore.</span>
+			</div>
+			<!-- Smelt Tin -->
+			
+			<!-- Smelt Zinc -->
+			<div class="tooltip">
+				<button onclick="clickSmelterZinc()" id="smelterZinc"><font size="2">Zinc</font></button>
+				<span class="tooltiptext" id="tooltipsmelterZinc">Extract Zinc from ore.</span>
+			</div>
+			<!-- Smelt Zinc -->
+			
+			<!-- Smelt Glass -->
+			<div class="tooltip">
+				<button onclick="clickSmelterSand()" id="smelterSand"><font size="2">Glass</font></button>
+				<span class="tooltiptext" id="tooltipsmelterSand">Extract Glass from ore.</span>
+			</div>
+			<!-- Smelt Glass -->
+			
+			</div>
+				</div>
+	</div>
+			
     <script src="idler.js">
 		
   </script>
