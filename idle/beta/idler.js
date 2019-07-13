@@ -146,7 +146,9 @@ var buildings = {
 	storage1: 0,
 	storage2: 0,
 	research1: 0,
-	smelter: 0
+	smelter: 0,
+	farm: 0,
+	mine: 0
 }
 
 //crate
@@ -185,6 +187,18 @@ var campsiteResearch1 = {
 var campsiteSmelter = {
 	costStone: 30,
 	costCopper: 5
+};
+
+var campsiteFarm = {
+	costWood: 50,
+	costTin: 5,
+	costGlass: 15
+};
+
+var campsiteMine = {
+	costStone: 30,
+	costTin: 5,
+	costWood: 15
 };
 
 var rs_check = {
@@ -419,6 +433,18 @@ function clickCampsiteSmelter() {
 		if (materials.stone >= campsiteSmelter.costStone * Math.pow(1.15, buildings["smelter"])) {
 			materials.copperingot -= campsiteSmelter.costCopper * Math.pow(1.15, buildings["smelter"]);
 			materials.stone -= campsiteSmelter.costStone * Math.pow(1.15, buildings["smelter"]);
+			buildings["smelter"]++;
+
+		}
+	}
+}
+
+//Agri Lab
+function clickCampsiteFarm() {
+	if (materials.tiningot >= campsiteFarm.costTin * Math.pow(1.15, buildings["farm"])) {
+		if (materials.wood >= campsiteFarm.costWood * Math.pow(1.15, buildings["farm"]) && materials.glass >= campsiteSmelter.costGlass * Math.pow(1.15, buildings["farm"])) {
+			materials.tiningot -= campsiteFarm.costTin * Math.pow(1.15, buildings["farm"]);
+			materials.glass -= campsiteFarm.costGlass * Math.pow(1.15, buildings["farm"]);
 			buildings["smelter"]++;
 
 		}
