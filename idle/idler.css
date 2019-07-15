@@ -70,18 +70,15 @@ li {
   display: inline;
 	float: left;
 }
-a {
-  display: block;
-  padding: 8px;
-  background-color: lightgrey;
-	border-left: 6px solid slategrey;
-}
+
 li a {
   display: block;
   color: black;
   text-align: center;
   padding: 14px 16px;
   text-decoration: none;
+  background-color: lightgrey;
+  border-left: 6px solid slategrey;
 }
 li a:hover {
   background-color: silver;

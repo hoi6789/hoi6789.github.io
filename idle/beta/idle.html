@@ -1,9 +1,5 @@
 <meta name="description" content="
-Version: dev-0.1
-Features: 6 distinct resources, 3 of which do nothing
-4 different tools
-2 working sciences
-Quality bug-free code
+hi lol
 ">
 <title></title>
 <head>
@@ -14,7 +10,8 @@ Quality bug-free code
 
   <font size="2">
     Survival Game
-		<br>
+	<span class="forceright"><a href="https://hoi6789.github.io/idle/changelog.txt" target="_blank">v. 0.4-i</a></span>
+	<hr/>
 		<ul>
 			<li><a href="#" id="naviCampsite" onclick="clickNaviCampsite()">Campsite</a></li>
 			<li><a href="#" id="naviExploration" onclick="clickNaviExploration()">Exploration</a></li>
@@ -27,49 +24,74 @@ Quality bug-free code
 				<div class="columnsmall">
 			<div class="tooltipbr">
     <p id="woodDisplay">
-			Wood <span class="tooltiptext"> no u </span>
+		Wood <span class="tooltiptext"> no u </span>
     </p>
-				</div>
-				<div class="tooltipbr">
+	</div>
+	<div class="tooltipbr">
     <p hidden id="stoneDisplay">
       Stone
     </p>
-					</div>
-					<div class="tooltipbr">
+		</div>
+		<div class="tooltipbr">
 		<p hidden id="scienceDisplay">
 			Science
 		</p>
-						</div>
-						<div class="tooltipbr">
+		</div>
+		<div class="tooltipbr">
 		<p hidden id="copperDisplay">
 			Copper
 		</p>
-							</div>
-							<div class="tooltipbr">
+		</div>
+		<div class="tooltipbr">
 		<p hidden id="tinDisplay">
 			Tin
 		</p>
 		</div>
-								<div class="tooltipbr">
+		<div class="tooltipbr">
 		<p hidden id="zincDisplay">
 			Zinc
 		</p>
-									</div>
+		</div>
 		<div class="tooltipbr">
 		<p hidden id="manpowerDisplay">
 			Manpower
 		</p>
-									</div>
+		</div>
 		<div class="tooltipbr">
 		<p hidden id="sandDisplay">
 			Sand
 		</p>
-									</div>
+		</div>
 		<div class="tooltipbr">
 		<p hidden id="clayDisplay">
 			Clay
 		</p>
-									</div>
+		</div>
+					
+					<div class="tooltipbr">
+					<p hidden id="ironDisplay">
+						Iron
+					</p>
+					</div>
+					
+					<div class="tooltipbr">
+					<p hidden id="coalDisplay">
+						Coal
+					</p>
+					</div>
+					
+					<div class="tooltipbr">
+					<p hidden id="bronzeDisplay">
+						Bronze
+					</p>
+					</div>
+					
+					<div class="tooltipbr">
+					<p hidden id="brassDisplay">
+						Brass
+					</p>
+					</div>
+					
 		<p id="diagnostic">
 			Score
 		</p>
@@ -229,6 +251,13 @@ Quality bug-free code
 		</div>
 		<!-- Copper Sights -->
 		
+		<!-- Bronze Pickaxe -->
+		<div class="tooltip">
+    <button hidden onclick="clickToolstation9()" id="toolstation9"><font size="2">Bronze Pickaxe</font></button>
+		<span class="tooltiptext" id="tooltipToolstation9">iron/coal in geology</span>
+		</div>
+		<!-- Bronze Pickaxe -->
+		
 		<h2> Research </h2>
 		
 		<!-- Fire -->
@@ -279,6 +308,15 @@ Quality bug-free code
 		<span class="tooltiptext" id="tooltipResearch5">Better digging techniques. Could boost stone production. Cost: 90 Science</span>
 		</div>
 		<!-- Mining -->
+		
+		<!-- Alloys -->
+		<div class="tooltip">
+    <button hidden onclick="clickResearch8()" id="research8"><font size="2">Alloys</font></button>
+		<span class="tooltiptext" id="tooltipResearch8">Combine metals together to make new ones. Cost: idk bro</span>
+		</div>
+		<!-- Mining -->
+		
+
 		</div>
 	<div class="zone" id="explorationzone">
 		<h2> Explore</h2>
@@ -356,6 +394,20 @@ Quality bug-free code
 				<span class="tooltiptext" id="tooltipsmelterSand">Extract Glass from ore.</span>
 			</div>
 			<!-- Smelt Glass -->
+			
+			<!-- Alloy Bronze -->
+			<div class="tooltip">
+				<button hidden onclick="clickSmelterBronze()" id="smelterBronze"><font size="2">Bronze</font></button>
+				<span class="tooltiptext" id="tooltipsmelterBronze">glass from ore? that's some wild stuff.</span>
+			</div>
+			<!-- Alloy Bronze -->
+			
+			<!-- Alloy Brass -->
+			<div class="tooltip">
+				<button hidden onclick="clickSmelterBrass()" id="smelterBrass"><font size="2">Brass</font></button>
+				<span class="tooltiptext" id="tooltipsmelterBrass">Extract Brass from other metal.</span>
+			</div>
+			<!-- Alloy Brass -->
 			
 			</div>
 				</div>
