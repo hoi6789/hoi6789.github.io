@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=Lato&display=swap');
+
 .tooltip {
     position: relative;
     display: inline-block;
@@ -56,10 +58,10 @@
 		font-size: 90%;
 	}
 body {
-		font-family: Maven Pro, Lato, sans-serif;
+		font-family: 'Lato', sans-serif;
 	}
 button {
-		font-family: Maven Pro, Lato, sans-serif;
+		font-family: 'Lato', sans-serif;
 	}
 ul {
   list-style-type: none;

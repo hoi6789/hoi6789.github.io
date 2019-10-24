@@ -63,7 +63,7 @@ var toolstation1 = {
 var toolstation2 = {
 	costWood: 10,
 	timeMod: 3,
-	queueMod: 1
+	queueMod: 5
 };
 
 //stone pickaxe
@@ -71,8 +71,8 @@ var toolstation2 = {
 var toolstation3 = {
 	costWood: 30,
 	costStone: 15,
-	timeMod: 3,
-	queueMod: 3
+	timeMod: 4,
+	queueMod: 8
 };
 
 //stone axe
@@ -81,7 +81,7 @@ var toolstation4 = {
 	costWood: 15,
 	costStone: 30,
 	timeMod: 2,
-	queueMod: 2
+	queueMod: 5
 };
 
 //copper axe
@@ -89,7 +89,7 @@ var toolstation4 = {
 var toolstation5 = {
 	costWood: 25,
 	costCopper: 5,
-	mult: 1.2
+	mult: 1.25
 };
 
 //copper pickaxe
@@ -97,14 +97,14 @@ var toolstation5 = {
 var toolstation6 = {
 	costWood: 25,
 	costCopper: 5,
-	mult: 1.2
+	mult: 1.25
 };
 
 //copper instruments
 //check, costcopper, mult
 var toolstation7 = {
 	costCopper: 5,
-	mult: 1.2
+	mult: 1.25
 };
 
 //copper optics
@@ -112,7 +112,7 @@ var toolstation7 = {
 var toolstation8 = {
 	costGlass: 25,
 	costCopper: 5,
-	mult: 1.2
+	mult: 1.25
 };
 
 //bronze pickaxe
@@ -126,19 +126,19 @@ var toolstation9 = {
 var woodTime = 0;
 var woodQueue = 0;
 var woodTimeMax = 15;
-var woodQueueMax = 5;
+var woodQueueMax = 10;
 var woodmult = 1;
 var woodStorage = 50;
 var stoneTime = 0;
 var stoneQueue = 0;
 var stoneTimeMax = 15;
-var stoneQueueMax = 5;
+var stoneQueueMax = 10;
 var stonemult = 1;
 var stoneStorage = 50;
 var scienceTime = 0;
 var scienceQueue = 0;
 var scienceTimeMax = 25;
-var scienceQueueMax = 3;
+var scienceQueueMax = 5;
 var sciencemult = 0;
 var scienceStorage = 0;
 var oresQueue = 0;
@@ -150,7 +150,7 @@ var sandTime = 0;
 var sandQueue = 0;
 var sandTimeMax = 20;
 var sandQueueMax = 4;
-var sandClay = 0.6;
+var sandClay = 0.65;
 var copperOreStorage = 50;
 var tinOreStorage = 50;
 var zincOreStorage = 50;
@@ -169,25 +169,25 @@ var buildings = {
 
 //crate
 var campsiteStorage1 = {
-	costWood: 25,
-	costStone: 25,
-	storageWood: 25,
-	storageStone: 25,
-	storageCopperOre: 10,
-	storageTinOre: 10,
-	storageZincOre: 10
+	costWood: 35,
+	costStone: 35,
+	storageWood: 50,
+	storageStone: 50,
+	storageCopperOre: 20,
+	storageTinOre: 20,
+	storageZincOre: 20
 };
 
 var campsiteStorage2 = {
-	costWood: 60,
-	costStone: 60,
-	storageWood: 50,
-	storageStone: 50,
-	storageCopperOre: 25,
-	storageTinOre: 25,
-	storageZincOre: 25,
-	storageCopperIngot: 5,
-	storageTinIngot: 5,
+	costWood: 80,
+	costStone: 80,
+	storageWood: 75,
+	storageStone: 75,
+	storageCopperOre: 30,
+	storageTinOre: 30,
+	storageZincOre: 30,
+	storageCopperIngot: 10,
+	storageTinIngot: 10,
 	storageZincIngot: 5
 };
 
@@ -195,7 +195,7 @@ var campsiteStorage2 = {
 var campsiteResearch1 = {
 	costWood: 45,
 	costStone: 35,
-	storageScience: 25,
+	storageScience: 30,
 	bonus: 10
 };
 
@@ -209,14 +209,14 @@ var campsiteFarm = {
 	costWood: 50,
 	costTin: 5,
 	costGlass: 15,
-	production: 0.04
+	production: 0.06
 };
 
 var campsiteMine = {
 	costStone: 30,
 	costTin: 5,
 	costWood: 15,
-	production: 0.04
+	production: 0.06
 };
 
 var rs_check = {
@@ -489,7 +489,7 @@ function clickCampsiteFarm() {
 //Mine
 function clickCampsiteMine() {
 	if (materials.tiningot >= campsiteMine.costTin * Math.pow(1.15, buildings["mine"])) {
-		if (materials.wood >= campsiteMine.costWood * Math.pow(1.15, buildings["mine"]) && materials.stone >= campsiteMine.costStone * Math.pow(1.15, buildings["farm"])) {
+		if (materials.wood >= campsiteMine.costWood * Math.pow(1.15, buildings["mine"]) && materials.stone >= campsiteMine.costStone * Math.pow(1.15, buildings["mine"])) {
 			materials.tiningot -= campsiteMine.costTin * Math.pow(1.15, buildings["mine"]);
 			materials.stone -= campsiteMine.costStone * Math.pow(1.15, buildings["mine"]);
 			spendWood(campsiteMine.costWood * Math.pow(1.15, buildings["mine"]));
@@ -1501,11 +1501,11 @@ function timer() {
 		woodTimeMax = 15;
 		woodQueueMax = 5;
 		woodmult = 1;
-		woodStorage = 100;
+		woodStorage = 50;
 		stoneTimeMax = 15;
 		stoneQueueMax = 5;
 		stonemult = 1;
-		stoneStorage = 100;
+		stoneStorage = 50;
 		scienceTimeMax = 25;
 		scienceQueueMax = 3;
 		sciencemult = 1;

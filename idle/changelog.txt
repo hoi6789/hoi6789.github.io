@@ -1,6 +1,9 @@
+v. indev 0.5
+10/24/2019
+minor qol/buffs/balance changes/bug fixes
+
 v. indev 0.4
 7/14/2019
-this is public now!
 added bronze, brass, iron, coal
 added agri plots and mines
 buffed geology
