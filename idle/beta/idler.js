@@ -22,8 +22,8 @@ var explorationQueue = 0;
 var explorationmult = 1;
 var sandTime = 0;
 var sandQueue = 0;
-var sandTimeMax = 10;
-var sandQueueMax = 2;
+var sandTimeMax = 20;
+var sandQueueMax = 8;
 var sandClay = 0.65;
 
 var materials = {
@@ -182,6 +182,22 @@ var toolstation10 = {
 	id: "10",
 };
 
+//stone shovel
+var toolstation11 = {
+	cost: [25, 15, 10],
+	material: ["stone", "wood", "clay"],
+	attributes: [3, 5], //time mod, queue mod
+	id: "10",
+};
+
+//bronze shovel
+var toolstation12 = {
+	cost: [5, 50, 25],
+	material: ["bronze", "wood", "clay"],
+	attributes: [2, 6, 5], //time mod, queue mod, clay chance
+	id: "10",
+};
+
 
 
 var buildings = {
@@ -204,6 +220,7 @@ var campsiteStorage1 = {
 	classifications: ["storage", "storage", "storage", "storage", "storage"]
 };
 
+//storehouse
 var campsiteStorage2 = {
 	cost: [80, 80],
 	material: ["wood", "stone"],
@@ -250,6 +267,15 @@ var campsiteMine = {
 	ratio: [1.15],
 	attributes: [0.06], //production
 	classifications: ["production"]
+};
+
+var coastPost = {
+	cost: [40, 3, 8],
+	material: ["wood", "copperingot", "manpower"],
+	call: "coastPost",
+	ratio: [1.15],
+	attributes: [2], //doubling chance
+	classifications: []
 };
 
 var rs_check = {
@@ -763,7 +789,7 @@ function timer() {
 				output += materialNames[data.material[Math.floor(i / 2)]];
 			} else {
 				output += "</span> <span class='forceright'>";
-				output += (data.cost[Math.floor(i / 2)] * Math.pow(data.ratio, buildings[data.call])).toFixed(3);
+				output += Number((data.cost[Math.floor(i / 2)] * Math.pow(data.ratio, buildings[data.call])).toFixed(3));
 			}
 		}
 		output += "</span> <br><hr> <span class='attribute'>";
@@ -791,23 +817,23 @@ function timer() {
 	//"tooltipToolstation2")= tt_gen_shiny(["Harvest wood faster.", "Wood", toolstation2.costWood], ["Wood Time Max: -" + toolstation2.timeMod, "Wood Queue Max: +" + toolstation2.queueMod]);
 	
 	materials.wood = materials.woodraw + materials.woodcut;
-	document.getElementById("woodDisplay").innerHTML = "Wood: " + materials.wood.toFixed(3) + tt_gen(["Timber", materials.woodraw.toFixed(3) + "/" + storage.woodraw, "Lumber", materials.woodcut.toFixed(3)]);
-	document.getElementById("stoneDisplay").innerHTML = "Stone: " + materials.stone.toFixed(3) + "/" + storage.stone;
-	document.getElementById("scienceDisplay").innerHTML = "Science: " + materials.science.toFixed(3) + "/" + storage.science;
-	document.getElementById("copperDisplay").innerHTML = "Copper: " + materials.copperingot.toFixed(3) + tt_gen(["Copper Ingots", materials.copperingot.toFixed(3) + "/" + storage.copperingot, "Copper Ore", materials.copperore.toFixed(3) + "/" + storage.copperore]);
-	document.getElementById("tinDisplay").innerHTML = "Tin: " + materials.tiningot.toFixed(3) + tt_gen(["Tin Ingots", materials.tiningot.toFixed(3) + "/" + storage.tiningot, "Tin Ore", materials.tinore.toFixed(3) + "/" + storage.tinore]);
-	document.getElementById("zincDisplay").innerHTML = "Zinc: " + materials.zincore.toFixed(3);
-	document.getElementById("manpowerDisplay").innerHTML = "Manpower: " + materials.manpower.toFixed(3);
-	document.getElementById("sandDisplayE").innerHTML = "Sand: " + materials.sandE.toFixed(3);
-	document.getElementById("clayDisplayE").innerHTML = "Clay: " + materials.clayE.toFixed(3);
-	document.getElementById("sandDisplay").innerHTML = "Sand: " + materials.sand.toFixed(3) + tt_gen(["Glass", materials.glass.toFixed(3)]);
-	document.getElementById("clayDisplay").innerHTML = "Clay: " + materials.clay.toFixed(3);
-	document.getElementById("ironDisplay").innerHTML = "Iron: " + materials.ironingot.toFixed(3) + tt_gen(["Iron Ingots", materials.ironingot.toFixed(3), "Iron Ore", materials.ironore.toFixed(3)]);
-	document.getElementById("coalDisplay").innerHTML = "Coal: " + materials.coal.toFixed(3);
-	document.getElementById("bronzeDisplay").innerHTML = "Bronze: " + materials.bronze.toFixed(3);
-	document.getElementById("brassDisplay").innerHTML = "Brass: " + materials.brass.toFixed(3);
+	document.getElementById("woodDisplay").innerHTML = "Wood: " + Number(materials.wood.toFixed(3)) + tt_gen(["Timber", Number(materials.woodraw.toFixed(3)) + "/" + storage.woodraw, "Lumber", Number(materials.woodcut.toFixed(3))]);
+	document.getElementById("stoneDisplay").innerHTML = "Stone: " + Number(materials.stone.toFixed(3)) + "/" + storage.stone;
+	document.getElementById("scienceDisplay").innerHTML = "Science: " + Number(materials.science.toFixed(3)) + "/" + storage.science;
+	document.getElementById("copperDisplay").innerHTML = "Copper: " + Number(materials.copperingot.toFixed(3)) + tt_gen(["Copper Ingots", Number(materials.copperingot.toFixed(3)) + "/" + storage.copperingot, "Copper Ore", Number(materials.copperore.toFixed(3)) + "/" + storage.copperore]);
+	document.getElementById("tinDisplay").innerHTML = "Tin: " + Number(materials.tiningot.toFixed(3)) + tt_gen(["Tin Ingots", Number(materials.tiningot.toFixed(3)) + "/" + storage.tiningot, "Tin Ore", Number(materials.tinore.toFixed(3)) + "/" + storage.tinore]);
+	document.getElementById("zincDisplay").innerHTML = "Zinc: " + Number(materials.zincore.toFixed(3));
+	document.getElementById("manpowerDisplay").innerHTML = "Manpower: " + Number(materials.manpower.toFixed(3));
+	document.getElementById("sandDisplayE").innerHTML = "Sand: " + Number(materials.sandE.toFixed(3));
+	document.getElementById("clayDisplayE").innerHTML = "Clay: " + Number(materials.clayE.toFixed(3));
+	document.getElementById("sandDisplay").innerHTML = "Sand: " + Number(materials.sand.toFixed(3)) + tt_gen(["Glass", Number(materials.glass.toFixed(3))]);
+	document.getElementById("clayDisplay").innerHTML = "Clay: " + Number(materials.clay.toFixed(3));
+	document.getElementById("ironDisplay").innerHTML = "Iron: " + Number(materials.ironingot.toFixed(3)) + tt_gen(["Iron Ingots", Number(materials.ironingot.toFixed(3)), "Iron Ore", Number(materials.ironore.toFixed(3))]);
+	document.getElementById("coalDisplay").innerHTML = "Coal: " + Number(materials.coal.toFixed(3));
+	document.getElementById("bronzeDisplay").innerHTML = "Bronze: " + Number(materials.bronze.toFixed(3));
+	document.getElementById("brassDisplay").innerHTML = "Brass: " + Number(materials.brass.toFixed(3));
 	var score = ((materials.ironore / 2) + (materials.coal / 4)) * ((materials.bronze + materials.brass) / 3) * (materials.exploredarea / 4);
-	document.getElementById("diagnostic").innerHTML = "Score: " + score.toFixed(3);
+	document.getElementById("diagnostic").innerHTML = "Score: " + Number(score.toFixed(3));
 	document.getElementById("tooltipCaravanCoast").innerHTML = tt_gen_alt(["Manpower", caravan1.costManpower, "Time", caravan1.time, "Sand Capacity", caravan1.limitSand, "Clay Capacity", caravan1.limitClay]);
 
 	
@@ -1266,7 +1292,7 @@ function timer() {
 		if (ts_check["9"] == true) {
 			document.getElementById("tooltipHarvestOres").innerHTML = tt_gen_alt(["Stone Cost", geology.costStone, "Productivity", geology.rolls, "Copper Chance", geology.chanceCopper, "Tin Chance", geology.chanceTin, "Zinc Chance", geology.chanceZinc, "Iron Chance", geology.chanceIron, "Coal Chance", geology.chanceCoal]);
 		}
-		document.getElementById("tooltipExplore").innerHTML = tt_gen_alt(["Explored Area", materials.exploredarea.toFixed(3), "Productivity", explorationmult]);
+		document.getElementById("tooltipExplore").innerHTML = tt_gen_alt(["Explored Area", Number(materials.exploredarea.toFixed(3)), "Productivity", explorationmult]);
 		document.getElementById("tooltipHarvestManpower").innerHTML = tt_gen_alt(["Manpower Time", manpowerTime, "Manpower Time Max", manpowerTimeMax]);
 		document.getElementById("tooltipHarvestSand").innerHTML = tt_gen_alt(["Sand in Queue", sandQueue, "Sand Time", sandTime, "Sand Queue Max", sandQueueMax, "Sand Time Max", sandTimeMax, "Clay Chance", sandClay * 100]);
 	}

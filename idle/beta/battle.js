@@ -1,24 +1,22 @@
-function decimalPlaces(num) {
-  var match = (''+num).match(/(?:\.(\d+))?(?:[eE]([+-]?\d+))?$/);
-  if (!match) { return 0; }
-  return Math.max(
-       0,
-       // Number of digits right of decimal point.
-       (match[1] ? match[1].length : 0)
-       // Adjust for scientific notation.
-       - (match[2] ? +match[2] : 0));
-}
-
 var combat_team1 = [];
 var combat_team2 = [];
 var combat_graveyard1 = [];
 var combat_graveyard2 = [];
 var fighters = [];
 var fighters_safe = [];
+var partbox = [];
+var toolbox = [];
+var partbox_name;
+var eqtoolbox_name;
 var awaitingInput = false;
+var selectedPart;
+var selectedMat;
+var selectedTool;
+var partsForCrafting = [];
 var c_inputUser;
 var c_skillUsed;
-
+var unitId;
+var _wp;
 
 class combat_status_object {
 	constructor(name, param, power, duration, chance, user, target) {
@@ -78,7 +76,7 @@ class combat_player_skill {
 }
 
 class combat_damage_object {
-	constructor(user, name, power, atk, type, acc, accMod, target, element, weapon) {
+	constructor(user, name, power, atk, type, acc, accMod, target, element, weapon, status, properties) {
 		this.user = user;
 		this.name = name;
 		this.power = power * atk;
@@ -89,20 +87,40 @@ class combat_damage_object {
 		this.status = status;
 		this.hit = 0;
 		this.weapon = weapon;
+		this.status = status;
+		this.properties = properties;
 		if(typeof(this.user.weapon) != "undefined") {
 			for(c_j = 0; c_j < this.user.weapon.primary_effect.length; c_j++) {
 				this.user.weapon.primary_effect[c_j].stateOnhitGeneric(this);
 			}
 		}
+		var _damage = this.power;
 		
 	}
 	send() {
+		var _areaMarker = false;
+		var i = 0;
+		if(this.properties.areaAttack == true) {
+			_areaMarker = true;
+		} 
+		do {
+		if(this.properties.areaAttack == true) {
+			if(this.user.side == 1) {
+				this.target = combat_team2[i];
+			} else {
+				this.target = combat_team1[i];
+			}
+			i++;
+		}
 		var _dodge = Math.random();
 		if(_dodge > this.acc / this.target.evd) {
 			this.hit = 1;
 			console.log("Dodge!");
 		}
-		var _damage = this.power;
+		var _crit = Math.random();
+		if(_crit < 0.05) {
+			_damage *= 1.5;
+		}
 		if(typeof(this.target.elementResists[this.element]) == "undefined") {
 			_damage *= 1;
 		} else {
@@ -118,13 +136,35 @@ class combat_damage_object {
 		
 		if(this.hit == 0) {
 			this.target.currentHealth -= Math.round(_damage);
-		}
-		console.log(this.target.currentHealth);
-		if(typeof(this.user.weapon) != "undefined" && this.weapon == true) {
-			for(c_j = 0; c_j < this.user.weapon.primary_effect.length; c_j++) {
-				this.user.weapon.primary_effect[c_j].stateOnhitWeapon(this);
+			if(typeof(this.status) != "undefined") {
+				this.inflict(new combat_status_object(this.status[0], this.status[1], this.status[2], this.status[3], this.status[4], this.user, this.target));
+			}
+			if(typeof(this.user.weapon) != "undefined" && this.weapon == true) {
+				for(c_j = 0; c_j < this.user.weapon.primary_effect.length; c_j++) {
+					this.user.weapon.primary_effect[c_j].stateOnhitWeapon(this);
+				}
+			}
+			if(typeof(this.target.weapon) != "undefined") {
+				for(c_j = 0; c_j < this.target.weapon.primary_effect.length; c_j++) {
+					this.target.weapon.primary_effect[c_j].stateOnhitRecieved(this);
+				}
 			}
 		}
+		if(this.properties.areaAttack == true) {
+			if(this.user.side == 1) {
+				if(i == combat_team2.length) {
+					_areaMarker = false;
+				}
+			} else {
+				if(i == combat_team2.length) {
+					_areaMarker = false;
+				}
+			}
+		}
+		console.log(this.target.currentHealth);
+		} while(_areaMarker == true);
+		
+		
 	}
 	inflict(_status) {
 		if(this.hit == 0) {
@@ -162,7 +202,7 @@ function combat_ai(type, param) {
 }
 
 class combat_fighter_object {
-	constructor(startinglevel, level, health, atk, matk, def, mdef, acc, evd, mana, chargemax, tag, side, elementResists, statusResists) {
+	constructor(startinglevel, level, health, atk, matk, def, mdef, acc, evd, mana, chargemax, tag, side, elementResists, statusResists, drops, laborStats) {
 		this.startinglevel = startinglevel;
 		this.level = level;
 		this.health = health;
@@ -198,23 +238,25 @@ class combat_fighter_object {
 		this.currentMana = mana;
 		this.charge = 0;
 		this.side = side;
+		this.drops = drops;
+		this.laborStats = laborStats;
 		
 		if(this.tag == "hero") {
-			this.health = Math.floor(this.health * Math.pow(1.14, this.level + 2) * 1.4);
+			this.health = Math.floor(this.health * Math.pow(1.12, this.level + 2) * 1.4);
 			this.atk = this.atk * Math.pow(1.1, this.level + 2) * 1.4;
 			this.matk = this.matk * Math.pow(1.1, this.level + 2) * 1.4;
-			this.def = this.def * Math.pow(1.05, this.level + 2) * 1.4;
-			this.mdef = this.mdef * Math.pow(1.05, this.level + 2) * 1.4;
+			this.def = this.def * Math.pow(1.07, this.level + 2) * 1.4;
+			this.mdef = this.mdef * Math.pow(1.07, this.level + 2) * 1.4;
 			this.acc = this.acc * Math.pow(1.02, this.level + 2) * 1.4;
 			this.evd = this.evd * Math.pow(1.02, this.level + 2) * 1.4;
 		} else {
-			this.health = Math.floor(this.health * Math.pow(1.14, this.startinglevel - 1) * Math.pow(1.182, this.level - this.startinglevel));
+			this.health = Math.floor(this.health * Math.pow(1.12, this.startinglevel - 1) * Math.pow(1.156, this.level - this.startinglevel));
 			this.atk = this.atk * Math.pow(1.1, this.startinglevel - 1) * Math.pow(1.13, this.level - this.startinglevel);
 			this.matk = this.matk * Math.pow(1.1, this.startinglevel - 1) * Math.pow(1.13, this.level - this.startinglevel);
-			this.def = this.def * Math.pow(1.05, this.startinglevel - 1) * Math.pow(1.065, this.level - this.startinglevel);
-			this.mdef = this.mdef * Math.pow(1.05, this.startinglevel - 1) * Math.pow(1.065, this.level - this.startinglevel);
-			this.acc = this.acc * Math.pow(1.02, this.startinglevel - 1) * Math.pow(1.026, this.level - this.startinglevel);
-			this.evd = this.evd * Math.pow(1.02, this.startinglevel - 1) * Math.pow(1.026, this.level - this.startinglevel);
+			this.def = this.def * Math.pow(1.07, this.startinglevel - 1) * Math.pow(1.091, this.level - this.startinglevel);
+			this.mdef = this.mdef * Math.pow(1.07, this.startinglevel - 1) * Math.pow(1.091, this.level - this.startinglevel);
+			this.acc = this.acc * Math.pow(1.05, this.startinglevel - 1) * Math.pow(1.065, this.level - this.startinglevel);
+			this.evd = this.evd * Math.pow(1.05, this.startinglevel - 1) * Math.pow(1.065, this.level - this.startinglevel);
 		}
 		this.dispAtk = this.atk;
 		this.dispMatk = this.matk;
@@ -228,7 +270,11 @@ class combat_fighter_object {
 	}
 	gametick() {
 		if(this.currentHealth > 0) {
-			this.charge++;
+			if(typeof(this.weapon) != "undefined") {
+				this.charge += (1 / (this.weapon.weight / 75 + 1))
+			} else {
+				this.charge++;
+			}
 		}
 		if(this.charge >= this.chargemax) {
 			this.ai();
@@ -238,21 +284,21 @@ class combat_fighter_object {
 
 	reinit() {
 		if(this.tag == "hero") {
-			this.health = Math.floor(this.trueHealth * Math.pow(1.14, this.level + 2) * 1.4);
+			this.health = Math.floor(this.trueHealth * Math.pow(1.12, this.level + 2) * 1.4);
 			this.atk = this.trueAtk * Math.pow(1.1, this.level + 2) * 1.4;
 			this.matk = this.trueMatk * Math.pow(1.1, this.level + 2) * 1.4;
-			this.def = this.trueDef * Math.pow(1.05, this.level + 2) * 1.4;
-			this.mdef = this.trueMdef * Math.pow(1.05, this.level + 2) * 1.4;
-			this.acc = this.trueAcc * Math.pow(1.02, this.level + 2) * 1.4;
-			this.evd = this.trueEvd * Math.pow(1.02, this.level + 2) * 1.4;
+			this.def = this.trueDef * Math.pow(1.07, this.level + 2) * 1.4;
+			this.mdef = this.trueMdef * Math.pow(1.07, this.level + 2) * 1.4;
+			this.acc = this.trueAcc * Math.pow(1.05, this.level + 2) * 1.4;
+			this.evd = this.trueEvd * Math.pow(1.05, this.level + 2) * 1.4;
 		} else {
-			this.health = Math.floor(this.trueHealth * Math.pow(1.14, this.startinglevel - 1) * Math.pow(1.182, this.level - this.startinglevel));
+			this.health = Math.floor(this.trueHealth * Math.pow(1.12, this.startinglevel - 1) * Math.pow(1.156, this.level - this.startinglevel));
 			this.atk = this.trueAtk * Math.pow(1.1, this.startinglevel - 1) * Math.pow(1.13, this.level - this.startinglevel);
 			this.matk = this.trueMatk * Math.pow(1.1, this.startinglevel - 1) * Math.pow(1.13, this.level - this.startinglevel);
-			this.def = this.trueDef * Math.pow(1.05, this.startinglevel - 1) * Math.pow(1.065, this.level - this.startinglevel);
-			this.mdef = this.trueMdef * Math.pow(1.05, this.startinglevel - 1) * Math.pow(1.065, this.level - this.startinglevel);
-			this.acc = this.trueAcc * Math.pow(1.02, this.startinglevel - 1) * Math.pow(1.026, this.level - this.startinglevel);
-			this.evd = this.trueEvd * Math.pow(1.02, this.startinglevel - 1) * Math.pow(1.026, this.level - this.startinglevel);
+			this.def = this.trueDef * Math.pow(1.07, this.startinglevel - 1) * Math.pow(1.091, this.level - this.startinglevel);
+			this.mdef = this.trueMdef * Math.pow(1.07, this.startinglevel - 1) * Math.pow(1.091, this.level - this.startinglevel);
+			this.acc = this.trueAcc * Math.pow(1.05, this.startinglevel - 1) * Math.pow(1.065, this.level - this.startinglevel);
+			this.evd = this.trueEvd * Math.pow(1.05, this.startinglevel - 1) * Math.pow(1.065, this.level - this.startinglevel);
 		}
 		if(typeof(this.weapon) != "undefined") {
 			this.health = Math.floor(this.health * this.weapon.health);
@@ -488,9 +534,9 @@ function updateInfobox(side, num) {
 	infobox_output += '<br> Level: ' + _ct.level;
 	infobox_output += '<br> Charge: ' + _ct.charge + "/" + _ct.chargemax;
 	infobox_output += '<br> Mana: ' + _ct.currentMana + "/" + _ct.mana;
-	infobox_output += '<br> DEF: ' + _ct.def.toFixed(3);
-	infobox_output += '<br> MDEF: ' + _ct.mdef.toFixed(3);
-	infobox_output += '<br> EVD: ' + _ct.evd.toFixed(3) + '<br><br><b>Buffs/Debuffs</b><br>';
+	infobox_output += '<br> DEF: ' + Number(_ct.def.toFixed(3));
+	infobox_output += '<br> MDEF: ' + Number(_ct.mdef.toFixed(3));
+	infobox_output += '<br> EVD: ' + Number(_ct.evd.toFixed(3)) + '<br><br><b>Buffs/Debuffs</b><br>';
 	infobox_output += (_ct.atk / _ct.dispAtk) + 'x ATK<br>'
 	infobox_output += (_ct.matk / _ct.dispMatk) + 'x MATK<br>'
 	infobox_output += (_ct.def / _ct.dispDef) + 'x DEF<br>'
@@ -502,70 +548,70 @@ function updateInfobox(side, num) {
 	infobox_output += '<div class="combatColumn"><b>Elemental Weaknesses</b><br/>'
 	infobox_output += 'Fire: '
 	if(typeof(_ct.elementResists.fire) != "undefined") {
-		infobox_output += _ct.elementResists.fire.toFixed(3).toString();;
+		infobox_output += Number(_ct.elementResists.fire.toFixed(3));
 	} else {
 		infobox_output += 1;
 	}
 	infobox_output += 'x<br>';
 	infobox_output += 'Ice: '
 	if(typeof(_ct.elementResists.ice) != "undefined") {
-		infobox_output += _ct.elementResists.ice;
+		infobox_output += Number(_ct.elementResists.ice.toFixed(3));
 	} else {
 		infobox_output += 1;
 	}
 	infobox_output += 'x<br>';
 	infobox_output += 'Electric: '
 	if(typeof(_ct.elementResists.thunder) != "undefined") {
-		infobox_output += _ct.elementResists.thunder;
+		infobox_output += Number(_ct.elementResists.thunder.toFixed(3));
 	} else {
 		infobox_output += 1;
 	}
 	infobox_output += 'x<br>';
 	infobox_output += 'Earth: '
 	if(typeof(_ct.elementResists.earth) != "undefined") {
-		infobox_output += _ct.elementResists.earth;
+		infobox_output += Number(_ct.elementResists.earth.toFixed(3));
 	} else {
 		infobox_output += 1;
 	}
 	infobox_output += 'x<br>';
 	infobox_output += 'Poison: '
 	if(typeof(_ct.elementResists.poison) != "undefined") {
-		infobox_output += _ct.elementResists.poison;
+		infobox_output += Number(_ct.elementResists.poison.toFixed(3));
 	} else {
 		infobox_output += 1;
 	}
 	infobox_output += 'x<br>';
 	infobox_output += 'Energy: '
 	if(typeof(_ct.elementResists.bomb) != "undefined") {
-		infobox_output += _ct.elementResists.bomb;
+		infobox_output += Number(_ct.elementResists.bomb.toFixed(3));
 	} else {
 		infobox_output += 1;
 	}
 	infobox_output += 'x<br>';
 	infobox_output += 'Water: '
 	if(typeof(_ct.elementResists.water) != "undefined") {
-		infobox_output += _ct.elementResists.water;
+		infobox_output += Number(_ct.elementResists.water.toFixed(3));
 	} else {
 		infobox_output += 1;
 	}
 	infobox_output += 'x<br>';
 	infobox_output += 'Wind: '
 	if(typeof(_ct.elementResists.wind) != "undefined") {
-		infobox_output += _ct.elementResists.wind;
+		infobox_output += Number(_ct.elementResists.wind.toFixed(3));
 	} else {
 		infobox_output += 1;
 	}
 	infobox_output += 'x<br>';
 	infobox_output += 'Light: '
 	if(typeof(_ct.elementResists.holy) != "undefined") {
-		infobox_output += _ct.elementResists.holy;
+		infobox_output += Number(_ct.elementResists.holy.toFixed(3));
 	} else {
 		infobox_output += 1;
 	}
 	infobox_output += 'x<br>';
 	infobox_output += 'Dark: '
 	if(typeof(_ct.elementResists.dark) != "undefined") {
-		infobox_output += _ct.elementResists.dark;
+		infobox_output += Number(_ct.elementResists.dark.toFixed(3));
 	} else {
 		infobox_output += 1;
 	}
@@ -655,6 +701,10 @@ function setTarget(tgt) {
 	}
 }
 
+
+//FORGING BEGINS HERE
+
+
 class forge_component {
 	constructor(material, part) {
 		this.hardness = material.hardness * part.hardness;
@@ -667,20 +717,30 @@ class forge_component {
 		this.power += this.hardness;
 		this.power += this.sharpness;
 		this.power += this.flexibility;
+		this.material = material;
+		this.part = part;
+	}
+	name() {
+		return this.material.name + " " + this.part.name;
 	}
 }
 class forge_tool {
-	constructor(components) {
+	constructor(components, name) {
+		this.weight = 0;
+		this.durability = 0;
 		this.user;
 		this.power = 0;
 		this.primary_effect = [];
-		var f_i;
-		for(f_i = 0; f_i < components.length; f_i++) {
+		this.parts = components;
+		this.name = components[0].material.name + name;
+		for(var f_i = 0; f_i < components.length; f_i++) {
 			if(f_i == 0) {
 				this.power += components[0].power * 1.5;
 			} else {
 				this.power += components[f_i].power;
 			}
+			this.weight += components[f_i].weight;
+			this.durability += components[f_i].durability;
 			if(typeof(components[f_i].primary_effect) != "undefined") {
 				this.primary_effect = this.primary_effect.concat(components[f_i].primary_effect);
 			}
@@ -693,17 +753,28 @@ class forge_tool {
 		}
 		user.weapon = this;
 	}
+	
 }
 class forge_tool_sword extends forge_tool {
 	constructor(components) {
-		super(components);
-		this.health = 1;
-		this.atk = 0.5 * this.power / 100 + 1;
-		this.matk = 0.3 * this.power / 100 + 1;
-		this.def = 0.15 * this.power / 100 + 1;
-		this.mdef = 0.12 * this.power / 100 + 1;
-		this.acc = 0.03 * this.power / 100 + 1;
-		this.evd = 0.04 * this.power / 100 + 1;
+		super(components, " Sword");
+		this.type = "sword";
+		this.health = tooltypes.sword.statmods[0] * this.power / 100 + 1;
+		this.atk = tooltypes.sword.statmods[1] * this.power / 100 + 1;
+		this.matk = tooltypes.sword.statmods[2] * this.power / 100 + 1;
+		this.def = tooltypes.sword.statmods[3] * this.power / 100 + 1;
+		this.mdef = tooltypes.sword.statmods[4] * this.power / 100 + 1;
+		this.acc = tooltypes.sword.statmods[5] * this.power / 100 + 1;
+		this.evd = tooltypes.sword.statmods[6] * this.power / 100 + 1;
+	}
+}
+
+var tooltypes = {
+	sword: {
+		parts: ["blade", "shaft", "shaft"],
+		statmods: [0, 0.7, 0.55, 0.08, 0.08, 0.15, 0.2],
+		name: "Sword",
+		funclmao: "toolbox.push(new forge_tool_sword(partsForCrafting));forge_update();"
 	}
 }
 
@@ -712,6 +783,24 @@ class forge_effect {
 		this.name = name;
 		this.params = params;
 		this.user;
+	}
+	stateEternal() {
+		switch(this.name) {
+			case "resistElement":
+				if(typeof(this.user.elementResists[this.params[0]]) != "undefined") {
+					this.user.elementResists[this.params[0]] -= this.params[1];
+				} else {
+					this.user.elementResists[this.params[0]] = 1 - this.params[1];
+				}
+				break;
+			case "resistStatus":
+				if(typeof(this.user.statusResists[this.params[0]]) != "undefined") {
+					this.user.statusResists[this.params[0]] -= this.params[1];
+				} else {
+					this.user.statusResists[this.params[0]] = 1 - this.params[1];
+				}
+				break;
+		}
 	}
 	stateReinit() {
 		switch(this.name) {
@@ -738,6 +827,10 @@ class forge_effect {
 					attack.power *= this.params[1];
 				}
 				break;
+			case "superLuck":
+				if(Math.random() < this.params[0]) {
+					this.power *= this.params[1];
+				}
 			default:
 				
 		}
@@ -746,10 +839,64 @@ class forge_effect {
 		switch(this.name) {
 			case "inflictStatus":
 				attack.inflict(new combat_status_object(this.params[0], this.params[1], this.params[2], this.params[3], this.params[4], attack.user, attack.target));
-				name, param, power, duration, chance, user, target
+				//name, param, power, duration, chance, user, target
+				break;
+			case "attackUnleash":
+				if(Math.random() < this.params[8]) {
+					var _temp = new combat_damage_object(attack.user, this.params[0], this.params[1], this.params[2], this.params[3], this.params[4], this.params[5], attack.target, this.params[6], this.params[7]);
+				}
 				break;
 			default:
 				
+		}
+	}
+	stateOnhitCritical(attack) {
+		switch(this.name) {
+			case "inflictStatus":
+				attack.inflict(new combat_status_object(this.params[0], this.params[1], this.params[2], this.params[3], 1, attack.user, attack.target));
+				//name, param, power, duration, chance, user, target
+				break;
+			case "attackUnleash":
+				var _temp = new combat_damage_object(attack.user, this.params[0], this.params[1], this.params[2], this.params[3], this.params[4], this.params[5], attack.target, this.params[6], this.params[7]);
+				break;
+			default:
+		}
+	}
+	stateOnhitRecieved(attack) {
+		switch(this.name) {
+			case "attackCounter":
+				if(Math.random() < this.params[8]) {
+					var _temp = new combat_damage_object(attack.target, this.params[0], this.params[1], this.params[2], this.params[3], this.params[4], this.params[5], attack.user, this.params[6], this.params[7]);
+				}
+				//user, name, power, atk, type, acc, accMod, target, element, weapon
+				break;
+			case "attackReflex":
+				if(Math.random() < this.params[8]) {
+					var _temp = new combat_damage_object(attack.target, this.params[0], this.params[1], this.params[2], this.params[3], this.params[4], this.params[5], attack.target, this.params[6], this.params[7]);
+				}
+				break;
+			case "nullify":
+				if(Math.random() < this.params[0]) {
+					this.target.currentHealth += attack._damage * this.params[1];
+				}
+			default:
+				
+		}
+	}
+	textGen() {
+		switch(this.name) {
+			case "resistElement":
+				return
+				break;
+			case "resistStatus":
+				
+				break;
+			case "boostElement":
+				
+				break;
+			case "inflictStatus":
+				
+				break;
 		}
 	}
 }
@@ -758,39 +905,50 @@ var toolparts = {
 	shaft: {
 		hardness: 1,
 		sharpness: 0,
-		flexibility: 1.3
+		flexibility: 1.3,
+		name: "shaft"
 	},
 	blade: {
 		hardness: 1.1,
-		sharpness: 1.5,
-		flexibility: -0.05
+		sharpness: 1.7,
+		flexibility: 0,
+		name: "blade"
 	},
 	axe: {
 		hardness: 1.1,
-		sharpness: 1.5,
-		flexibility: -0.05
+		sharpness: 1.7,
+		flexibility: 0,
+		name: "axe"
 	},
 	hammer: {
-		hardness: 1.7,
+		hardness: 2.1,
 		sharpness: 0,
-		flexibility: 0.8
+		flexibility: 0.5,
+		name: "hammer"
 	},
 	rope: {
 		hardness: 0.5,
-		sharpness: 0.5,
-		flexibility: 1.7
+		sharpness: 0,
+		flexibility: 2.1,
+		name: "rope"
 	}
 }
 var toolmaterials = {
 	wood: {
+		name: "wood",
+		resource: "wood",
+		cost: 25,
 		hardness: 3.5,
-		sharpness: 1.8,
-		flexibility: 6,
-		durability: 35,
+		sharpness: 1.7,
+		flexibility: 7.6,
+		durability: 25,
 		weight: 4.1,
 		primary_effect: [new forge_effect("inflictStatus", ["debuff", "def", 25, 60, 1])]
 	},
 	stone: {
+		name: "stone",
+		resource: "stone",
+		cost: 25,
 		hardness: 8.3,
 		sharpness: 1.8,
 		flexibility: 2,
@@ -798,6 +956,9 @@ var toolmaterials = {
 		weight: 12
 	},
 	copper: {
+		name: "copper",
+		resource: "copperingot",
+		cost: 8,
 		hardness: 4.6,
 		sharpness: 5.5,
 		flexibility: 4.4,
@@ -805,6 +966,9 @@ var toolmaterials = {
 		weight: 8.5
 	},
 	tin: {
+		name: "tin",
+		resource: "tiningot",
+		cost: 8,
 		hardness: 4.3,
 		sharpness: 4.8,
 		flexibility: 5.1,
@@ -812,14 +976,20 @@ var toolmaterials = {
 		weight: 6.5
 	},
 	bronze: {
+		name: "bronze",
+		resource: "bronze",
+		cost: 8,
 		hardness: 4.5,
 		sharpness: 5.3,
 		flexibility: 4.9,
 		durability: 120,
 		weight: 8,
-		primary_effect: [new forge_effect("resistElement", ["fire", 1.15])]
+		primary_effect: [new forge_effect("resistElement", ["fire", 0.2])]
 	},
 	steel: {
+		name: "steel",
+		resource: "wood",
+		cost: 8,
 		hardness: 5.8,
 		sharpness: 6.2,
 		flexibility: 3.9,
@@ -828,8 +998,397 @@ var toolmaterials = {
 	}
 }
 
+function forge_update() {
+	var forge_output = "";
+	forge_output += '<div class="combatMove"><h2>Parts</h2><ul>';
+	Object.keys(toolparts).forEach(function(key) {
+		forge_output += '<li style="display: block;float: none;"><a href="#" class="forgeTPGUI" onclick="selectedPart = this.innerHTML;forge_toolparts_gui(this);">';
+		forge_output += key;
+		forge_output += '</a></li>';
+	});
+	forge_output += '</ul><br><br><br><hr>';
+	Object.keys(toolmaterials).forEach(function(key) {
+		forge_output += '<button class="forgeMTGUI" onclick="selectedMat = this.innerHTML;forge_materials_gui(this);">';
+		forge_output += key;
+		forge_output += '</button>';
+	});
+	forge_output += '<hr/><div>';
+	forge_output += '<div id="materialStats"></div>'
+	
+	document.getElementById("materialDisplay").innerHTML = forge_output;
+	
+	forge_output = "";
+	Object.keys(toolparts).forEach(function(key) {
+		forge_output += '<li style="display: block;float: none;"><a href="#" class="forgePBGUI" onclick="partbox_name = this.innerHTML;forge_partbox_gui(this);">';
+		forge_output += key;
+		forge_output += '</a></li>';
+	});
+	document.getElementById("partbox_list").innerHTML = forge_output;
+	
+	forge_output = "";
+	Object.keys(tooltypes).forEach(function(key) {
+		forge_output += '<li style="display: block;float: none;"><a href="#" class="forgeTBGUI" onclick="selectedTool = this.innerHTML;forge_toolbuild_gui(this);">';
+		forge_output += key;
+		forge_output += '</a></li>';
+	});
+	document.getElementById("toolbuilder_display").innerHTML = forge_output;
+	
+	forge_output = "<ul>";
+	for(i = 0; i < fighters.length; i++) {
+		forge_output += '<li><a href="#" class="forgeEQGUI" onclick="unitId = ';
+		forge_output += i;
+		forge_output += ';forge_equips_gui(this)">';
+		forge_output += fighters[i].properName;
+		forge_output += '</a></li>';
+	}
+	forge_output += "</ul><br><br><br>";
+	document.getElementById("big_equip_display").innerHTML = forge_output;
+	
+	forge_output = "";
+	for(i = 0; i < toolbox.length; i++) {
+		forge_output += '<button class="forgeEQTBGUI" onclick="eqtoolbox_name = ';
+		forge_output += i;
+		forge_output += ';forge_eqtoolbox_gui(this);">';
+		forge_output += toolbox[i].name;
+		forge_output += '</button>';
+	}
+	document.getElementById("eqToolbox").innerHTML = forge_output;
+}
+
+function forge_updateInner() {
+	var forge_output = "";
+	if(typeof(selectedMat) != "undefined") {
+		forge_output += 'Hardness: ';
+		forge_output += toolmaterials[selectedMat].hardness;
+		forge_output += '<br/>Sharpness: ';
+		forge_output += toolmaterials[selectedMat].sharpness;
+		forge_output += '<br/>Flexibility: ';
+		forge_output += toolmaterials[selectedMat].flexibility;
+		forge_output += '<br/>Weight: ';
+		forge_output += toolmaterials[selectedMat].weight;
+		forge_output += '<br/>Durability: ';
+		forge_output += toolmaterials[selectedMat].durability;
+		if(typeof(selectedMat.primary_effect) != "undefined") {
+			forge_output += '<br/>Offensive Effects: ';
+			for(var i = 0; i < selectedMat.primary_effect.length; i++) {
+				forge_output += '<br/>';
+				forge_output += selectedMat.primary_effect[i].textGen();
+			}
+		}
+		if(typeof(selectedMat.defensive_effect) != "undefined") {
+			forge_output += '<br/>Defensive Effects: ';
+			for(var i = 0; i < selectedMat.primary_effect.length; i++) {
+				
+			}
+		}
+		if(typeof(selectedMat.secondary_effect) != "undefined") {
+			forge_output += '<br/>Secondary Effects: ';
+			for(var i = 0; i < selectedMat.primary_effect.length; i++) {
+				
+			}
+		}
+	
+	
+	forge_output += '</div><hr>Power: ';
+	var tool_power = toolparts[selectedPart].hardness * toolmaterials[selectedMat].hardness + toolparts[selectedPart].sharpness * toolmaterials[selectedMat].sharpness + toolparts[selectedPart].flexibility * toolmaterials[selectedMat].flexibility;
+	forge_output += tool_power;
+	forge_output += '<br/><button onclick="forge_craft(toolmaterials[selectedMat], toolparts[selectedPart])">Craft</button>'
+	forge_output += '<br/><button>Update</button>'
+	document.getElementById("materialStats").innerHTML = forge_output;
+	}
+	
+	forge_output = "";
+	for(i = 0; i < partbox.length; i++) {
+		if(partbox[i].part.name == partbox_name) {
+			forge_output += '<button onclick="forge_part_assign(';
+			forge_output += i;
+			forge_output += ')">';
+			forge_output += partbox[i].name();
+			forge_output += '</button>';
+		}
+	}
+	document.getElementById("partbox").innerHTML = forge_output;
+	
+	forge_output = "";
+	for(i = 0; i < tooltypes[selectedTool].parts.length; i++) {
+		forge_output += tooltypes[selectedTool].parts[i];
+		forge_output += ": "
+		if(typeof(partsForCrafting[i]) != "undefined") {
+			forge_output += partsForCrafting[i].name();
+		}
+		forge_output += "<br>";
+	}
+	forge_output += "<hr>";
+	if(partsForCrafting.length == tooltypes[selectedTool].parts.length) {
+		var selectedPartsPower = 0;
+		for(i = 0; i < partsForCrafting.length; i++) {
+			if(i == 0) {
+				selectedPartsPower += partsForCrafting[i].power * 1.5;
+			} else {
+				selectedPartsPower += partsForCrafting[i].power;
+			}
+		} 
+		
+		forge_output += "Health: +";
+		forge_output += tooltypes[selectedTool].statmods[0] * selectedPartsPower;
+		forge_output += "%<br>Attack: +";
+		forge_output += tooltypes[selectedTool].statmods[1] * selectedPartsPower;
+		forge_output += "%<br>Magic Attack: +";
+		forge_output += tooltypes[selectedTool].statmods[2] * selectedPartsPower;
+		forge_output += "%<br>Defence: +";
+		forge_output += tooltypes[selectedTool].statmods[3] * selectedPartsPower;
+		forge_output += "%<br>Magic Defence: +";
+		forge_output += tooltypes[selectedTool].statmods[4] * selectedPartsPower;
+		forge_output += "%<br>Accuracy: +";
+		forge_output += tooltypes[selectedTool].statmods[5] * selectedPartsPower;
+		forge_output += "%<br>Evasion: +";
+		forge_output += tooltypes[selectedTool].statmods[6] * selectedPartsPower;
+		forge_output += "%<br>Weight: "
+		forge_output += selectedTool.weight;
+		
+		forge_output += "<br><button onclick='eval(tooltypes[selectedTool].funclmao);partsForCrafting=[];forge_updateInner();'>Craft</button>"
+	}
+	document.getElementById("toolbuilder_inner").innerHTML = forge_output;
+	
+	
+}
+
+function forge_updateInnerer() {
+	_ct = fighters[unitId];
+	_ct.reinit();
+	if(typeof(_ct.weapon) != "undefined") {
+			for(c_j = 0; c_j < _ct.weapon.primary_effect.length; c_j++) {
+				_ct.weapon.primary_effect[c_j].stateEternal();
+			}
+	}
+	forge_output = "<h2>";
+	forge_output += fighters[unitId].properName;
+	forge_output += '</h2><hr/><div class="row"><div class="combatColumn"><b>Stat Overview</b><br/>Max HP: ';
+	forge_output += fighters[unitId].health;
+	forge_output += '<br>Charge Requirement: '
+	forge_output += fighters[unitId].chargemax;
+	forge_output += '<br>Max Mana: ';
+	forge_output += fighters[unitId].mana;
+	forge_output += '<br>ATK: ';
+	forge_output += Number(fighters[unitId].atk.toFixed(3));
+	forge_output += '<br>MATK: ';
+	forge_output += Number(fighters[unitId].matk.toFixed(3));
+	forge_output += '<br>DEF: ';
+	forge_output += Number(fighters[unitId].def.toFixed(3));
+	forge_output += '<br>MDEF: ';
+	forge_output += Number(fighters[unitId].mdef.toFixed(3));
+	forge_output += '<br>ACC: ';
+	forge_output += Number(fighters[unitId].acc.toFixed(3));
+	forge_output += '<br>EVD: ';
+	forge_output += Number(fighters[unitId].evd.toFixed(3));
+	forge_output += '<br><b>Elemental Weaknesses</b><br>';
+	forge_output += 'Fire: '
+	if(typeof(_ct.elementResists.fire) != "undefined") {
+		forge_output += Number(_ct.elementResists.fire.toFixed(3));
+	} else {
+		forge_output += 1;
+	}
+	forge_output += 'x<br>';
+	forge_output += 'Ice: '
+	if(typeof(_ct.elementResists.ice) != "undefined") {
+		forge_output += Number(_ct.elementResists.ice.toFixed(3));
+	} else {
+		forge_output += 1;
+	}
+	forge_output += 'x<br>';
+	forge_output += 'Electric: '
+	if(typeof(_ct.elementResists.thunder) != "undefined") {
+		forge_output += Number(_ct.elementResists.thunder.toFixed(3));
+	} else {
+		forge_output += 1;
+	}
+	forge_output += 'x<br>';
+	forge_output += 'Earth: '
+	if(typeof(_ct.elementResists.earth) != "undefined") {
+		forge_output += Number(_ct.elementResists.earth.toFixed(3));
+	} else {
+		forge_output += 1;
+	}
+	forge_output += 'x<br>';
+	forge_output += 'Poison: '
+	if(typeof(_ct.elementResists.poison) != "undefined") {
+		forge_output += Number(_ct.elementResists.poison.toFixed(3));
+	} else {
+		forge_output += 1;
+	}
+	forge_output += 'x<br>';
+	forge_output += 'Energy: '
+	if(typeof(_ct.elementResists.bomb) != "undefined") {
+		forge_output += Number(_ct.elementResists.bomb.toFixed(3));
+	} else {
+		forge_output += 1;
+	}
+	forge_output += 'x<br>';
+	forge_output += 'Water: '
+	if(typeof(_ct.elementResists.water) != "undefined") {
+		forge_output += Number(_ct.elementResists.water.toFixed(3));
+	} else {
+		forge_output += 1;
+	}
+	forge_output += 'x<br>';
+	forge_output += 'Wind: '
+	if(typeof(_ct.elementResists.wind) != "undefined") {
+		forge_output += Number(_ct.elementResists.wind.toFixed(3));
+	} else {
+		forge_output += 1;
+	}
+	forge_output += 'x<br>';
+	forge_output += 'Light: '
+	if(typeof(_ct.elementResists.holy) != "undefined") {
+		forge_output += Number(_ct.elementResists.holy.toFixed(3));
+	} else {
+		forge_output += 1;
+	}
+	forge_output += 'x<br>';
+	forge_output += 'Dark: '
+	if(typeof(_ct.elementResists.dark) != "undefined") {
+		forge_output += Number(_ct.elementResists.dark.toFixed(3));
+	} else {
+		forge_output += 1;
+	}
+	forge_output += 'x</div><div class="combatColumn"><b>Status Resistances</b>';
+	Object.keys(_ct.statusResists).forEach(function(key) {
+		forge_output += "<br>";
+		forge_output += combat_status_names[key];
+		forge_output += ": ";
+		forge_output += _ct.statusResists[key];
+		forge_output += "x";
+	});
+	forge_output += '<br/><br/><b>Environment Modifiers</b><br><br><b>Equips</b><br>Weapon: ';
+	if(typeof(_ct.weapon) != "undefined") {
+		forge_output += _ct.weapon.name;
+		forge_output += "<br>Health: +";
+		forge_output += tooltypes[_ct.weapon.type].statmods[0] * _ct.weapon.power;
+		forge_output += "%<br>Attack: +";
+		forge_output += tooltypes[_ct.weapon.type].statmods[1] * _ct.weapon.power;
+		forge_output += "%<br>Magic Attack: +";
+		forge_output += tooltypes[_ct.weapon.type].statmods[2] * _ct.weapon.power;
+		forge_output += "%<br>Defence: +";
+		forge_output += tooltypes[_ct.weapon.type].statmods[3] * _ct.weapon.power;
+		forge_output += "%<br>Magic Defence: +";
+		forge_output += tooltypes[_ct.weapon.type].statmods[4] * _ct.weapon.power;
+		forge_output += "%<br>Accuracy: +";
+		forge_output += tooltypes[_ct.weapon.type].statmods[5] * _ct.weapon.power;
+		forge_output += "%<br>Evasion: +";
+		forge_output += tooltypes[_ct.weapon.type].statmods[6] * _ct.weapon.power;
+	}
+	forge_output += '</div>';
+	document.getElementById("smol_equip_display").innerHTML = forge_output;
+}
+
+function forge_updateInnerest() {
+	_wp = toolbox[eqtoolbox_name];
+	var forge_output = "";
+	forge_output += '<div class="row"><div class="combatColumn">'
+	forge_output += "Power: ";
+	forge_output += _wp.power;
+	forge_output += "<br>Health: +";
+	forge_output += tooltypes[_wp.type].statmods[0] * _wp.power;
+	forge_output += "%<br>Attack: +";
+	forge_output += tooltypes[_wp.type].statmods[1] * _wp.power;
+	forge_output += "%<br>Magic Attack: +";
+	forge_output += tooltypes[_wp.type].statmods[2] * _wp.power;
+	forge_output += "%<br>Defence: +";
+	forge_output += tooltypes[_wp.type].statmods[3] * _wp.power;
+	forge_output += "%<br>Magic Defence: +";
+	forge_output += tooltypes[_wp.type].statmods[4] * _wp.power;
+	forge_output += "%<br>Accuracy: +";
+	forge_output += tooltypes[_wp.type].statmods[5] * _wp.power;
+	forge_output += "%<br>Evasion: +";
+	forge_output += tooltypes[_wp.type].statmods[6] * _wp.power;
+	forge_output += '</div><div class="combatColumn">'
+	for(i = 0; i < _wp.parts.length; i++) {
+		forge_output += _wp.parts[i].name();
+		forge_output += '<br>';
+	}
+	forge_output += '<button onclick="toolbox.push(fighters[unitId].weapon);_wp.assign(fighters[unitId]);toolbox.splice(eqtoolbox_name, 1);forge_updateInnerer();forge_updateInnerest();forge_update();">Equip</button>';
+	forge_output += '</div></div>'
+	document.getElementById("eqEqEQ").innerHTML = forge_output;
+}
+
+function forge_toolparts_gui(id) {
+	var temp1 = document.getElementsByClassName("forgeTPGUI");
+	for(asd = 0; asd < temp1.length; asd++) {
+		temp1[asd].setAttribute("style", "background-color:lightgrey");
+	}
+	id.setAttribute("style", "background-color:silver");
+	forge_updateInner();
+}
+
+function forge_partbox_gui(id) {
+	var temp1 = document.getElementsByClassName("forgePBGUI");
+	for(asd = 0; asd < temp1.length; asd++) {
+		temp1[asd].setAttribute("style", "background-color:lightgrey");
+	}
+	id.setAttribute("style", "background-color:silver");
+	forge_updateInner();
+}
+
+function forge_eqtoolbox_gui(id) {
+	var temp1 = document.getElementsByClassName("forgeEQTBGUI");
+	for(asd = 0; asd < temp1.length; asd++) {
+		temp1[asd].removeAttribute("disabled");
+	}
+	id.setAttribute("disabled", "true");
+	forge_updateInnerest();
+}
+
+function forge_toolbuild_gui(id) {
+	var temp1 = document.getElementsByClassName("forgeTBGUI");
+	for(asd = 0; asd < temp1.length; asd++) {
+		temp1[asd].setAttribute("style", "background-color:lightgrey");
+	}
+	id.setAttribute("style", "background-color:silver");
+	forge_updateInner();
+}
+
+function forge_materials_gui(id) {
+	var temp1 = document.getElementsByClassName("forgeMTGUI");
+	for(asd = 0; asd < temp1.length; asd++) {
+		temp1[asd].removeAttribute("disabled");
+	}
+	id.setAttribute("disabled", "true");
+	forge_updateInner();
+}
+
+function forge_equips_gui(id) {
+	var temp1 = document.getElementsByClassName("forgeEQGUI");
+	for(asd = 0; asd < temp1.length; asd++) {
+		temp1[asd].setAttribute("style", "background-color:lightgrey");
+	}
+	id.setAttribute("style", "background-color:silver");
+	forge_updateInnerer();
+}
+
+function forge_part_assign(part_id) {
+	var sel_part = partbox[part_id].part;
+	if(sel_part.name == tooltypes[selectedTool].parts[partsForCrafting.length]) {
+		partsForCrafting = partsForCrafting.concat(partbox.splice(part_id, 1));
+	}
+	forge_updateInner();
+}
+
+function forge_craft(material, part) {
+	var rs = material.resource;
+	if(materials[rs] >= material.cost) {
+		materials[rs] -= material.cost;
+		partbox.push(new forge_component(material, part));
+	}
+	forge_updateInner();
+}
+
 var x = new forge_component(toolmaterials.bronze, toolparts.blade);
-var y = new forge_component(toolmaterials.bronze, toolparts.blade);
+var y = new forge_component(toolmaterials.wood, toolparts.shaft);
 var z = new forge_component(toolmaterials.wood, toolparts.shaft);
+partbox.push(x);
+partbox.push(y);
+partbox.push(z);
+partbox.push(new forge_component(toolmaterials.tin, toolparts.blade));
 var q = new forge_tool_sword([x, y, z]);
+toolbox.push(q);
 q.assign(fighters[0]);

@@ -12,19 +12,21 @@
 /* Tooltip text */
 .tooltip .tooltiptext {
     visibility: hidden;
-    width: 180px;
+    width: 220px;
     background-color: silver;
     color: #000;
     text-align: center;
     padding: 5px 4px;
-	 	border-left: 6px solid slategrey;
+	border-left: 6px solid slategrey;
     background-color: lightgrey;
     position: absolute;
     z-index: 1;
+	top: 100%;
+	margin-left: -50%;
 }
 .tooltip .tooltiptextinverse{ /*i don't know how to do css lol*/
     visibility: hidden;
-    width: 180px;
+    width: 220px;
     background-color: silver;
     color: #000;
     text-align: center;
@@ -37,7 +39,7 @@
 }
 .tooltipbr .tooltiptext {
     visibility: hidden;
-    width: 180px;
+    width: 220px;
     background-color: silver;
     color: #000;
     text-align: center;
@@ -181,13 +183,15 @@ li a:hover {
 	border-right: 1px solid slategrey;
 	border-left: 1px solid slategrey;
 	padding-left: 6px;
-  padding-right: 6px;
+	padding-right: 6px;
 }
 .combatColumn:first-child {
 	border-left: none;
+	padding-left: 0px;
 }
 .combatColumn:last-child {
 	border-right: none;
+	padding-right: 0px;
 }
 
 .combatMove {
@@ -195,13 +199,15 @@ li a:hover {
 	border-right: 1px solid slategrey;
 	border-left: 1px solid slategrey;
 	padding-left: 6px;
-  padding-right: 6px;
+	padding-right: 6px;
 }
 .combatMove:first-child {
 	border-left: none;
+	padding-left: 0px;
 }
 .combatMove:last-child {
 	border-right: none;
+	padding-right: 0px;
 }
 
 .column {

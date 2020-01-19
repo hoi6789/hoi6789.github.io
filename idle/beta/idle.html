@@ -2,23 +2,28 @@
 hi lol
 ">
 <title></title>
+
 <head>
-      <link rel="stylesheet" type="text/css" href="idler.css">
-		  <title>Survidle</title>
-</head
+    <link rel="stylesheet" type="text/css" href="idler.css">
+    <title>Survidle</title>
+</head>
+
 <body>
 
-
-  <font size="2">
+<font size="2">
     Survival Game
 	<span class="forceright" style="padding-left: 5px;"><a href="#" onclick="resetGame()">Reset</a></span>
 	<span class="forceright">     |     </span>
-	<span class="forceright" style="padding-right: 5px;"><a href="https://hoi6789.github.io/idle/changelog.txt" target="_blank">v. 0.5-i</a></span>
+	<span class="forceright" style="padding-left: 5px;padding-right: 5px;"><a href="#" onclick="alert('not exist yet')">Codex</a></span>
+	<span class="forceright">     |     </span>
+	<span class="forceright" style="padding-right: 5px;"><a href="https://hoi6789.github.io/idle/changelog.txt" target="_blank">v. 0.6-i</a></span>
 	<hr/>
 		<ul>
 			<li><a href="#" id="naviCampsite" class="navbarMain" onclick="clickNaviMain('campsitezone', this)">Campsite</a></li>
 			<li><a href="#" id="naviExploration" class="navbarMain" onclick="clickNaviMain('explorationzone', this)">Exploration</a></li>
 			<li><a href="#" id="naviCombat" class="navbarMain" onclick="clickNaviMain('combatzone', this)">Combat</a></li>
+			<li><a href="#" id="naviForging" class="navbarMain" onclick="clickNaviMain('forgingzone', this)">Forging</a></li>
+			<li><a href="#" id="naviEquips" class="navbarMain" onclick="clickNaviMain('equipzone', this)">Equips</a></li>
 		</ul>
 		<br>
 		<br>
@@ -71,31 +76,31 @@ hi lol
 			Clay
 		</p>
 		</div>
-					
+
 					<div class="tooltipbr">
 					<p hidden id="ironDisplay">
 						Iron
 					</p>
 					</div>
-					
+
 					<div class="tooltipbr">
 					<p hidden id="coalDisplay">
 						Coal
 					</p>
 					</div>
-					
+
 					<div class="tooltipbr">
 					<p hidden id="bronzeDisplay">
 						Bronze
 					</p>
 					</div>
-					
+
 					<div class="tooltipbr">
 					<p hidden id="brassDisplay">
 						Brass
 					</p>
 					</div>
-					
+
 		<p id="diagnostic">
 			Score
 		</p>
@@ -109,389 +114,630 @@ hi lol
 			<span class="tooltiptext" id="tooltipHarvestWood">Enable Javascript to play this game. Alternatively, there's a bug.</span>
 		</div>
 		<!-- Wood -->
-		
+
 		<!-- Stone -->
 		<div class="tooltip">
     <button hidden onclick="harvestStone()" id="harvestStone"><font size="2">Collect Stone</font></button>
-			<span class="tooltiptext" id="tooltipHarvestStone">ur mum big gae</span>
-		</div>
-		<!-- Stone -->
-		
-		<!-- Science -->
-		<div class="tooltip">
-    <button hidden onclick="harvestScience()" id="harvestScience"><font size="2">Conduct Research</font></button>
-			<span class="tooltiptext" id="tooltipHarvestScience">ur mum bigger gae</span>
-		</div>
-		<!-- Science -->
-		
-		<!-- Ores -->
-		<div class="tooltip">
-			<button hidden onclick="harvestOres()" id="harvestOres">Analyze Ores</button>
-			<span class="tooltiptext" id="tooltipHarvestOres">ur mum bigger gaer</span>
-		</div>
-		<!-- Ores -->
-		
-		<!-- Manpower -->
-		<div class="tooltip">
-			<button hidden onclick="harvestManpower()" id="harvestManpower">Collect Supplies</button>
-			<span class="tooltiptext" id="tooltipHarvestManpower">ur mum biggest gaer</span>
-		</div>
-		<!-- Manpower -->
-		
-		<!-- Manpower -->
-		<div class="tooltip">
-			<button hidden onclick="harvestManpower()" id="harvestManpower">Collect Supplies</button>
-			<span class="tooltiptext" id="tooltipHarvestManpower">ur mum biggest gaer</span>
-		</div>
-		<!-- Manpower -->
-		
-		<!-- Crate -->
-		<div class="tooltip">
-    <button hidden onclick="clickCounter(campsiteStorage1)" id="campsiteStorage1"><font size="2">Crate</font></button>
-		<span class="tooltiptext" id="tooltipCampsiteStorage1">increases wood/stone storage</span>
-		</div>
-		<!-- Crate -->
-		
-		<!-- Storehouse -->
-		<div class="tooltip">
-    <button hidden onclick="clickCounter(campsiteStorage2)" id="campsiteStorage2"><font size="2">Storehouse</font></button>
-		<span class="tooltiptext" id="tooltipCampsiteStorage2">increases wood/stone storage</span>
-		</div>
-		<!-- Storehouse -->
-		
-		<!-- Research Station -->
-		<div class="tooltip">
-    <button hidden onclick="clickCounter(campsiteResearch1)" id="campsiteResearch1"><font size="2">Research Station</font></button>
-		<span class="tooltiptext" id="tooltipCampsiteResearch1">Allows you to conduct research. The more the better!</span>
-		</div>
-		<!-- Research Station -->
-		
-		<!-- Smelter -->
-		<div class="tooltip">
-    <button hidden onclick="clickCounter(campsiteSmelter)" id="campsiteSmelter"><font size="2">Smelter</font></button>
-		<span class="tooltiptext" id="tooltipCampsiteSmelter">Uses Wood to smelt ores.</span>
-		</div>
-		<!-- Smelter -->
-		
-		<!-- Agri Plot -->
-		<div class="tooltip">
-    <button hidden onclick="clickCounter(campsiteFarm)" id="campsiteFarm"><font size="2">Agri Plot</font></button>
-		<span class="tooltiptext" id="tooltipCampsiteFarm">grow trees</span>
-		</div>
-		<!-- Agri Plot -->
-		
-		<!-- Mine -->
-		<div class="tooltip">
-    <button hidden onclick="clickCounter(campsiteMine)" id="campsiteMine"><font size="2">Mine</font></button>
-		<span class="tooltiptext" id="tooltipCampsiteMine">mine rocks</span>
-		</div>
-		<!-- Mine -->
-		
-		<!-- Smelt Copper -->
-		<div class="tooltip">
-    <button hidden onclick="clickSmeltCopper()" id="smeltCopper"><font size="2">Smelt Copper</font></button>
-		<span class="tooltiptext" id="tooltipSmeltCopper">i wont even bother</span>
-		</div>
-		<!-- Smelt Copper -->
-		
-	<br/>
-		<br/>
-		<br/>
-    <h2>Toolstation</h2>
-		
-		<!-- Wooden Axe -->
-		<div class="tooltip">
-    <button hidden onclick="clickCheck(toolstation2, ts_check)" id="toolstation2"><font size="2">Wooden Axe</font></button>
-		<span class="tooltiptext" id="tooltipToolstation2">Harvest wood faster. Cost: 15 Wood</span>
-		</div>
-		<!-- Wooden Axe -->
-		
-		<!-- Wooden Pickaxe -->
-		<div class="tooltip">
-    <button hidden onclick="clickCheck(toolstation1, ts_check)" id="toolstation1"><font size="2">Wooden Pickaxe</font></button>
-		<span class="tooltiptext" id="tooltipToolstation1">Allows the collection of stone. Cost: 50 Wood</span>
-		</div>
-		<!-- Wooden Pickaxe -->
-		
-		<!-- Stone Pickaxe -->
-		<div class="tooltip">
-    <button hidden onclick="clickCheck(toolstation3, ts_check)" id="toolstation3"><font size="2">Stone Pickaxe</font></button>
-		<span class="tooltiptext" id="tooltipToolstation3">Harvest stone faster. Cost: 40 Stone, 20 Wood</span>
-		</div>
-		<!-- Stone Pickaxe -->
-		
-		<!-- Stone Axe -->
-		<div class="tooltip">
-    <button hidden onclick="clickCheck(toolstation4, ts_check)" id="toolstation4"><font size="2">Stone Axe</font></button>
-		<span class="tooltiptext" id="tooltipToolstation4">Harvest wood faster. Cost: 40 Stone, 20 Wood</span>
-		</div>
-		<!-- Stone Axe -->
-		
-		<!-- Copper Axe -->
-		<div class="tooltip">
-    <button hidden onclick="clickCheck(toolstation5, ts_check)" id="toolstation5"><font size="2">Copper Axe</font></button>
-		<span class="tooltiptext" id="tooltipToolstation5">wood mult 1.2</span>
-		</div>
-		<!-- Copper Axe -->
-		
-		<!-- Copper Pickaxe -->
-		<div class="tooltip">
-    <button hidden onclick="clickCheck(toolstation6, ts_check)" id="toolstation6"><font size="2">Copper Pickaxe</font></button>
-		<span class="tooltiptext" id="tooltipToolstation6">stone mult 1.2</span>
-		</div>
-		<!-- Copper Pickaxe -->
-		
-		<!-- Copper Instruments -->
-		<div class="tooltip">
-    <button hidden onclick="clickCheck(toolstation7, ts_check)" id="toolstation7"><font size="2">Copper Instruments</font></button>
-		<span class="tooltiptext" id="tooltipToolstation7">Science mult 1.2</span>
-		</div>
-		<!-- Copper Instruments -->
-		
-		<!-- Copper Sights -->
-		<div class="tooltip">
-    <button hidden onclick="clickCheck(toolstation8, ts_check)" id="toolstation8"><font size="2">Copper Optics</font></button>
-		<span class="tooltiptext" id="tooltipToolstation8">manpower mult 1.2</span>
-		</div>
-		<!-- Copper Sights -->
-		
-		<!-- Bronze Pickaxe -->
-		<div class="tooltip">
-    <button hidden onclick="clickCheck(toolstation9, ts_check)" id="toolstation9"><font size="2">Bronze Pickaxe</font></button>
-		<span class="tooltiptext" id="tooltipToolstation9">iron/coal in geology</span>
-		</div>
-		<!-- Bronze Pickaxe -->
-		
-		<!-- Coal Smelters -->
-		<div class="tooltip">
-    <button hidden onclick="clickCheck(toolstation10, ts_check)" id="toolstation10"><font size="2">Coal Smelters</font></button>
-		<span class="tooltiptext" id="tooltipToolstation10">coal is a fuel source yes</span>
-		</div>
-		<!-- Coal Smelters -->
-		
-		<h2> Research </h2>
-		
-		<!-- Fire -->
-		<div class="tooltip">
-    <button hidden onclick="clickCheck(research1, rs_check)" id="research1"><font size="2">Fire</font></button>
-		<span class="tooltiptext" id="tooltipResearch1">Discover Fire. Required for all other research upgrades. Cost: 10 Science</span>
-		</div>
-		<!-- Fire -->
-		
-		<!-- Exploration -->
-		<div class="tooltip">
-    <button hidden onclick="clickCheck(research2, rs_check)" id="research2"><font size="2">Exploration</font></button>
-		<span class="tooltiptext" id="tooltipResearch2">Look around you. See what's available. Unlocks exploration and a few new resources. Cost: 30 Science</span>
-		</div>
-		<!-- Exploration -->
-		
-		<!-- Geology -->
-		<div class="tooltip">
-    <button hidden onclick="clickCheck(research3, rs_check)" id="research3"><font size="2">Geology</font></button>
-		<span class="tooltiptext" id="tooltipResearch3">Find metals in stone. Cost: 60 Science</span>
-		</div>
-		<!-- Geology -->
-		
-		<!-- Metallurgy -->
-		<div class="tooltip">
-    <button hidden onclick="clickclickCheck(research6, rs_check)" id="research6"><font size="2">Metallurgy</font></button>
-		<span class="tooltiptext" id="tooltipResearch6">Smelt materials into different forms. Cost: 120 Science</span>
-		</div>
-		<!-- Metallurgy -->
-		
-		<!-- Organization -->
-		<div class="tooltip">
-    <button hidden onclick="clickCheck(research7, rs_check)" id="research7"><font size="2">Organization</font></button>
-		<span class="tooltiptext" id="tooltipResearch7">Smelt materials into different forms. Cost: 120 Science</span>
-		</div>
-		<!-- Organization -->
-		
-		<!-- Agriculture -->
-		<div class="tooltip">
-    <button hidden onclick="clickCheck(research4, rs_check)" id="research4"><font size="2">Agriculture</font></button>
-		<span class="tooltiptext" id="tooltipResearch4">Learn how to grow things. Could boost wood production. Cost: 90 Science</span>
-		</div>
-		<!-- Agriculture -->
-		
-		<!-- Mining -->
-		<div class="tooltip">
-    <button hidden onclick="clickCheck(research5, rs_check)" id="research5"><font size="2">Mining</font></button>
-		<span class="tooltiptext" id="tooltipResearch5">Better digging techniques. Could boost stone production. Cost: 90 Science</span>
-		</div>
-		<!-- Mining -->
-		
-		<!-- Alloys -->
-		<div class="tooltip">
-    <button hidden onclick="clickCheck(research8, rs_check)" id="research8"><font size="2">Alloys</font></button>
-		<span class="tooltiptext" id="tooltipResearch8">Combine metals together to make new ones. Cost: idk bro</span>
-		</div>
-		<!-- Mining -->
-		
+<span class="tooltiptext" id="tooltipHarvestStone">ur mum big gae</span>
+</div>
+<!-- Stone -->
 
-		</div>
-	<div class="zone" id="explorationzone">
-		<h2> Explore</h2>
-		<div class="tooltip">
-		<button onclick="clickExplore()" id="buttonExplore">Explore</button>
-			<span class="tooltiptext" id="tooltipExplore">*notices bulge*</span>
-	</div>
-		<br>
-		<br>
-		<ul>
-			<li><a href="#" id="EnaviCoast" style="display:none;" onclick ="clickEnaviCoast()">Coast</a></li>
-		</ul>
-		<br>
-		<br>
-		<br>
-		<div class="ezone" id="coastEzone">
-			<div class="tooltipbr">
-    <p id="sandDisplayE">
-      Sand
-    </p>
-					</div>
-			<div class="tooltipbr">
-    <p id="clayDisplayE">
-      Clay
-    </p>
-					</div>
-			<div class="tooltip">
-    <button onclick="harvestSand()" id="harvestSand">Collect Sand</button>
-			<span class="tooltiptext" id="tooltipHarvestSand">hooga hooga hooga</span>
-		</div>
-			<div class="tooltip">
-    <button onclick="caravanCoast()" id="caravanCoast">Send Caravan</button>
-			<span class="tooltiptext" id="tooltipCaravanCoast">what do we want? low flying aeroplane noises! when do we want it? neeeoooowww</span>
-		</div>
-		</div>
-			</div>
-	
+<!-- Science -->
+<div class="tooltip">
+    <button hidden onclick="harvestScience()" id="harvestScience"><font size="2">Conduct Research</font></button>
+    <span class="tooltiptext" id="tooltipHarvestScience">ur mum bigger gae</span>
+</div>
+<!-- Science -->
+
+<!-- Ores -->
+<div class="tooltip">
+    <button hidden onclick="harvestOres()" id="harvestOres">Analyze Ores</button>
+    <span class="tooltiptext" id="tooltipHarvestOres">ur mum bigger gaer</span>
+</div>
+<!-- Ores -->
+
+<!-- Manpower -->
+<div class="tooltip">
+    <button hidden onclick="harvestManpower()" id="harvestManpower">Collect Supplies</button>
+    <span class="tooltiptext" id="tooltipHarvestManpower">ur mum biggest gaer</span>
+</div>
+<!-- Manpower -->
+
+<!-- Manpower -->
+<div class="tooltip">
+    <button hidden onclick="harvestManpower()" id="harvestManpower">Collect Supplies</button>
+    <span class="tooltiptext" id="tooltipHarvestManpower">ur mum biggest gaer</span>
+</div>
+<!-- Manpower -->
+
+<!-- Crate -->
+<div class="tooltip">
+    <button hidden onclick="clickCounter(campsiteStorage1)" id="campsiteStorage1"><font size="2">Crate</font></button>
+    <span class="tooltiptext" id="tooltipCampsiteStorage1">increases wood/stone storage</span>
+</div>
+<!-- Crate -->
+
+<!-- Storehouse -->
+<div class="tooltip">
+    <button hidden onclick="clickCounter(campsiteStorage2)" id="campsiteStorage2"><font size="2">Storehouse</font></button>
+    <span class="tooltiptext" id="tooltipCampsiteStorage2">increases wood/stone storage</span>
+</div>
+<!-- Storehouse -->
+
+<!-- Research Station -->
+<div class="tooltip">
+    <button hidden onclick="clickCounter(campsiteResearch1)" id="campsiteResearch1"><font size="2">Research Station</font></button>
+    <span class="tooltiptext" id="tooltipCampsiteResearch1">Allows you to conduct research. The more the better!</span>
+</div>
+<!-- Research Station -->
+
+<!-- Smelter -->
+<div class="tooltip">
+    <button hidden onclick="clickCounter(campsiteSmelter)" id="campsiteSmelter"><font size="2">Smelter</font></button>
+    <span class="tooltiptext" id="tooltipCampsiteSmelter">Uses Wood to smelt ores.</span>
+</div>
+<!-- Smelter -->
+
+<!-- Agri Plot -->
+<div class="tooltip">
+    <button hidden onclick="clickCounter(campsiteFarm)" id="campsiteFarm"><font size="2">Agri Plot</font></button>
+    <span class="tooltiptext" id="tooltipCampsiteFarm">grow trees</span>
+</div>
+<!-- Agri Plot -->
+
+<!-- Mine -->
+<div class="tooltip">
+    <button hidden onclick="clickCounter(campsiteMine)" id="campsiteMine"><font size="2">Mine</font></button>
+    <span class="tooltiptext" id="tooltipCampsiteMine">mine rocks</span>
+</div>
+<!-- Mine -->
+
+<!-- Smelt Copper -->
+<div class="tooltip">
+    <button hidden onclick="clickSmeltCopper()" id="smeltCopper"><font size="2">Smelt Copper</font></button>
+    <span class="tooltiptext" id="tooltipSmeltCopper">i wont even bother</span>
+</div>
+<!-- Smelt Copper -->
+
+<br/>
+<br/>
+<br/>
+<h2>Toolstation</h2>
+
+<!-- Wooden Axe -->
+<div class="tooltip">
+    <button hidden onclick="clickCheck(toolstation2, ts_check)" id="toolstation2"><font size="2">Wooden Axe</font></button>
+    <span class="tooltiptext" id="tooltipToolstation2">Harvest wood faster. Cost: 15 Wood</span>
+</div>
+<!-- Wooden Axe -->
+
+<!-- Wooden Pickaxe -->
+<div class="tooltip">
+    <button hidden onclick="clickCheck(toolstation1, ts_check)" id="toolstation1"><font size="2">Wooden Pickaxe</font></button>
+    <span class="tooltiptext" id="tooltipToolstation1">Allows the collection of stone. Cost: 50 Wood</span>
+</div>
+<!-- Wooden Pickaxe -->
+
+<!-- Stone Pickaxe -->
+<div class="tooltip">
+    <button hidden onclick="clickCheck(toolstation3, ts_check)" id="toolstation3"><font size="2">Stone Pickaxe</font></button>
+    <span class="tooltiptext" id="tooltipToolstation3">Harvest stone faster. Cost: 40 Stone, 20 Wood</span>
+</div>
+<!-- Stone Pickaxe -->
+
+<!-- Stone Axe -->
+<div class="tooltip">
+    <button hidden onclick="clickCheck(toolstation4, ts_check)" id="toolstation4"><font size="2">Stone Axe</font></button>
+    <span class="tooltiptext" id="tooltipToolstation4">Harvest wood faster. Cost: 40 Stone, 20 Wood</span>
+</div>
+<!-- Stone Axe -->
+
+<!-- Copper Axe -->
+<div class="tooltip">
+    <button hidden onclick="clickCheck(toolstation5, ts_check)" id="toolstation5"><font size="2">Copper Axe</font></button>
+    <span class="tooltiptext" id="tooltipToolstation5">wood mult 1.2</span>
+</div>
+<!-- Copper Axe -->
+
+<!-- Copper Pickaxe -->
+<div class="tooltip">
+    <button hidden onclick="clickCheck(toolstation6, ts_check)" id="toolstation6"><font size="2">Copper Pickaxe</font></button>
+    <span class="tooltiptext" id="tooltipToolstation6">stone mult 1.2</span>
+</div>
+<!-- Copper Pickaxe -->
+
+<!-- Copper Instruments -->
+<div class="tooltip">
+    <button hidden onclick="clickCheck(toolstation7, ts_check)" id="toolstation7"><font size="2">Copper Instruments</font></button>
+    <span class="tooltiptext" id="tooltipToolstation7">Science mult 1.2</span>
+</div>
+<!-- Copper Instruments -->
+
+<!-- Copper Sights -->
+<div class="tooltip">
+    <button hidden onclick="clickCheck(toolstation8, ts_check)" id="toolstation8"><font size="2">Copper Optics</font></button>
+    <span class="tooltiptext" id="tooltipToolstation8">manpower mult 1.2</span>
+</div>
+<!-- Copper Sights -->
+
+<!-- Bronze Pickaxe -->
+<div class="tooltip">
+    <button hidden onclick="clickCheck(toolstation9, ts_check)" id="toolstation9"><font size="2">Bronze Pickaxe</font></button>
+    <span class="tooltiptext" id="tooltipToolstation9">iron/coal in geology</span>
+</div>
+<!-- Bronze Pickaxe -->
+
+<!-- Coal Smelters -->
+<div class="tooltip">
+    <button hidden onclick="clickCheck(toolstation10, ts_check)" id="toolstation10"><font size="2">Coal Smelters</font></button>
+    <span class="tooltiptext" id="tooltipToolstation10">coal is a fuel source yes</span>
+</div>
+<!-- Coal Smelters -->
+
+<h2> Research </h2>
+
+<!-- Fire -->
+<div class="tooltip">
+    <button hidden onclick="clickCheck(research1, rs_check)" id="research1"><font size="2">Fire</font></button>
+    <span class="tooltiptext" id="tooltipResearch1">Discover Fire. Required for all other research upgrades. Cost: 10 Science</span>
+</div>
+<!-- Fire -->
+
+<!-- Exploration -->
+<div class="tooltip">
+    <button hidden onclick="clickCheck(research2, rs_check)" id="research2"><font size="2">Exploration</font></button>
+    <span class="tooltiptext" id="tooltipResearch2">Look around you. See what's available. Unlocks exploration and a few new resources. Cost: 30 Science</span>
+</div>
+<!-- Exploration -->
+
+<!-- Geology -->
+<div class="tooltip">
+    <button hidden onclick="clickCheck(research3, rs_check)" id="research3"><font size="2">Geology</font></button>
+    <span class="tooltiptext" id="tooltipResearch3">Find metals in stone. Cost: 60 Science</span>
+</div>
+<!-- Geology -->
+
+<!-- Metallurgy -->
+<div class="tooltip">
+    <button hidden onclick="clickclickCheck(research6, rs_check)" id="research6"><font size="2">Metallurgy</font></button>
+    <span class="tooltiptext" id="tooltipResearch6">Smelt materials into different forms. Cost: 120 Science</span>
+</div>
+<!-- Metallurgy -->
+
+<!-- Organization -->
+<div class="tooltip">
+    <button hidden onclick="clickCheck(research7, rs_check)" id="research7"><font size="2">Organization</font></button>
+    <span class="tooltiptext" id="tooltipResearch7">Smelt materials into different forms. Cost: 120 Science</span>
+</div>
+<!-- Organization -->
+
+<!-- Agriculture -->
+<div class="tooltip">
+    <button hidden onclick="clickCheck(research4, rs_check)" id="research4"><font size="2">Agriculture</font></button>
+    <span class="tooltiptext" id="tooltipResearch4">Learn how to grow things. Could boost wood production. Cost: 90 Science</span>
+</div>
+<!-- Agriculture -->
+
+<!-- Mining -->
+<div class="tooltip">
+    <button hidden onclick="clickCheck(research5, rs_check)" id="research5"><font size="2">Mining</font></button>
+    <span class="tooltiptext" id="tooltipResearch5">Better digging techniques. Could boost stone production. Cost: 90 Science</span>
+</div>
+<!-- Mining -->
+
+<!-- Alloys -->
+<div class="tooltip">
+    <button hidden onclick="clickCheck(research8, rs_check)" id="research8"><font size="2">Alloys</font></button>
+    <span class="tooltiptext" id="tooltipResearch8">Combine metals together to make new ones. Cost: idk bro</span>
+</div>
+<!-- Mining -->
+
+</div>
+<div class="zone" id="explorationzone">
+    <h2> Explore</h2>
+    <div class="tooltip">
+        <button onclick="clickExplore()" id="buttonExplore">Explore</button>
+        <span class="tooltiptext" id="tooltipExplore">*notices bulge*</span>
+    </div>
+    <br>
+    <br>
+    <ul>
+        <li><a href="#" id="EnaviCoast" style="display:none;" onclick="clickEnaviCoast()">Coast</a></li>
+    </ul>
+    <br>
+    <br>
+    <br>
+    <div class="ezone" id="coastEzone">
+        <div class="tooltipbr">
+            <p id="sandDisplayE">
+                Sand
+            </p>
+        </div>
+        <div class="tooltipbr">
+            <p id="clayDisplayE">
+                Clay
+            </p>
+        </div>
+        <div class="tooltip">
+            <button onclick="harvestSand()" id="harvestSand">Collect Sand</button>
+            <span class="tooltiptext" id="tooltipHarvestSand">hooga hooga hooga</span>
+        </div>
+        <div class="tooltip">
+            <button onclick="caravanCoast()" id="caravanCoast">Send Caravan</button>
+            <span class="tooltiptext" id="tooltipCaravanCoast">what do we want? low flying aeroplane noises! when do we want it? neeeoooowww</span>
+        </div>
+    </div>
+</div>
+
+<div class="zone" id="combatzone" hidden>
+
+    <div id="combatOutputLocation">
+        <div class="fighterLeft"><span>Sand Slime</span></div>
+        <div class="fighterRight"><span>Water Slime</span></div>
+        <div>
+            <progress class="forceLeft health" max="100" value="31"> 31% </progress>
+        </div>
+        <progress class="forceRight health" max="100" value="78"> 78% </progress>
+        <br/>
+        <div>
+            <progress class="forceLeft charge" max="100" value="42"> 42% </progress>
+        </div>
+        <div>
+            <progress class="forceRight charge" max="100" value="33"> 33% </progress>
+        </div>
+        <br/>
+        <br/>
+        <div class="fighterLeft"><span>Water Slime</span></div>
+        <div class="fighterRight"><span>Sand Slime</span></div>
+        <div>
+            <progress class="forceLeft health" max="100" value="55"> 55% </progress>
+        </div>
+        <progress class="forceRight health" max="100" value="100">100% </progress>
+        <br/>
+        <div>
+            <progress class="forceLeft charge" max="100" value="33"> 33% </progress>
+        </div>
+        <div>
+            <progress class="forceRight charge" max="100" value="42"> 42% </progress>
+        </div>
+        <br/>
+        <br/>
+        <hr/>
+
+    </div>
+
+    <div id="combatFlex" class="row">
+        <div class="combatColumn"><b>Sand Slime</b>
+            <br/>HP: 69/69
+            <br/>Charge: 39/50
+            <br/>Mana: 3/3
+            <br/>DEF: 4.20
+            <br/>MDEF: 4.20
+            <br/>EVD: -1 UwU
+            <br/>
+            <br/><b>Buffs/Debuffs</b>
+            <br/>1x ATK
+            <br/>1x MATK
+            <br/>1.3x DEF
+            <br/>0.75x MDEF
+            <br/>1x ACC
+            <br/>1.5x EVD</div>
+        <div class="combatColumn"><b>Elemental Weaknesses</b>
+            <br/>Fire: 1x
+            <br/>Ice: 99x
+            <br/>Thunder: 0x
+            <br/>Earth: -1x
+            <br/>Poison: 1.5x
+            <br/>Energy: 2x
+            <br/>Water: 1.5x
+            <br/>Wind: 0.8x
+            <br/>Light: 1x
+            <br/>Dark: 1x OwO</div>
+        <div class="combatColumn"><b>Status Resistances QwQ</b>
+            <br/>Burn: 0.5x
+            <br/>Dazed: 0.5x
+            <br/>Wet: 2x
+            <br/>
+            <br/><b>Environment Modifiers</b>
+            <br/>3x Dry: 1.3x DEF</div>
+        <div class="combatColumn"><b>Current Afflictions/Modifiers UvU</b>
+            <br/>1x Poison for 3.4 sec
+            <br/>3x Poison for 2.2 sec
+            <br/>99x Burn for 200 sec
+            <br/>1.1x Buffing Power for 15 sec</div>
+
+    </div>
+    <hr/>
+    <div id="moveset">
+        <button>Move1</button>
+        <button>Move2</button>
+        <button>Move3</button>
+        <button>Move4</button>
+        <button>Move5</button>
+        <button>Move6</button>
+        <button>Move7</button>
+        <button>Move8</button>
+    </div>
+    <br/>
+    <div class="row" id="moveDisplay">
+        <div class="combatMove"><b>Tactic/Spell Name</b>
+            <br/>Power: Jack ****
+            <br/>Accuracy: Present
+            <br/>Element: NO
+            <br/>Crit Rate: U</div>
+        <div class="combatMove"><b>Effects</b>
+            <br>Healing: No
+            <br/>Debuff ATK for -5 sec
+            <br/>Eat **** and die</div>
+    </div>
+
+</div>
+
+<div class="zone" id="forgingzone" hidden>
+    <div class="row">
+        <div class="combatMove" id="materialDisplay">
+            <h2>Parts</h2>
+            <ul>
+                <li style="display: block;float: none;"><a>Shaft</a></li>
+                <li style="display: block;float: none;"><a>Blade</a></li>
+                <li style="display: block;float: none;"><a style="background-color:silver;">Axe</a></li>
+                <li style="display: block;float: none;"><a>String</a></li>
+            </ul>
+            <br/>
+            <br/>
+            <br/>
+            <hr/>
+            <button>Wood</button>
+            <button>Stone</button>
+            <button>Copper</button>
+            <button>Tin</button>
+            <button>Bronze</button>
+            <button>Steel</button>
+            <button disabled="true">Brimstone</button>
+            
+            <hr/>
+            <div id="materialStats">
+                Hardness: 1000
+                <br/> Sharpness: 500
+                <br/> Flexibility: -69420
+                <br/> Weight: 1
+                <br/> Durability: 666
+                <br/> Offensive Effect: Boosts the power of Fire attacks by 45%
+                <br/> Defensive Effect: Counters attacks with Fireball
+                <br/> Secondary Effect: Boosts burn resistance by 40%
+
+                <hr/> Power: 0
+                <br/>
+                <button>Craft</button>
+            </div>
+        </div>
+        <div class="combatMove">
+            <h2>Weapons</h2>
+            <div id="toolbuilder_display">
+                <ul>
+                    <li style="display: block;float: none;"><a style="background-color:silver;">Broadsword</a></li>
+                    <li style="display: block;float: none;"><a>Handaxe</a></li>
+                    <li style="display: block;float: none;"><a>Bow</a></li>
+                    <li style="display: block;float: none;"><a>Greataxe</a></li>
+                </ul>
+            </div>
+            <br/>
+            <br/>
+            <br/>
+            <div id="toolbuilder_inner">
+                Blade: Bronze
+                <br/>Shaft: Wood
+                <br/>Shaft: Wood
+                <hr/> Health: +0%
+                <br/>Attack: +25%
+                <br/>Magic Attack: +5%
+                <br/>Defence: 8%
+                <br/>Magic Defence: +6%
+                <br/>Accuracy: +1%
+                <br/>Evade: +1%
+                <hr/> Boosts the power of Electric attacks by 30%
+                <br/>Boosts sleep resistance by 25%
+                <br/>Boosts sleep resistance by 25%
+            </div>
+            <br/>
+            <br/>
+            <button onclick="forge_update()">Craft</button>
+        </div>
+
+    </div>
+    <hr/>
+    <div class="fighterLeft" style="background-color:silver;"><span>Partbox</span></div>
+    <br/>
+    <br/>
+    <br/>
+    <div id="partbox_list">
+        <ul>
+            <li style="display: block;float: none;"><a style="background-color:silver;">Shaft</a></li>
+            <li style="display: block;float: none;"><a>Blade</a></li>
+            <li style="display: block;float: none;"><a>Axe</a></li>
+            <li style="display: block;float: none;"><a>String</a></li>
+        </ul>
+    </div>
+    <br/>
+    <br/>
+    <br/>
+    <div id="partbox">
+        <button>Wood Blade</button>
+        <button>Wood Blade</button>
+        <button>Wood Blade</button>
+        <button disabled="true">Bronze Blade</button>
+        <button>Amber Blade</button>
+        <button>Brimstone Blade</button>
+        <button>Silk Blade</button>
+    </div>
+
+</div>
 			
-			
-			<div class="zone" id="combatzone" hidden>
-				
-				
-				<div id="combatOutputLocation">
-				<div class="fighterLeft"><span>Sand Slime</span></div>
-				<div class="fighterRight"><span>Water Slime</span></div>
-				<div><progress class="forceLeft health" max="100" value="31"> 31% </progress></div>
-				<progress class="forceRight health" max="100" value="78"> 78% </progress>
-				<br/>
-				<div><progress class="forceLeft charge" max="100" value="42"> 42% </progress></div>
-				<div><progress class="forceRight charge" max="100" value="33"> 33% </progress></div>
-				<br/>
-				<br/>
-				<div class="fighterLeft"><span>Water Slime</span></div>
-				<div class="fighterRight"><span>Sand Slime</span></div>
-				<div><progress class="forceLeft health" max="100" value="55"> 55% </progress></div>
-				<progress class="forceRight health" max="100" value="100">100% </progress>
-				<br/>
-				<div><progress class="forceLeft charge" max="100" value="33"> 33% </progress></div>
-				<div><progress class="forceRight charge" max="100" value="42"> 42% </progress></div>
-				<br/><br/><hr/>
-					
+			<div class="zone" id="equipzone" hidden>
+				<div id="big_equip_display">
+					<ul>
+						<li><a>Lv. 14 Sand Slime</a></li>
+						<li><a>Lv. 12 Sand Slime</a></li>
+						<li><a style="background-color:silver;">Lv. 8 Sand Pawn</a></li>
+						<li><a>Lv. 25 Giant Crab</a></li>
+					</ul>
+					<br/><br/><br/></div>
+				<div id="smol_equip_display">
+					<h2>Sand Pawn</h2>
+					<hr/>
+					<div class="row">
+        <div class="combatColumn"><b>Stat Overview</b>
+            <br/>HP: 69
+            <br/>Charge: 50
+            <br/>Mana: 3
+			<br/>ATK: 4.20
+			<br/>MATK: 4.20
+            <br/>DEF: 4.20
+            <br/>MDEF: 4.20
+			<br/>ACC: 999
+            <br/>EVD: -1 UwU
+            <br/>Level: 8
+            <br/>Starting Level: 6
+			<br/><br/><b>Elemental Weaknesses</b>
+            <br/>Fire: 1x
+            <br/>Ice: 99x
+            <br/>Thunder: 0x
+            <br/>Earth: -1x
+            <br/>Poison: 1.5x
+            <br/>Energy: 2x
+            <br/>Water: 1.5x
+            <br/>Wind: 0.8x
+            <br/>Light: 1x
+            <br/>Dark: 1x OwO</div>
+        <div class="combatColumn"><b>Status Resistances QwQ</b>
+            <br/>Burn: 0.5x
+            <br/>Dazed: 0.5x
+            <br/>Wet: 2x
+            <br/>
+            <br/><b>Environment Modifiers</b>
+            <br/>Dry: +10% DEF
+			<br/><br/><b>Equipment</b>
+			<br/>Weapon: None
+			<br/>Armor: None
+			<br/>Headgear: None
+		</div>
+        <div class="combatColumn"><b>Current Afflictions/Modifiers UvU</b>
+            <br/>1x Poison for 3.4 sec
+            <br/>3x Poison for 2.2 sec
+            <br/>99x Burn for 200 sec
+            <br/>1.1x Buffing Power for 15 sec</div>
+
+    </div>
 				</div>
-				
-				<div id="combatFlex" class="row">
-					<div class="combatColumn"><b>Sand Slime</b><br/>HP: 69/69<br/>Charge: 39/50<br/>Mana: 3/3<br/>DEF: 4.20<br/>MDEF: 4.20<br/>EVD: -1 UwU<br/><br/><b>Buffs/Debuffs</b><br/>1x ATK<br/>1x MATK<br/>1.3x DEF<br/>0.75x MDEF<br/>1x ACC<br/>1.5x EVD</div>
-					<div class="combatColumn"><b>Elemental Weaknesses</b><br/>Fire: 1x<br/>Ice: 99x<br/>Thunder: 0x<br/>Earth: -1x<br/>Poison: 1.5x<br/>Energy: 2x<br/>Water: 1.5x<br/>Wind: 0.8x<br/>Light: 1x<br/>Dark: 1x OwO</div>
-					<div class="combatColumn"><b>Status Resistances QwQ</b><br/>Burn: 0.5x<br/>Dazed: 0.5x<br/>Wet: 2x<br/><br/><b>Environment Modifiers</b><br/>3x Dry: 1.3x DEF</div>
-					<div class="combatColumn"><b>Current Afflictions/Modifiers UvU</b><br/>1x Poison for 3.4 sec<br/>3x Poison for 2.2 sec<br/>99x Burn for 200 sec<br/>1.1x Buffing Power for 15 sec</div>
-					
-					
+			<hr/>
+				<ul>
+                    <li style="display: block;float: none;"><a style="background-color:silver;">Weapons</a></li>
+                    <li style="display: block;float: none;"><a>Armour</a></li>
+                    <li style="display: block;float: none;"><a>Headgear</a></li>
+                </ul><br/><br/><br/>
+				<div id="eqToolbox">
+				<button>A ton of buttons that show the equips</button>
 				</div>
 				<hr/>
-				<div id="moveset">
-					<button>Move1</button>
-					<button>Move2</button>
-					<button>Move3</button>
-					<button>Move4</button>
-					<button>Move5</button>
-					<button>Move6</button>
-					<button>Move7</button>
-					<button>Move8</button>
+				<div id="eqEqEQ">
+				<div class="row">
+					<div class="combatColumn">
+						<b>Bronze Sword</b>
+						<br/>Power:
+						<br/>Weight:
+						<br/>Durability:
+						<br/>Health:
+						<br/>Attack:
+						<br/>Magic Attack:
+						<br/>Defence:
+						<br/>Magic Defence:
+						<br/>Accuracy:<br/>
+						Evade:
+						
+					</div>
+					<div class="combatColumn">
+						<br/>*insert effect list*
+						<br/>Blade: Bronze<br/>
+						Shaft: Bronze
+						<br/>Shaft: Wood<br/>
+						<button>Replace</button>
+					</div>
 				</div>
-				<br/>
-				<div class="row" id="moveDisplay">
-					<div class="combatMove"><b>Tactic/Spell Name</b><br/>Power: Jack ****<br/>Accuracy: Present<br/>Element: NO<br/>Crit Rate: U</div>
-					<div class="combatMove"><b>Effects</b><br>Healing: No<br/>Debuff ATK for -5 sec<br/>Eat **** and die</div>
 				</div>
 				
-				
-				
 			</div>
+
+
+
+</div>
 			
-			
-			
-			</div>
-			
-			
-			
-			
-			<div class="columnsmall">
-		<ul>
-			<li><a hidden href="#" id="naviSmelter" onclick="clickNaviSmelter()">Smelter Configuration</a></li>
-		</ul>
-		<div class="zone" id="smelterzone">
-			<!-- Smelter Mode -->
-			<div class="tooltip">
-				<button onclick="clickSmelterMode()" id="smelterMode"><font size="2">Mode: xxx</font></button>
-			</div>
-			<!-- Smelter Mode -->
-			
-			<!-- Fuel Mode -->
-			<div class="tooltip">
-				<button onclick='' id="smelterFuelMode" hidden><font size="2">Fuel Mode</font></button>
-				<span class="tooltiptextinverse" id="asd">
+
+
+<div class="columnsmall">
+    <ul>
+        <li><a hidden href="#" id="naviSmelter" onclick="clickNaviSmelter()">Smelter Configuration</a></li>
+    </ul>
+    <div class="zone" id="smelterzone">
+        <!-- Smelter Mode -->
+        <div class="tooltip">
+            <button onclick="clickSmelterMode()" id="smelterMode"><font size="2">Mode: xxx</font></button>
+        </div>
+        <!-- Smelter Mode -->
+
+        <!-- Fuel Mode -->
+        <div class="tooltip">
+            <button onclick='' id="smelterFuelMode" hidden><font size="2">Fuel Mode</font></button>
+            <span class="tooltiptextinverse" id="asd">
 					<ul>
 						<li><a href="#" class="navbarFuel" id="fuelmodeWood" onclick='smelterFuelMode("wood", this);'>Wood</a></li>
 						<li><a href="#" class="navbarFuel" id="fuelmodeCoal" onclick='smelterFuelMode("coal", this)'>Coal</a></li>
 					</ul>
 				</span>
-			</div>
-			<!-- Fuel Mode -->
-			
-			<!-- Smelt Copper -->
-			<div class="tooltip">
-				<button onclick='clickSmelter("copper")' id="smelterCopper"><font size="2">Copper</font></button>
-				<span class="tooltiptextinverse" id="tooltipsmelterCopper">Extract Copper from ore.</span>
-			</div>
-			<!-- Smelt Copper -->
-			
-			<!-- Smelt Tin -->
-			<div class="tooltip">
-				<button onclick='clickSmelter("tin")' id="smelterTin"><font size="2">Tin</font></button>
-				<span class="tooltiptextinverse" id="tooltipsmelterTin">Extract Tin from ore.</span>
-			</div>
-			<!-- Smelt Tin -->
-			
-			<!-- Smelt Glass -->
-			<div class="tooltip">
-				<button onclick='clickSmelter("sand")' id="smelterSand"><font size="2">Glass</font></button>
-				<span class="tooltiptextinverse" id="tooltipsmelterSand">Extract Glass from ore.</span>
-			</div>
-			<!-- Smelt Glass -->
-			
-			<!-- Alloy Bronze -->
-			<div class="tooltip">
-				<button hidden onclick='clickSmelter("bronze")' id="smelterBronze"><font size="2">Bronze</font></button>
-				<span class="tooltiptextinverse" id="tooltipsmelterBronze">glass from ore? that's some wild stuff.</span>
-			</div>
-			<!-- Alloy Bronze -->
-			
-			<!-- Alloy Brass -->
-			<div class="tooltip">
-				<button hidden onclick='clickSmelter("brass")' id="smelterBrass"><font size="2">Brass</font></button>
-				<span class="tooltiptextinverse" id="tooltipsmelterBrass">Extract Brass from other metal.</span>
-			</div>
-			<!-- Alloy Brass -->
-			
-			</div>
-				</div>
-	</div>
-			
-					<script src="cycle.js"></script>
-    <script src="strings.js"></script>
-    <script src="idler.js"></script>
-	<script src="battle.js"></script>
-	
+        </div>
+        <!-- Fuel Mode -->
+
+        <!-- Smelt Copper -->
+        <div class="tooltip">
+            <button onclick='clickSmelter("copper")' id="smelterCopper"><font size="2">Copper</font></button>
+            <span class="tooltiptextinverse" id="tooltipsmelterCopper">Extract Copper from ore.</span>
+        </div>
+        <!-- Smelt Copper -->
+
+        <!-- Smelt Tin -->
+        <div class="tooltip">
+            <button onclick='clickSmelter("tin")' id="smelterTin"><font size="2">Tin</font></button>
+            <span class="tooltiptextinverse" id="tooltipsmelterTin">Extract Tin from ore.</span>
+        </div>
+        <!-- Smelt Tin -->
+
+        <!-- Smelt Glass -->
+        <div class="tooltip">
+            <button onclick='clickSmelter("sand")' id="smelterSand"><font size="2">Glass</font></button>
+            <span class="tooltiptextinverse" id="tooltipsmelterSand">Extract Glass from ore.</span>
+        </div>
+        <!-- Smelt Glass -->
+
+        <!-- Alloy Bronze -->
+        <div class="tooltip">
+            <button hidden onclick='clickSmelter("bronze")' id="smelterBronze"><font size="2">Bronze</font></button>
+            <span class="tooltiptextinverse" id="tooltipsmelterBronze">glass from ore? that's some wild stuff.</span>
+        </div>
+        <!-- Alloy Bronze -->
+
+        <!-- Alloy Brass -->
+        <div class="tooltip">
+            <button hidden onclick='clickSmelter("brass")' id="smelterBrass"><font size="2">Brass</font></button>
+            <span class="tooltiptextinverse" id="tooltipsmelterBrass">Extract Brass from other metal.</span>
+        </div>
+        <!-- Alloy Brass -->
+
+    </div>
+</div>
+</div>
+
+<script src="cycle.js"></script>
+<script src="strings.js"></script>
+<script src="idler.js"></script>
+<script src="battle.js"></script>
+
 </body>
