@@ -1,0 +1,80 @@
+<meta name="description" content="
+hi lol
+">
+<title></title>
+
+<head>
+    <link rel="stylesheet" type="text/css" href="idler.css">
+    <title>Survidle</title>
+</head>
+
+
+<body>
+	<font size="2">
+		Survidle
+		<span class="forceright" style="padding-left: 5px;"><a href="#" onclick="resetGame()">Reset</a></span>
+		<span class="forceright">     |     </span>
+		<span class="forceright" style="padding-left: 5px;padding-right: 5px;"><a href="#" onclick="alert('not exist yet')">WIP</a></span>
+		<span class="forceright">     |     </span>
+		<span class="forceright" style="padding-right: 5px;"><a href="changelog.txt" target="_blank">v. 1.0-a</a></span>
+		<hr/>
+		<ul id="Navbar">
+		</ul>
+		<br/>
+		<br/>
+		<br/>
+		<hr/>
+		<div class="row">
+			<div class="columnsmall" id="resourceColumn">
+				<div id="resourceDisplay">
+					
+					
+				</div>
+			</div>
+			<div class="column" id="buttonColumn">
+				<div id="buttonDisplay"></div>
+				<div id="toolDisplay"></div>
+				<div id="explorationDisplay"></div>
+				
+				<span id="combatZone" hidden>
+					<div id="combatOutputLocation"></div>
+					<div id="combatFlex" class="row"></div>
+					<div id="moveset"></div>
+					<div class="row" id="moveDisplay"></div>
+				</span>
+				
+				<span id="forgeZone" hidden>
+					neato
+					<div class="row">
+						<div class="combatMove" id="materialDisplay"></div>
+						<div class="combatMove"><h2>Weapons</h2>
+							<div id="toolbuilder_display"></div>
+							<div id="toolbuilder_inner"></div>
+						</div>
+					</div>
+					<div id="partbox_list"></div>
+					<div id="partbox"></div>
+				</span>
+				
+				<span id="equipZone" hidden>
+					why
+					<div id="big_equip_display"></div>
+					<div id="smol_equip_display"></div>
+					<div id="eqToolbox"></div>
+					<div id="eqEqEQ"></div>
+				</span>
+			</div>
+			
+			<div class="columnsmall" id="configuratorColumn">
+				<div id="configuratorDisplay">
+				</div>
+			</div>
+		</div>
+		
+	</font>
+	
+<script src="battle.js"></script>
+<script src="idler.js"></script>
+<script src="cycle.js"></script>
+<script src="strings.js"></script>
+</body>

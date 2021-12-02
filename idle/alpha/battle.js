@@ -163,11 +163,16 @@ class combat_damage_object {
 		}
 		
 		//element resist check
-		if(typeof(target.elementResists[this.element]) == "undefined") {
-			_damage *= 1;
-		} else {
-			_damage *= target.elementResists[this.element];
+		_damage /= this.element[0].length;
+		var _elementDamage = 0;
+		for(i = 0; i < this.element.length; i++) {
+			if(typeof(target.elementResists[this.element[0][i]]) == "undefined") {
+				_elementDamage += _damage *= 1;
+			} else {
+				_elementDamage += _damage *= target.elementResists[this.element[1][i]];
+			}
 		}
+		_damage = _elementDamage;
 		
 		//defence subtraction
 		if(this.type == "atk") {
@@ -478,13 +483,71 @@ class fighter_SandSlime extends combat_fighter_object {
 		//this.template = fighter_SandSlime;
 		this.properName = "Sand Slime";
 		this.target;
-		this.skills = //i knows buddy
+		this.skills = 
+		[new combat_damage_object(this, "Pound", 16, "atk", 1, [["none"], [1]], true), 
+		new combat_damage_object(this, "Sand Spit", 5, "atk", 1, "earth", "tactic_standard", [new combat_status_object("burn", 20, 1, {power:12,initialDuration:20}, this)]),
+		new combat_damage_object(this, "Sandblast", 40, "atk", 1, "earth")];
+		this.playerskills = 
 		[new combat_damage_object(this, "Pound", 16, "atk", 1, "none", true), 
 		new combat_damage_object(this, "Sand Spit", 5, "atk", 1, "earth", "tactic_standard", [new combat_status_object("burn", 20, 1, {power:12,initialDuration:20}, this)]),
 		new combat_damage_object(this, "Sandblast", 40, "atk", 1, "earth")];
+	}
+	ai() {
+		var _target;
+		if(this.side == 1) {
+			updateMovelist(this);
+			awaitingInput = true;
+			c_inputUser = this;
+			clearInterval(combat_starter); 
+		} else {
+			_target = combat_ai("random");
+			var _roll = Math.floor(Math.random() * 3);
+			if(this.currentHealth / this.health < 0.5 && this.currentMana > 0) {
+				if(combat_ai("lowestBuff", "def")[1] > 0.9) {
+					this.skills[1].send(_target);
+				} else {
+					_target = combat_ai("lowestBuff", "def")[0];
+					this.skills[2].send(_target);
+					this.currentMana--;
+				}
+				
+			} else {
+				if(_roll == 0 || _roll == 1) {
+					this.skills[0].send(_target);
+				}
+				if(_roll == 2) {
+					this.skills[1].send(_target);
+				}
+			}
+		}
+	}
+	playerControl(roll, _target) {
+		if(roll == 0) {
+			this.skills[0].send(_target);
+		}
+		if(roll == 1) {
+			this.skills[1].send(_target);
+		}
+		if(roll == 2) {
+			this.skills[2].send(_target);
+			this.currentMana--;
+		}
+	}
+}
+
+class fighter_StoneSoldier extends combat_fighter_object {
+	constructor(startinglevel, level, side) {
+		super(startinglevel, level, {health:85,atk:4.2,matk:4,def:4,mdef:4,acc:4,evd:4,mana:2,chargemax:40,aggro:7,size:1}, "unit", side, {thunder:0,ice:1.5,earth:-1,water:2,wind:0.5,dark:0.8,bomb:2}, {burn:1}, {resource:[],amount:[],interval:[]}, {resource:["sand", "stone"],amount:[15, 30],interval:[1, 3]}, []);
+		//this.template = fighter_SandSlime;
+		this.properName = "Sand Slime";
+		this.target;
+		this.skills = //i knows buddy
+		[new combat_damage_object(this, "Sand Slash", 16, "atk", 1, "earth"), 
+		new combat_damage_object(this, "Blazing Dune", 8, "matk", 1, "fire", "tactic_standard", [new combat_status_object("burn", 80, 1, {power:30,initialDuration:80}, this)]),
+		new combat_damage_object(this, "Sandblast", 40, "atk", 1, "earth")];
 		this.playerskills = //i knows buddy
-		[new combat_damage_object(this, "Pound", 16, "atk", 1, "none", true), 
-		new combat_damage_object(this, "Sand Spit", 5, "atk", 1, "earth", "tactic_standard", [new combat_status_object("burn", 20, 1, {power:12,initialDuration:20}, this)]),
+		[new combat_damage_object(this, "Sand Slash", 16, "atk", 1, "earth"), 
+		new combat_damage_object(this, "Blazing Dune", 8, "matk", 1, "fire", "tactic_standard", [new combat_status_object("burn", 80, 1, {power:30,initialDuration:80}, this)]),
 		new combat_damage_object(this, "Sandblast", 40, "atk", 1, "earth")];
 	}
 	ai() {
@@ -801,7 +864,7 @@ function updateMovebox(skill) {
 	movebox_output += '<div class="combatMove"><b>'
 	movebox_output += skill.name;
 	movebox_output += '</b><br/>Power: ';
-	movebox_output += skill.power.toFixed(3);
+	movebox_output += skill.power;
 	movebox_output += ' ';
 	if(skill.type == "atk") {
 		movebox_output += "Physical";

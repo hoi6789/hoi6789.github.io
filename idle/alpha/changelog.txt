@@ -1,8 +1,6 @@
 v. alpha 1.0
 xx/yy/202x
-combat system
-reworked early progression systems
-
+Rebuilt the game from the ground up, content subject to change
 
 v. indev 0.6
 1/19/2020

@@ -1,5 +1,20 @@
 @import url('https://fonts.googleapis.com/css?family=Lato&display=swap');
 
+
+.divprogress {
+	margin-top: 6px;
+	width: 100%;
+	height: 24px;
+    background-color: lightgrey;
+	text-align: center;
+}
+.divprogress2 {
+	margin-top: -19px;
+	width: 50%;
+	height: 24px;
+    background-color: #00b4d4;
+}
+
 .tooltip {
     position: relative;
     display: inline-block;
@@ -53,7 +68,6 @@
 
 .tooltip:hover .tooltiptext {
     visibility: visible;
-	pointer-events: none;
 }
 .tooltip:hover .tooltiptextinverse {
     visibility: visible;
@@ -66,7 +80,14 @@
     visibility: hidden !important;
 }
 
-
+.configBackground {
+	background-color: lightgrey;
+	padding: 3px;
+	border-color: black;
+	margin-top: 2px;
+	margin-bottom: 2px;
+	border: 2px;
+}
 	
 	.forceleft {
 		float: left;
@@ -175,7 +196,7 @@ li a {
 	float: left;
   color: black;
   text-align: center;
-  padding: 14px 16px;
+  padding: 16px 20px;
   text-decoration: none;
   background-color: lightgrey;
   border-left: 6px solid slategrey;

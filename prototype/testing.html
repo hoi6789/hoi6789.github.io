@@ -1,15 +1,51 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="viewport" charset='utf-8' content="width=device-width, initial-scale=1.0"/>
 <style>
-canvas {
-    border: 1px solid #d3d3d3;
-    background-color: #f1f1f2;
-}
+@import url('https://fonts.googleapis.com/css?family=Lato&display=swap');
+
+
+
 </style>
+	<link rel="stylesheet" type="text/css" href="idler.css">
 </head>
-<body onload="startGame()">
+<body>
+    <div id="combatOutputLocation">
+        <div class="fighterLeft" onclick="origin = this;"><span>Sand Slime</span></div>
+        <div class="fighterRight" onclick="target = this;"><span>Water Slime</span></div>
+        <div>
+            <progress class="forceleft health" max="100" value="31"> 31% </progress>
+        </div>
+        <progress class="forceright health" max="100" value="78"> 78% </progress>
+        <br/>
+        <div>
+            <progress class="forceleft charge" max="100" value="42"> 42% </progress>
+        </div>
+        <div>
+            <progress class="forceright charge" max="100" value="33"> 33% </progress>
+        </div>
+        <br/>
+        <br/>
+        <div class="fighterLeft" onclick="origin = this;"><span>Water Slime</span></div>
+        <div class="fighterRight" onclick="target = this;"><span>Sand Slime</span></div>
+        <div>
+            <progress class="forceleft health" max="100" value="55"> 55% </progress>
+        </div>
+        <progress class="forceright health" max="100" value="100">100% </progress>
+        <br/>
+        <div>
+            <progress class="forceleft charge" max="100" value="33"> 33% </progress>
+        </div>
+        <div>
+            <progress class="forceright charge" max="100" value="42"> 42% </progress>
+        </div>
+        <br/>
+        <br/>
+        <hr/>
+
+    </div>
+	<button onclick="waterblast()">Particle Test 1: Waterblast</button>
     <script src="testing.js"></script>
 
 
