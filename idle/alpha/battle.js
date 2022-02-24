@@ -57,9 +57,9 @@ class combat_status_object {
 	execute() {//effect of the status effect
 		switch(this.name) {
 			case "burn"://takes params of Power and Initial Duration
-				var damage_event = new combat_damage_object(this.user, "Burn", this.params.power / this.params.initialDuration, "matk", 999, "fire");
-				console.log(damage_event);
-				console.log("burn test");
+				var damage_event = new combat_damage_object(this.user, "Burn", this.params.power / this.params.initialDuration, "matk", 999, [["fire"], [1]]);
+				//console.log(damage_event);
+				//console.log("burn test");
 				damage_event.send(this.target);
 				break;
 			case "buff": //takes params of Stat and Power
@@ -107,7 +107,7 @@ class combat_player_skill {
 }
 
 class combat_damage_object {
-	constructor(user, name, power, type, accMod, element, weapon, status, properties) {//user, formal name, base damage, damage type, accuracy modifier, element, weapon, status
+	constructor(user, name, power, type, accMod, element, weapon, status, properties) {//user, formal name, base damage, damage type, accuracy modifier, element, apply weapon effects?, status
 		this.user = user;
 		this.name = name;
 		this.power = power;
@@ -163,13 +163,13 @@ class combat_damage_object {
 		}
 		
 		//element resist check
-		_damage /= this.element[0].length;
+		_damage /= 1;
 		var _elementDamage = 0;
-		for(i = 0; i < this.element.length; i++) {
+		for(i = 0; i < this.element[0].length; i++) {
 			if(typeof(target.elementResists[this.element[0][i]]) == "undefined") {
-				_elementDamage += _damage *= 1;
+				_elementDamage += _damage * this.element[1][i];
 			} else {
-				_elementDamage += _damage *= target.elementResists[this.element[1][i]];
+				_elementDamage += _damage * this.element[1][i] * target.elementResists[this.element[0][i]];
 			}
 		}
 		_damage = _elementDamage;
@@ -321,24 +321,13 @@ class combat_fighter_object {
 		this.critChance = 0.05;
 		this.critDamage = 1.5;
 		//true stats are stats unchanged by levels, buffs, equips, etc
-		
-		if(this.tag == "hero") {
-			this.health = Math.floor(this.health * Math.pow(1.12, this.level + 2) * 1.4);
-			this.atk = this.atk * Math.pow(1.1, this.level + 2) * 1.4;
-			this.matk = this.matk * Math.pow(1.1, this.level + 2) * 1.4;
-			this.def = this.def * Math.pow(1.07, this.level + 2) * 1.4;
-			this.mdef = this.mdef * Math.pow(1.07, this.level + 2) * 1.4;
-			this.acc = this.acc * Math.pow(1.02, this.level + 2) * 1.4;
-			this.evd = this.evd * Math.pow(1.02, this.level + 2) * 1.4;
-		} else {
-			this.health = Math.floor(this.health * Math.pow(1.12, this.startinglevel - 1) * Math.pow(1.156, this.level - this.startinglevel));
-			this.atk = this.atk * Math.pow(1.1, this.startinglevel - 1) * Math.pow(1.13, this.level - this.startinglevel);
-			this.matk = this.matk * Math.pow(1.1, this.startinglevel - 1) * Math.pow(1.13, this.level - this.startinglevel);
-			this.def = this.def * Math.pow(1.07, this.startinglevel - 1) * Math.pow(1.091, this.level - this.startinglevel);
-			this.mdef = this.mdef * Math.pow(1.07, this.startinglevel - 1) * Math.pow(1.091, this.level - this.startinglevel);
-			this.acc = this.acc * Math.pow(1.05, this.startinglevel - 1) * Math.pow(1.065, this.level - this.startinglevel);
-			this.evd = this.evd * Math.pow(1.05, this.startinglevel - 1) * Math.pow(1.065, this.level - this.startinglevel);
-		}
+		this.health = Math.floor(this.health * Math.pow(1.12, this.level));
+		this.atk = this.atk * Math.pow(1.1, this.level);
+		this.matk = this.matk * Math.pow(1.1, this.level);
+		this.def = this.def * Math.pow(1.07, this.level);
+		this.mdef = this.mdef * Math.pow(1.07, this.level);
+		this.acc = this.acc * Math.pow(1.02, this.level);
+		this.evd = this.evd * Math.pow(1.02, this.level);
 		this.dispAtk = this.atk;
 		this.dispMatk = this.matk;
 		this.dispDef = this.def;
@@ -369,23 +358,15 @@ class combat_fighter_object {
 
 	//rebuilds stat block for technical reasons
 	reinit() {
-		if(this.tag == "hero") {
-			this.health = Math.floor(this.trueHealth * Math.pow(1.12, this.level + 2) * 1.4);
-			this.atk = this.trueAtk * Math.pow(1.1, this.level + 2) * 1.4;
-			this.matk = this.trueMatk * Math.pow(1.1, this.level + 2) * 1.4;
-			this.def = this.trueDef * Math.pow(1.07, this.level + 2) * 1.4;
-			this.mdef = this.trueMdef * Math.pow(1.07, this.level + 2) * 1.4;
-			this.acc = this.trueAcc * Math.pow(1.05, this.level + 2) * 1.4;
-			this.evd = this.trueEvd * Math.pow(1.05, this.level + 2) * 1.4;
-		} else {
-			this.health = Math.floor(this.trueHealth * Math.pow(1.12, this.startinglevel - 1) * Math.pow(1.156, this.level - this.startinglevel));
-			this.atk = this.trueAtk * Math.pow(1.1, this.startinglevel - 1) * Math.pow(1.13, this.level - this.startinglevel);
-			this.matk = this.trueMatk * Math.pow(1.1, this.startinglevel - 1) * Math.pow(1.13, this.level - this.startinglevel);
-			this.def = this.trueDef * Math.pow(1.07, this.startinglevel - 1) * Math.pow(1.091, this.level - this.startinglevel);
-			this.mdef = this.trueMdef * Math.pow(1.07, this.startinglevel - 1) * Math.pow(1.091, this.level - this.startinglevel);
-			this.acc = this.trueAcc * Math.pow(1.05, this.startinglevel - 1) * Math.pow(1.065, this.level - this.startinglevel);
-			this.evd = this.trueEvd * Math.pow(1.05, this.startinglevel - 1) * Math.pow(1.065, this.level - this.startinglevel);
-		}
+		
+		this.health = Math.floor(this.trueHealth * Math.pow(1.12, this.level));
+		this.atk = this.trueAtk * Math.pow(1.1, this.level);
+		this.matk = this.trueMatk * Math.pow(1.1, this.level);
+		this.def = this.trueDef * Math.pow(1.07, this.level);
+		this.mdef = this.trueMdef * Math.pow(1.07, this.level);
+		this.acc = this.trueAcc * Math.pow(1.05, this.level);
+		this.evd = this.trueEvd * Math.pow(1.05, this.level);
+		
 		if(typeof(this.weapon) != "undefined") {
 			this.health = Math.floor(this.health * this.weapon.health);
 			this.atk *= this.weapon.atk;
@@ -479,18 +460,18 @@ class combat_fighter_object {
 
 class fighter_SandSlime extends combat_fighter_object {
 	constructor(startinglevel, level, side) {
-		super(startinglevel, level, {health:49,atk:4,matk:4,def:3.5,mdef:3.5,acc:4,evd:3.8,mana:3,chargemax:50,aggro:3,size:1}, "unit", side, {fire:0.5,thunder:0.5,ice:1.5,earth:0.5,water:1.5,wind:0.8}, {burn:1}, {resource:[],amount:[],interval:[]}, {resource:["sand", "stone"],amount:[15, 30],interval:[1, 3]}, []);
+		super(startinglevel, level, {health:49,atk:3.6,matk:3.6,def:4,mdef:4,acc:4,evd:3.8,mana:3,chargemax:50,aggro:3,size:1}, "unit", side, {fire:0.5,thunder:0.5,ice:1.5,earth:0.5,water:1.5,wind:0.8}, {burn:1}, {resource:[],amount:[],interval:[]}, {resource:["sand", "stone"],amount:[15, 30],interval:[1, 3]}, []);
 		//this.template = fighter_SandSlime;
 		this.properName = "Sand Slime";
 		this.target;
 		this.skills = 
 		[new combat_damage_object(this, "Pound", 16, "atk", 1, [["none"], [1]], true), 
-		new combat_damage_object(this, "Sand Spit", 5, "atk", 1, "earth", "tactic_standard", [new combat_status_object("burn", 20, 1, {power:12,initialDuration:20}, this)]),
-		new combat_damage_object(this, "Sandblast", 40, "atk", 1, "earth")];
+		new combat_damage_object(this, "Sand Spit", 5, "atk", 1, [["earth"], [1]], "tactic_standard", [new combat_status_object("burn", 20, 1, {power:12,initialDuration:20}, this)]),
+		new combat_damage_object(this, "Sandblast", 40, "atk", 1, [["earth"], [1]])];
 		this.playerskills = 
-		[new combat_damage_object(this, "Pound", 16, "atk", 1, "none", true), 
-		new combat_damage_object(this, "Sand Spit", 5, "atk", 1, "earth", "tactic_standard", [new combat_status_object("burn", 20, 1, {power:12,initialDuration:20}, this)]),
-		new combat_damage_object(this, "Sandblast", 40, "atk", 1, "earth")];
+		[new combat_damage_object(this, "Pound", 16, "atk", 1, [["none"], [1]], true), 
+		new combat_damage_object(this, "Sand Spit", 5, "atk", 1, [["earth"], [1]], "tactic_standard", [new combat_status_object("burn", 20, 1, {power:12,initialDuration:20}, this)]),
+		new combat_damage_object(this, "Sandblast", 40, "atk", 1, [["earth"], [1]])];
 	}
 	ai() {
 		var _target;
@@ -733,8 +714,11 @@ function updateInfobox(side, num) {
 	infobox_output += '<br> Level: ' + _ct.level;
 	infobox_output += '<br> Charge: ' + _ct.charge + "/" + _ct.chargemax;
 	infobox_output += '<br> Mana: ' + _ct.currentMana + "/" + _ct.mana;
+	infobox_output += '<br> ATK: ' + Number(_ct.atk.toFixed(3));
+	infobox_output += '<br> MATK: ' + Number(_ct.matk.toFixed(3));
 	infobox_output += '<br> DEF: ' + Number(_ct.def.toFixed(3));
 	infobox_output += '<br> MDEF: ' + Number(_ct.mdef.toFixed(3));
+	infobox_output += '<br> DEF: ' + Number(_ct.acc.toFixed(3));
 	infobox_output += '<br> EVD: ' + Number(_ct.evd.toFixed(3)) + '<br><br><b>Buffs/Debuffs</b><br>';
 	infobox_output += (_ct.atk / _ct.dispAtk) + 'x ATK<br>'
 	infobox_output += (_ct.matk / _ct.dispMatk) + 'x MATK<br>'
@@ -832,12 +816,7 @@ function updateInfobox(side, num) {
 	for(c_uwu = 0; c_uwu < _ct.statusList.length; c_uwu ++) {
 		if(_ct.statusList[c_uwu].name != "buff" && _ct.statusList[c_uwu].name != "debuff") {
 			infobox_output += "<br>";
-			infobox_output += _ct.statusList[c_uwu].power;
-			infobox_output += "x ";
-			infobox_output += combat_status_names[_ct.statusList[c_uwu].name];
-			infobox_output += "for ";
-			infobox_output += _ct.statusList[c_uwu].duration / tickspeed;
-			infobox_output += "sec"
+			infobox_output += parseStatusForFighter(_ct.statusList[c_uwu]);
 		}
 	}
 	infobox_output += "</div>";
@@ -872,15 +851,19 @@ function updateMovebox(skill) {
 		movebox_output += "Magical";
 	}
 	movebox_output += '<br/>Accuracy: ';
-	movebox_output += skill.acc.toFixed(3);
-	movebox_output += '<br>Element: ';
-	movebox_output += skill.element;
+	movebox_output += Number(skill.acc.toFixed(3));
+	movebox_output += 'x<br>Element: ';
+	for(i = 0; i < skill.element[0].length; i++) {
+		if(i > 0) {
+			movebox_output += ", "
+		}
+		movebox_output += `${skill.element[1][i] * 100}% ${skill.element[0][i]} elemental`;
+	}
 	movebox_output += '</div><div class="combatMove"><b>Effects</b>';
 	if(typeof(skill.status) != "undefined") {
 		for(i = 0; i < skill.status.length; i++) {
 			movebox_output += "<br>";
-			movebox_output += combat_status_names[skill.status[i].name];
-			movebox_output += "applied";
+			movebox_output += parseStatusForMovebox(skill.status[i]);
 		}
 	}
 	movebox_output += "</div>";
@@ -897,6 +880,25 @@ function setTarget(tgt) {
 	}
 }
 
+function parseStatusForMovebox(status) {
+	let output = "";
+	switch(status.name) {
+		case "burn":
+			output += `${status.chance * 100}% chance to Burn target for ${status.params.power / (status.duration / tickspeed)} damage/second for ${status.duration / tickspeed} seconds`
+			break;
+	}
+	return output;
+}
+
+function parseStatusForFighter(status) {
+	let output = "";
+	switch(status.name) {
+		case "burn":
+			output += `Burning for ${status.params.power / (status.params.initialDuration / tickspeed)} damage/second for ${status.duration / tickspeed} seconds`
+			break;
+	}
+	return output;
+}
 
 //FORGING BEGINS HERE
 
