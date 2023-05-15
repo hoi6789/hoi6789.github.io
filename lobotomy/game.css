@@ -1,48 +1,27 @@
-body {
-  background-color: white;
+@font-face {
+  font-family: "Norwester";
+  src: url(assets/norwester.otf);
 }
-span#player1 {
-	position: relative;
-  left: 15%;
-	top: 30%;
+
+.cells {
+	display: flex;
 }
-span#player2 {
-	position: relative;
-  left: 15%;
-	top: 50%;
+.containment {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 4px;
+	margin: 5px;
+	flex: 1;
+	background-image: url("assets/Containment_Unit.png");
+	background-size: cover;
+	aspect-ratio: 950 / 581;
+	filter: brightness(50%);
 }
-span#player3 {
-	position: relative;
-  left: 15%;
-	top: 70%;
+.abnormality {
+	max-width: 50%;
 }
-span#enemy1 {
-	position: relative;
-	float: right;
-  right: 15%;
-	top: 30%;
-}
-span#enemy2 {
-	position: relative;
-	float: right;
-  right: 15%;
-	top: 40%;
-}
-span#enemy3 {
-	position: relative;
-	float: right;
-  right: 15%;
-	top: 50%;
-}
-span#enemy4 {
-	position: relative;
-	float: right;
-  right: 15%;
-	top: 60%;
-}
-span#enemy5 {
-	position: relative;
-	float: right;
-  right: 15%;
-	top: 70%;
+.nameplate {
+	text-align: center;
+	font-family: "Norwester";
 }

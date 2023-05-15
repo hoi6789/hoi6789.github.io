@@ -1,4 +1,4 @@
-var tickspeed = 5; //should be 5 in release ver
+var tickspeed = 50; //should be 5 in release ver
 var global_version = 100;
 
 var woodTime = 0;
@@ -35,7 +35,7 @@ function test(element) {
 
 var Game = {
 	activeZone: "Clearing",
-	createResource: function(zone, resource, subs) {
+	createResource: function(zone, resource, subs, caps) {
 		if(typeof(zone.materials[resource]) != "undefined"/* && zone.flags.materials[resource][0] == true*/) {
 			 var display = zone.name + resource + "Display";
 			 var output = "";
@@ -50,7 +50,8 @@ var Game = {
 			 output += '<br/><font size="1">'
 			 for(i = 0; i < subs.length; i++) {
 				 if(typeof(zone.materials[resource][i]) != "undefined"/* && zone.flags.materials[resource][i + 1] == true*/) {
-					 output += '<span id="'
+					 output += `<span id="${zone.name + resource}t${i}">${subs[i]}: ${Number(zone.materials[resource][i].toFixed(3))}/${Number(zone.resourcearray[resource][1][i])}<br/></span>`
+					 /*output += '<span id="'
 					 output += zone.name;
 					 output += resource;
 					 output += "t";
@@ -59,7 +60,8 @@ var Game = {
 					 output += subs[i];
 					 output += ": ";
 					 output += Number(zone.materials[resource][i].toFixed(3));
-					 output += "<br/></span>";
+					 output +=
+					 output += "<br/></span>";*/
 				 }
 			 }
 			 output += "</font></p>"
@@ -81,7 +83,7 @@ var Game = {
 		output += "</button></div>";
 		document.getElementById("buttonDisplay").innerHTML += output;
 	},
-	createBuildingButton: function(zone, zoneName, building, name, id, cost) {
+	createBuildingButton: function(zone, zoneName, building, name, id) {
 		var output = "<div class='tooltip' id='";
 		output += id;
 		output += "'>";
@@ -217,7 +219,14 @@ var Game = {
 				//console.log(q.flags.tools[key]);
 			}
 		})
-		
+	},
+	createBuildings: function(zone, zoneName) {
+		Object.keys(zone.flags.buildings).forEach(function(key) {
+			if(zone.flags.buildings[key] >= 1) {
+				Game.createBuildingButton(zone, zoneName, key, Buildings[key].name, zoneName);
+				//console.log(q.flags.tools[key]);
+			}
+		})
 	}
 }
 
@@ -237,20 +246,22 @@ class Zone {
 		this.specialCounters = Object.assign(JSON.parse(JSON.stringify(baseCounters)), extraCounters);
 	}
 	gain(resource, amount, tier) {
-		if(typeof(this.materials[resource]) != "undefined") {
-			if(typeof(this.materials[resource][tier]) == "undefined") {
-				this.materials[resource][tier] = 0;
-			}
-			this.materials[resource][tier] += amount;
-		} else {
-			this.materials[resource] = [];
-			this.materials[resource][tier] = amount;
+		if(typeof(this.materials[resource]) == "undefined") this.materials[resource] = []
+		if(typeof(this.materials[resource][tier]) == "undefined") {
+			this.materials[resource][tier] = 0;
 		}
+		if(amount > this.resourcearray[resource][1][tier] - this.materials[resource][tier]) {
+			amount = this.resourcearray[resource][1][tier] - this.materials[resource][tier]
+		}
+		if(amount < 0) amount = 0;
+		this.materials[resource][tier] += amount;
 	}
 	amount(resource) {
 		var tally = 0;
 		for(i = 0; i < this.materials[resource].length; i++) {
-			tally += this.materials[resource][i];
+			if(typeof(this.materials[resource][i] != "undefined")) {
+				tally += this.materials[resource][i];
+			}
 		}
 		return tally;
 	}
@@ -259,11 +270,16 @@ class Zone {
 		var q = this;
 		for(i = 0; i < resource.length; i++) {
 			if(max_tier[i] == -1) {
-				max_tier[i] = this.materials[resource[i]].length;
+				if(typeof(this.materials[resource[i]]) != "undefined") {
+					max_tier[i] = this.materials[resource[i]].length;
+				}
+				else {
+					max_tier[i] = 0;
+				}
 			}
 			var t2 = 0;
 			for(j = min_tier[i]; j <= max_tier[i]; j++) {
-				if(typeof(this.materials[resource[i]][j]) != "undefined") {
+				if(typeof(this.materials[resource[i]]) != "undefined") {
 					t2 += this.materials[resource[i]][j];
 				}
 			}
@@ -305,6 +321,7 @@ class Zone {
 		if(this.spend(costs[0], costs[1], costs[2], costs[3]) == 1) {
 			if(typeof(this.buildings[building]) == "undefined") {
 				this.buildings[building] = 0;
+				this.flags.buildings[building] = 2
 			}
 			this.buildings[building]++;
 		}
@@ -318,7 +335,7 @@ class Zone {
 	createResources() {
 		var q = this;
 		Object.keys(this.resourcearray).forEach(function(key) {
-			Game.createResource(q, key, q.resourcearray[key]);
+			Game.createResource(q, key, q.resourcearray[key][0]);
 		})
 	}
 	checkBuildings() {
@@ -393,6 +410,7 @@ class Zone {
 
 var Buildings = {
 	farm: {
+		name: "Farm",
 		blurb: {
 			normal: "Produces wood and grows plants.",
 			fibers: "Long durable fibers good for construction.",
@@ -414,10 +432,11 @@ var Buildings = {
 		}
 	},
 	waypost: {
+		name: "Waypost",
 		blurb: {
 			normal: "Marks the way and allows you to explore."
 		},
-		cost: [[], [], []],
+		cost: [["wood"], [20], [0], [-1]],
 		ratio: 1.2,
 		modes: ["normal"],
 		properties: {
@@ -472,12 +491,12 @@ var ToolItems = {
 }
 
 var nauvisResourceArray = {
-	wood: ["timber", "lumber"], 
-	soil: ["mud", "clay"],
-	rope: ["fibers"],
-	adhesive: ["sapglue"],
-	stone: ["stone"], 
-	ore: ["copper", "tin", "zinc"],
+	wood: [["timber", "lumber"], [50, 0]], 
+	soil: [["mud", "clay"], [50, 0]],
+	rope: [["fibers"], [10]],
+	adhesive: [["sapglue"], [10]],
+	stone: [["stone"], [50]], 
+	ore: [["copper", "tin", "zinc"], [10, 10, 10]],
 }
 var nauvisSpecialCounters = {
 	woodTimeMax: 15,
@@ -504,6 +523,10 @@ var nauvisFlags = {
 	},
 	tools: {
 		tieroneAxe: 0
+	},
+	buildings: {
+		farm: 0,
+		waypost: 0
 	}
 }
 class Encounter {
@@ -660,8 +683,6 @@ function tooltipBuilding(name, mode, zone) {
 	return output;
 }
 
-
-
 function tooltipTool(tool) {
 	var data = ToolItems[tool];
 	var output = data.blurb;
@@ -698,7 +719,8 @@ function tooltipTool(tool) {
 var quicktime = 0;
 var time_payback = new Date();
 
-nauvis.gain("wood", 100, 0);
+//nauvis.gain("wood", 10000, 0);
+//nauvis.gain("wood", 10000, 1);
 nauvis.gain("soil", 100, 0);
 setInterval(timer, 1000/tickspeed);
 function timer() {
@@ -731,30 +753,45 @@ function timer() {
 	
 	nauvis.checkTools("nauvis");
 	SpecialButtons.tickingHarvestWood(nauvis);
+	SpecialButtons.tickingHarvestSoil(nauvis);
 	/////////////////////////////////////////////////////////////
 	
 	if(Game.activeZone == "Clearing") {
 		nauvis.createResources();
 		Game.createTools(nauvis, "nauvis")
+		Game.createBuildings(nauvis, "nauvis")
 		Game.createSpecialButton(nauvis, "SpecialButtons.harvestWood(nauvis)", "Collect Wood", "nauvisHarvestWood");
-		Game.createBuildingButton(nauvis, "nauvis", "farm", "Farm", "nauvisBuildFarm");
-		Game.createTooltip("nauvisBuildFarm", tooltipBuilding("farm", "normal", nauvis));
 		Game.createTooltip("nauvisHarvestWood", tooltipGeneric(["wood in queue:", nauvis.specialCounters.woodQueue + "/" + nauvis.specialCounters.woodQueueMax, "harvest progress:", nauvis.specialCounters.woodTime + "/" + nauvis.specialCounters.woodTimeMax]));
-		Game.createConfigurator(nauvis, "nauvis", "farm", "Farm Configuration", "nauvisConfigFarm");
-		Game.createConfiguratorToggle(nauvis, "nauvis", "nauvisConfigFarm", "farm");
-		Game.createConfiguratorMode(nauvis, "nauvis", "nauvisConfigFarm", "farm", "fibers", "Fibrous Stalks", "nauvisConfigModeFibers");
-		Game.createTooltip("nauvisConfigModeFibers", tooltipBuilding("farm", "fibers", nauvis));
-		//Game.createConfiguratorMode(nauvis, "nauvis", "nauvisConfigFarm", "farm", "resin", "Resiny Bark", "nauvisConfigModeResin");
-		//Game.createTooltip("nauvisConfigModeResin", tooltipBuilding("farm", "resin", nauvis));
-		if(nauvis.amount("wood") > 100 && nauvis.flags.tools.tieroneAxe == 0) {
-			nauvis.flags.tools.tieroneAxe = 1;
-			console.log("BITCH");
-		}
-		if(nauvis.level >= 1) {
-			SpecialButtons.tickingHarvestSoil(nauvis);
+		
+		if(nauvis.flags.misc.unlockedSoil == true) {
 			Game.createSpecialButton(nauvis, "SpecialButtons.harvestSoil(nauvis)", "Collect Soil", "nauvisHarvestSoil");
 			Game.createTooltip("nauvisHarvestSoil", tooltipGeneric(["soil in queue:", nauvis.specialCounters.soilQueue + "/" + nauvis.specialCounters.soilQueueMax, "harvest progress:", nauvis.specialCounters.soilTime + "/" + nauvis.specialCounters.soilTimeMax]));
 		}
+		
+		//if(nauvis.flags.misc.unlockedSoil == true) {
+		//	Game.createBuildingButton(nauvis, "nauvis", "farm", "nauvisBuildFarm");
+		//	Game.createTooltip("nauvisBuildFarm", tooltipBuilding("farm", "normal", nauvis));
+		//}
+		if(nauvis.flags.buildings.farm == 2) {
+			Game.createConfigurator(nauvis, "nauvis", "farm", "Farm Configuration", "nauvisConfigFarm");
+			Game.createConfiguratorToggle(nauvis, "nauvis", "nauvisConfigFarm", "farm");
+		}
+		
+		//Game.createConfiguratorMode(nauvis, "nauvis", "nauvisConfigFarm", "farm", "fibers", "Fibrous Stalks", "nauvisConfigModeFibers");
+		//Game.createTooltip("nauvisConfigModeFibers", tooltipBuilding("farm", "fibers", nauvis));
+		//Game.createConfiguratorMode(nauvis, "nauvis", "nauvisConfigFarm", "farm", "resin", "Resiny Bark", "nauvisConfigModeResin");
+		//Game.createTooltip("nauvisConfigModeResin", tooltipBuilding("farm", "resin", nauvis));
+		if(nauvis.amount("wood") > 10 && nauvis.flags.tools.tieroneAxe == 0) {
+			nauvis.flags.misc.unlockedSoil = true;
+			nauvis.flags.tools.tieroneAxe = 1;
+			console.log("BITCH");
+		}
+		
+		if(nauvis.amount("soil") > 10 && nauvis.flags.buildings.farm == 0) {
+			nauvis.flags.buildings.farm = 1;
+			console.log("owo");
+		}
+		
 	}
 	
 	if(Game.activeZone == "Testville") {
