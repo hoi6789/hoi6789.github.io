@@ -59,6 +59,17 @@ function addDarkening(obj) {
 	obj.style.filter = "brightness(50%)";
 }
 
-function createMenu() {
-	document.createElement();
+function createMenu(event, w, h) {
+	//event.stopPropagation();
+	var _p = document.getElementById("clickPanel");
+	_p.style.left = event.clientX + "px";
+	_p.style.top = event.clientY + "px";
+	_p.style.visibility = "visible";
+	_p.style.width = w + "px";
+	_p.style.height = h + "px";
+	
+}
+
+function dismissMenu() {
+	document.getElementById("clickPanel").style.visibility = "hidden";
 }

@@ -12,7 +12,7 @@
 	<div class="cells">
 		<div class="singleCell">
 			<div class="nameplate">One Sin and Hundreds of Good Deeds</div>
-			<div class="containment" onmouseover="removeDarkening(this)" onmouseout="addDarkening(this)" onclick="createMenu()"> <div position="absolute">hey</div> <img class="abnormality" src="assets/onesin.webp"> </div>
+			<div class="containment" onmouseover="removeDarkening(this)" onmouseout="addDarkening(this)" onclick="createMenu(event, 200, 200)"> <div position="absolute">hey</div> <img class="abnormality" src="assets/onesin.webp"> </div>
 		</div>
 		<div class="singleCell">
 			<div>Test</div>
@@ -32,7 +32,7 @@
 	<button onclick="updateEnergy(6);">Work Insight</button>
 	<button onclick="updateEnergy(7);">Work Attachment</button>
 	<button onclick="updateEnergy(4);">Work Repression</button>
-	
+	<div id="clickPanel">weary</div>
 	<script src="game.js"></script>
 </body>
 </html>
