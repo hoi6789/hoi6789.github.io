@@ -1509,7 +1509,7 @@ function timer() {
 		if (rs_check["4"] != true) {
 			document.getElementById("toolstation11").setAttribute("hidden", true);
 			document.getElementById("toolstation12").setAttribute("hidden", true);
-			document.getElementById("campsiteFarm2").removeAttribute("hidden");
+			document.getElementById("campsiteFarm2").setAttribute("hidden", true);
 		}
 		
 		if (rs_check["4"] == true) {
