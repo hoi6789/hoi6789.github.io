@@ -93,7 +93,9 @@ hi lol
 						Brass
 					</p>
 					</div>
-
+                    <p hidden id="medallionDisplay">
+                        Medallions
+                    </p>
 		<p id="diagnostic">
 			Score
 		</p>
@@ -164,6 +166,21 @@ hi lol
 </div>
 <!-- Research Station -->
 
+<!-- Observatory -->
+<div class="tooltip">
+    <button hidden onclick="clickCounter(campsiteResearch2)" id="campsiteResearch2"><font size="2">Observatory</font></button>
+    <span class="tooltiptext" id="tooltipCampsiteResearch2">Allows you to conduct research. The more the better!</span>
+</div>
+<!-- Research Station -->
+
+
+<!-- Waypost -->
+<div class="tooltip">
+    <button hidden onclick="clickCounter(campsiteWaypost)" id="campsiteWaypost"><font size="2">Waypost</font></button>
+    <span class="tooltiptext" id="tooltipCampsiteWaypost">Allows you to conduct research. The more the better!</span>
+</div>
+<!-- Research Station -->
+
 <!-- Smelter -->
 <div class="tooltip">
     <button hidden onclick="clickCounter(campsiteSmelter)" id="campsiteSmelter"><font size="2">Smelter</font></button>
@@ -178,10 +195,24 @@ hi lol
 </div>
 <!-- Agri Plot -->
 
+<!-- Lumber Mill -->
+<div class="tooltip">
+    <button hidden onclick="clickCounter(campsiteFarm2)" id="campsiteFarm2"><font size="2">Lumber Mill</font></button>
+    <span class="tooltiptext" id="tooltipCampsiteFarm2">grow trees</span>
+</div>
+<!-- Agri Plot -->
+
 <!-- Mine -->
 <div class="tooltip">
     <button hidden onclick="clickCounter(campsiteMine)" id="campsiteMine"><font size="2">Mine</font></button>
     <span class="tooltiptext" id="tooltipCampsiteMine">mine rocks</span>
+</div>
+<!-- Mine -->
+
+<!-- Mine -->
+<div class="tooltip">
+    <button hidden onclick="clickCounter(campsiteMine2)" id="campsiteMine2"><font size="2">Excavator</font></button>
+    <span class="tooltiptext" id="tooltipCampsiteMine2">mine rocks</span>
 </div>
 <!-- Mine -->
 
@@ -191,6 +222,13 @@ hi lol
     <span class="tooltiptext" id="tooltipSmeltCopper">i wont even bother</span>
 </div>
 <!-- Smelt Copper -->
+
+<!-- Factory -->
+<div class="tooltip">
+    <button hidden onclick="clickCounter(campsiteFactory)" id="campsiteFactory"><font size="2">Factory</font></button>
+    <span class="tooltiptext" id="tooltipCampsiteFactory">mine rocks</span>
+</div>
+<!-- Factory -->
 
 <br/>
 <br/>
@@ -232,12 +270,40 @@ hi lol
 </div>
 <!-- Copper Axe -->
 
+<!-- Composting -->
+<div class="tooltip">
+    <button hidden onclick="clickCheck(toolstation11, ts_check)" id="toolstation11"><font size="2">Composting</font></button>
+    <span class="tooltiptext" id="tooltipToolstation11">farms make dirt</span>
+</div>
+<!-- Composting -->
+
+<!-- Soil Enrichment -->
+<div class="tooltip">
+    <button hidden onclick="clickCheck(toolstation12, ts_check)" id="toolstation12"><font size="2">Soil Enrichment</font></button>
+    <span class="tooltiptext" id="tooltipToolstation12">dirt makes farms gooder</span>
+</div>
+<!--  -->
+
 <!-- Copper Pickaxe -->
 <div class="tooltip">
     <button hidden onclick="clickCheck(toolstation6, ts_check)" id="toolstation6"><font size="2">Copper Pickaxe</font></button>
     <span class="tooltiptext" id="tooltipToolstation6">stone mult 1.2</span>
 </div>
 <!-- Copper Pickaxe -->
+
+<!-- Richer Veins -->
+<div class="tooltip">
+    <button hidden onclick="clickCheck(toolstation13, ts_check)" id="toolstation13"><font size="2">Richer Veins</font></button>
+    <span class="tooltiptext" id="tooltipToolstation13">farms make dirt</span>
+</div>
+<!--  -->
+
+<!-- Digging Techniques -->
+<div class="tooltip">
+    <button hidden onclick="clickCheck(toolstation14, ts_check)" id="toolstation14"><font size="2">Digging Techniques</font></button>
+    <span class="tooltiptext" id="tooltipToolstation14">dirt makes farms gooder</span>
+</div>
+<!--  -->
 
 <!-- Copper Instruments -->
 <div class="tooltip">
@@ -260,6 +326,61 @@ hi lol
 </div>
 <!-- Bronze Pickaxe -->
 
+<!-- Bronze Plough -->
+<div class="tooltip">
+    <button hidden onclick="clickCheck(toolstation15, ts_check)" id="toolstation15"><font size="2">Bronze Plough</font></button>
+    <span class="tooltiptext" id="tooltipToolstation15">yay more dirt</span>
+</div>
+<!-- Bronze Pickaxe -->
+
+<!-- Ore Sorting -->
+<div class="tooltip">
+    <button hidden onclick="clickCheck(toolstation16, ts_check)" id="toolstation16"><font size="2">Ore Sorting</font></button>
+    <span class="tooltiptext" id="tooltipToolstation16">iron/coal in mines</span>
+</div>
+<!-- Ore Sorting -->
+
+<!-- Conveyor Belts -->
+<div class="tooltip">
+    <button hidden onclick="clickCheck(toolstation17, ts_check)" id="toolstation17"><font size="2">Conveyor Belts</font></button>
+    <span class="tooltiptext" id="tooltipToolstation17">iron/coal in geology</span>
+</div>
+<!-- Conveyor Belts -->
+
+<!-- Tailings Refinery -->
+<div class="tooltip">
+    <button hidden onclick="clickCheck(toolstation18, ts_check)" id="toolstation18"><font size="2">Tailings Refining</font></button>
+    <span class="tooltiptext" id="tooltipToolstation18">iron/coal in geology</span>
+</div>
+<!-- Tailings Refinery -->
+
+<!-- Fertilization -->
+<div class="tooltip">
+    <button hidden onclick="clickCheck(toolstation19, ts_check)" id="toolstation19"><font size="2">Fertilization</font></button>
+    <span class="tooltiptext" id="tooltipToolstation19">iron/coal in geology</span>
+</div>
+<!-- Fertilization -->
+
+<div class="tooltip">
+    <button hidden onclick="clickCheck(toolstation20, ts_check)" id="toolstation20"><font size="2">Clearcutting</font></button>
+    <span class="tooltiptext" id="tooltipToolstation20">iron/coal in geology</span>
+</div>
+
+<div class="tooltip">
+    <button hidden onclick="clickCheck(toolstation22, ts_check)" id="toolstation22"><font size="2">Lumber Milling</font></button>
+    <span class="tooltiptext" id="tooltipToolstation22">iron/coal in geology</span>
+</div>
+
+<div class="tooltip">
+    <button hidden onclick="clickCheck(toolstation23, ts_check)" id="toolstation23"><font size="2">Power Dredge</font></button>
+    <span class="tooltiptext" id="tooltipToolstation23">iron/coal in geology</span>
+</div>
+
+<div class="tooltip">
+    <button hidden onclick="clickCheck(toolstation21, ts_check)" id="toolstation21"><font size="2">Applied Science</font></button>
+    <span class="tooltiptext" id="tooltipToolstation21">iron/coal in geology</span>
+</div>
+
 <!-- Coal Smelters -->
 <div class="tooltip">
     <button hidden onclick="clickCheck(toolstation10, ts_check)" id="toolstation10"><font size="2">Coal Smelters</font></button>
@@ -275,6 +396,13 @@ hi lol
     <span class="tooltiptext" id="tooltipResearch1">Discover Fire. Required for all other research upgrades. Cost: 10 Science</span>
 </div>
 <!-- Fire -->
+
+<!-- Logistics -->
+<div class="tooltip">
+    <button hidden onclick="clickCheck(research9, rs_check)" id="research9"><font size="2">Logistics</font></button>
+    <span class="tooltiptext" id="tooltipResearch9">Look around you. See what's available. Unlocks exploration and a few new resources. Cost: 30 Science</span>
+</div>
+<!-- Logictics -->
 
 <!-- Exploration -->
 <div class="tooltip">
@@ -292,7 +420,7 @@ hi lol
 
 <!-- Metallurgy -->
 <div class="tooltip">
-    <button hidden onclick="clickclickCheck(research6, rs_check)" id="research6"><font size="2">Metallurgy</font></button>
+    <button hidden onclick="clickCheck(research6, rs_check)" id="research6"><font size="2">Metallurgy</font></button>
     <span class="tooltiptext" id="tooltipResearch6">Smelt materials into different forms. Cost: 120 Science</span>
 </div>
 <!-- Metallurgy -->
@@ -322,6 +450,13 @@ hi lol
 <div class="tooltip">
     <button hidden onclick="clickCheck(research8, rs_check)" id="research8"><font size="2">Alloys</font></button>
     <span class="tooltiptext" id="tooltipResearch8">Combine metals together to make new ones. Cost: idk bro</span>
+</div>
+<!-- Mining -->
+
+<!-- Industrialization -->
+<div class="tooltip">
+    <button hidden onclick="clickCheck(research10, rs_check)" id="research10"><font size="2">Industrialization</font></button>
+    <span class="tooltiptext" id="tooltipResearch10">Combine metals together to make new ones. Cost: idk bro</span>
 </div>
 <!-- Mining -->
 
@@ -423,6 +558,13 @@ hi lol
             <span class="tooltiptextinverse" id="tooltipsmelterBrass">Extract Brass from other metal.</span>
         </div>
         <!-- Alloy Brass -->
+
+        <!-- Iron -->
+        <div class="tooltip">
+            <button hidden onclick='clickSmelter("iron")' id="smelterIron"><font size="2">Iron</font></button>
+            <span class="tooltiptextinverse" id="tooltipsmelterIron">we need to cook.</span>
+        </div>
+        <!-- Iron -->
 
     </div>
 </div>

@@ -1,3 +1,17 @@
+v. indev 1.0
+10/xx/2023
+definitive release version! this version of the game is now end of life
+this isn't the fabled Massive Update, that's 5 hours away (tm)
+
+game now works better when tabbed out
+5 new buildings!
+13 new tools!
+2 new researches!
+even more if you count all the content didn't show up even though i added them in previous patches!
+prestige!
+rebalancing, qol, bug fixes
+fixed a bug where metallurgy wouldn't unlock, making content added after indev 0.3 inaccessable
+
 v. indev 0.6
 1/19/2020
 internal rewrites

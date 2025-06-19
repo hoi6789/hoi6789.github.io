@@ -21,6 +21,8 @@
     background-color: lightgrey;
     position: absolute;
     z-index: 1;
+    top:130%;
+    left: 0;
 }
 .tooltip .tooltiptextinverse{ /*i don't know how to do css lol*/
     visibility: hidden;
@@ -34,6 +36,7 @@
 	right: 0;
     position: absolute;
     z-index: 1;
+    top:130%;
 }
 .tooltipbr .tooltiptext {
     visibility: hidden;

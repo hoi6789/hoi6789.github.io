@@ -1,6 +1,6 @@
 var tickspeed = 50; //should be 5 in release ver
 var global_version = 100;
-
+/*
 var woodTime = 0;
 var woodQueue = 0;
 var woodTimeMax = 15;
@@ -25,7 +25,7 @@ var sandTime = 0;
 var sandQueue = 0;
 var sandTimeMax = 20;
 var sandQueueMax = 8;
-var sandClay = 0.65;
+var sandClay = 0.65;*/
 var i;
 var j;
 
@@ -98,8 +98,10 @@ var Game = {
 			output += zone.buildings[building];
 			output += ")";
 		}
-		output += "</button></div>";
-		document.getElementById("buttonDisplay").innerHTML += output;
+		output += "</button><span class='tooltiptext'>";
+		output += tooltipBuilding(building, "normal", zone);
+		output += "</div>";
+		document.getElementById("buildingDisplay").innerHTML += output;
 	},
 	createToolButton: function(zone, zoneName, tool, name, id) {
 		var output = "<div class='tooltip' id='";
@@ -120,6 +122,7 @@ var Game = {
 	},
 	purgeButtons: function() {
 		document.getElementById("buttonDisplay").innerHTML = "";
+		document.getElementById("buildingDisplay").innerHTML = "";
 		document.getElementById("toolDisplay").innerHTML = "";
 		document.getElementById("explorationDisplay").innerHTML = "";
 	},
@@ -321,6 +324,7 @@ class Zone {
 		if(this.spend(costs[0], costs[1], costs[2], costs[3]) == 1) {
 			if(typeof(this.buildings[building]) == "undefined") {
 				this.buildings[building] = 0;
+				this.configSettings[building] = {};
 				this.flags.buildings[building] = 2
 			}
 			this.buildings[building]++;
@@ -342,6 +346,7 @@ class Zone {
 		var q = this;
 		Object.keys(q.buildings).forEach(function(key) {
 			var tally = q.buildings[key];
+			console.log(tally);
 			if(typeof(q.configSettings[key].modes) != "undefined") {
 				Object.keys(q.configSettings[key].modes).forEach(function(modeSet) {
 					Buildings.interperet(q, key, modeSet, q.configSettings[key].modes[modeSet]);
@@ -466,6 +471,27 @@ var Buildings = {
 }
 
 var ToolItems = {
+	crudeAnvil: {
+		name: "Stone \"Anvil\"",
+		blurb: "A platform to help you produce simple tools.",
+		cost: [["wood", "adhesive"], [50, 15], [0, 0], [-1, -1]],
+		values: [2, 4],
+		properties: [["Max Wood in Queue:&nbsp", "Wood Harvest Time:&nbsp"], [" +4", " -2"]],
+		execute: function(zone) {
+			zone.specialCounters.woodTimeMax -= this.values[0];
+			zone.specialCounters.woodQueueMax += this.values[1];
+		}
+	},
+	firepit: {
+		name: "Fire Pit",
+		blurb: "The start of a signal fire.",
+		cost: [["wood", "stone"], [10, 10], [0, 0], [-1, -1]],
+		values: [],
+		properties: [[], []],
+		execute: function(zone) {
+
+		}
+	},
 	tieroneAxe: {
 		name: "Wooden Axe",
 		blurb: "Cut wood faster.",
@@ -492,37 +518,42 @@ var ToolItems = {
 
 var nauvisResourceArray = {
 	wood: [["timber", "lumber"], [50, 0]], 
+	stone: [["stone"], [50]], 
 	soil: [["mud", "clay"], [50, 0]],
 	rope: [["fibers"], [10]],
 	adhesive: [["sapglue"], [10]],
-	stone: [["stone"], [50]], 
 	ore: [["copper", "tin", "zinc"], [10, 10, 10]],
 }
 var nauvisSpecialCounters = {
 	woodTimeMax: 15,
-	woodQueueMax: 10,
+	woodQueueMax: 20,
 	soilTimeMax: 15,
-	soilQueueMax: 10
+	soilQueueMax: 10,
+	stoneTimeMax: 40,
+	stoneQueueMax: 10
 }
 var nauvisExtraCounters = {
 	woodTime: 0,
 	woodQueue: 0,
 	soilTime: 0,
-	soilQueue: 0
+	soilQueue: 0,
+	stoneTime: 0,
+	stoneQueue: 0
 }
 var nauvisFlags = {
 	misc: {
 		unlockedSoil: false,
+		unlockedStone: false,
 		unlockedFarm: false,
 		unlockedFibers: false,
 		unlockedResin: false
 	},
 	materials: {
-		wood: [true, true],
-		soil: [true, true]
+		//deprecated? 
 	},
 	tools: {
-		tieroneAxe: 0
+		tieroneAxe: 0,
+		firepit: 1
 	},
 	buildings: {
 		farm: 0,
@@ -611,7 +642,24 @@ var SpecialButtons = {
 				zone.specialCounters.soilQueue--;
 			}
 		}
-	}
+	},
+	harvestStone: function(zone) {
+		zone.specialCounters.stoneQueue++;
+		zone.specialCounters.stoneTime++;
+	},
+	tickingHarvestStone: function(zone) {
+		if(zone.specialCounters.stoneQueue > 0) {
+			if(zone.specialCounters.stoneQueue > zone.specialCounters.stoneQueueMax) {
+				zone.specialCounters.stoneQueue = zone.specialCounters.stoneQueueMax;
+			}
+			zone.specialCounters.stoneTime++;
+			if(zone.specialCounters.stoneTime >= zone.specialCounters.stoneTimeMax) {
+				zone.specialCounters.stoneTime = 0;
+				zone.gain("stone", 1, 0);
+				zone.specialCounters.stoneQueue--;
+			}
+		}
+	},
 }
 
 function tooltipGeneric(data) {
@@ -754,6 +802,7 @@ function timer() {
 	nauvis.checkTools("nauvis");
 	SpecialButtons.tickingHarvestWood(nauvis);
 	SpecialButtons.tickingHarvestSoil(nauvis);
+	SpecialButtons.tickingHarvestStone(nauvis);
 	/////////////////////////////////////////////////////////////
 	
 	if(Game.activeZone == "Clearing") {
@@ -761,7 +810,9 @@ function timer() {
 		Game.createTools(nauvis, "nauvis")
 		Game.createBuildings(nauvis, "nauvis")
 		Game.createSpecialButton(nauvis, "SpecialButtons.harvestWood(nauvis)", "Collect Wood", "nauvisHarvestWood");
+		Game.createSpecialButton(nauvis, "SpecialButtons.harvestStone(nauvis)", "Collect Stone", "nauvisHarvestStone");
 		Game.createTooltip("nauvisHarvestWood", tooltipGeneric(["wood in queue:", nauvis.specialCounters.woodQueue + "/" + nauvis.specialCounters.woodQueueMax, "harvest progress:", nauvis.specialCounters.woodTime + "/" + nauvis.specialCounters.woodTimeMax]));
+		Game.createTooltip("nauvisHarvestStone", tooltipGeneric(["stone in queue:", nauvis.specialCounters.stoneQueue + "/" + nauvis.specialCounters.stoneQueueMax, "harvest progress:", nauvis.specialCounters.stoneTime + "/" + nauvis.specialCounters.stoneTimeMax]));
 		
 		if(nauvis.flags.misc.unlockedSoil == true) {
 			Game.createSpecialButton(nauvis, "SpecialButtons.harvestSoil(nauvis)", "Collect Soil", "nauvisHarvestSoil");
