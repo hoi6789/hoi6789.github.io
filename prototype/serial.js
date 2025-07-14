@@ -8,15 +8,24 @@ var readableStreamClosed;
 var writableStreamClosed;
 
 var enableDecoder = true;
-var enableEncoder = true;
+var enableEncoder = false;
 
 var table;
 
-for(i = 0; i < 15; i++) {
-    var output = ```<tr><td>P${Math.floor(i / 8)}.${i % 8}}</td></tr>```;
+for(i = 0; i < 16; i++) {
+    var output = "<tr>";
+    var maj = Math.floor(i / 8);
+    var min;
+    (i < 8) ? min = i % 8 : min = 7 - (i % 8); 
+    output += `<td> <label for="p${maj}${min}">P${maj}.${min}</label><input onclick="" type="checkbox" id="p${maj}${min}"> </td>`;
+    if(i == 0) {
+        output += `<td rowspan="16"> <img src="relayboard.png" alt="relayboard" height="500"> </td>`;
+    }
+    maj += 2;
+    output += `<td> <label for="p${maj}${min}">P${maj}.${min}</label><input onclick="" type="checkbox" id="p${maj}${min}"> </td>`;
     document.getElementById("feedbackTable").innerHTML += output;
-
 }
+
 
 if("serial" in navigator) {
     document.getElementById("output").innerHTML = "Serial Supported"
@@ -24,7 +33,7 @@ if("serial" in navigator) {
     document.getElementById("output").innerHTML = "Serial Not Supported"
 }
 // don't ask me what any of this does or how it works
-// as far as i'm concerned it doesn't, and it's all black magic to be
+// as far as i'm concerned it doesn't, and it's all black magic to me
 async function getSerial() {
     port = await navigator.serial.requestPort();
     document.getElementById("output").innerHTML = "Connected to: " + await port;
@@ -47,7 +56,7 @@ async function openSerial() {
     } else {
         writer = await port.writable.getWriter();
     }
-    var locked = true;
+    locked = true;
     beginListening();
 
 }
@@ -63,7 +72,7 @@ async function beginListening() {
             break;
         }
         // value is a Uint8Array.
-        document.getElementById("outputStream").innerHTML += value;
+        document.getElementById("outputStream").innerHTML += value.toHex();
         document.getElementById("outputStream").innerHTML += "<br>";
     }
 }
