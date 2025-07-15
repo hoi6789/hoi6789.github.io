@@ -90,7 +90,7 @@ async function sendMessage() { // BAD BAD BAD BAD BAD
 
 async function flushBuffer() {
     for(i = 0; i < buffer.length; i++) {
-        buffer[i] = buffer[i].toString(16);
+        buffer[i] = Number(buffer[i]).toString(16);
     }
     document.getElementById("outputStream").innerHTML += buffer;
     document.getElementById("outputStream").innerHTML += "<br>";
