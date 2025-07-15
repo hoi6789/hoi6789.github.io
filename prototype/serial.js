@@ -76,7 +76,7 @@ async function beginListening() {
         // value is a Uint8Array.
         buffer = buffer.concat(value);
         clearTimeout(timeout);
-        if(buffer.length >= 5) {
+        if(buffer.length >= 8) {
             flushBuffer();
         } else {
             timeout = setTimeout(flushBuffer, 1000);
@@ -89,8 +89,8 @@ async function sendMessage() { // BAD BAD BAD BAD BAD
 }
 
 async function flushBuffer() {
-    for(item of buffer) {
-        item.toString(16);
+    for(i = 0; i < buffer.length; i++) {
+        buffer[i] = buffer[i].toString(16);
     }
     document.getElementById("outputStream").innerHTML += buffer;
     document.getElementById("outputStream").innerHTML += "<br>";
