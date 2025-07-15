@@ -12,6 +12,9 @@ var enableEncoder = false;
 
 var table;
 
+var buffer = [];
+var timeout;
+
 for(i = 0; i < 16; i++) {
     var output = "<tr>";
     var maj = Math.floor(i / 8);
@@ -61,7 +64,6 @@ async function openSerial() {
 
 }
 
-openSerial().then(console.log);
 
 async function beginListening() {
     while(locked) {
@@ -72,11 +74,26 @@ async function beginListening() {
             break;
         }
         // value is a Uint8Array.
-        document.getElementById("outputStream").innerHTML += value.toHex();
-        document.getElementById("outputStream").innerHTML += "<br>";
+        buffer = buffer.concat(value);
+        clearTimeout(timeout);
+        if(buffer.length >= 5) {
+            flushBuffer();
+        } else {
+            timeout = setTimeout(flushBuffer, 1000);
+        }
     }
 }
 
-async function sendMessage() {
+async function sendMessage() { // BAD BAD BAD BAD BAD
     await writer.write(document.getElementById("input").value);
+}
+
+async function flushBuffer() {
+    for(item of buffer) {
+        item.toString(16);
+    }
+    document.getElementById("outputStream").innerHTML += buffer;
+    document.getElementById("outputStream").innerHTML += "<br>";
+    buffer = [];
+    clearTimeout(timeout);
 }
