@@ -15,24 +15,24 @@
     </td>
 
     <td>
-      <p id='output'>Connected to: </p>
+      <p id='output'>Serial Not Supported</p>
       <button onclick='getSerial()'>Choose Serial Device</button>
       <form>
         <label for="brate">Baud Rate:</label><br>
         <input type="number" id="brate" name="brate" value="9600"><br>
         <input type="button" onclick="openSerial()" value="Set Baud Rate"><br><br>
 
-        <input type="text" id="input1" name="input1" maxlength="2" size="1" value="7c">
-        <input type="text" id="input2" name="input2" maxlength="2" size="1" value="06">
-        <input type="text" id="input3" name="input3" maxlength="2" size="1">
-        <input type="text" id="input4" name="input4" maxlength="2" size="1">
-        <input type="text" id="input5" name="input5" maxlength="2" size="1">
-        <input type="text" id="input6" name="input6" maxlength="2" size="1">
-        <input type="text" id="input7" name="input7" maxlength="2" size="1">
-        <input type="text" id="input8" name="input8" maxlength="2" size="1" value="cf"><br>
+        <label for="hostMCU">Host MCU:</label>
+        <input type="number" id="hostMCU" maxlength="2" size="1" value="0" min="0" max="16">
+        <label for="targetMCU">Target MCU:</label>
+        <input type="number" id="targetMCU" maxlength="2" size="1" value="3" min="0" max="16"><br>
+        <label for="pMajor">P</label>
+        <input type="number" id="pMajor" maxlength="1" size="1" value="0" min="0" max="9">
+        <label for="pMinor">.</label>
+        <input type="number" id="pMinor" maxlength="1" size="1" value="0" min="0" max="7">
+        <label for="setOnOff">=</label>
+        <input type="number" id="setOnOff" maxlength="1" size="1" value="0" min="0" max="1"><br>
         <input type="button" onclick="sendMessage()" value="Send Message">
-        <input type="checkbox" onclick="toggleAutoChecksum()" name="autoChecksum" id="autoChecksum">
-        <label for="autoChecksum">Automatically Generate Checksum Byte</label>
       </form>
       <p>Output Stream:</p>
       <p id="outputStream"></p>

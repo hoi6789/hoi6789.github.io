@@ -31,7 +31,7 @@ for(i = 0; i < 16; i++) {
 
 
 if("serial" in navigator) {
-    document.getElementById("output").innerHTML = "Serial Supported"
+    document.getElementById("output").innerHTML = "Awaiting Serial Device"
 } else {
     document.getElementById("output").innerHTML = "Serial Not Supported"
 }
@@ -106,8 +106,28 @@ async function sendMessage() { // BAD BAD BAD BAD BAD
     // parameter is always 0 in return messages
     // remember to change checksum
 
-    await writer.write(document.getElementById("input").value);
-    
+    // i want the input schema to look like:
+    // MCUX -> Y   Pn.m = Z  [Tx]
+    // and hopefully i can store inputs I receive? idk i want to make sure I'm reading a return value properly i think
+    // whateverrr
+    var userIns = [document.getElementById("hostMCU").value, document.getElementById("targetMCU").value, document.getElementById("pMajor").value, document.getElementById("pMinor").value, document.getElementById("setOnOff").value];
+    var txArray = [0x7c, 0x06, Number(userIns[1]), 0, 0, Number(userIns[0]), 0, 0xcf];
+    console.log(userIns[2] + 1);
+    //console.log(userIns[4]);
+    txArray[3] = ((Number(userIns[2]) + 1) * 16) + Number(userIns[4]);
+    console.log(txArray[3]);
+    txArray[4] = Math.pow(2, Number(userIns[3]));
+    if(Number(userIns[4]) == 0 ) txArray[4] = ~Number(txArray[4]);
+    txArray[6] = txArray[2] ^ txArray[3] ^ txArray[4] ^ txArray[5];
+    var hexArray = [];
+    var outArray = new Uint8Array(txArray);
+    for(i = 0; i < 8; i++) {
+        hexArray[i] = outArray[i].toString(16);
+    }
+    console.log(hexArray);
+    console.log(txArray);
+
+    await writer.write(outArray);
 }
 
 async function flushBuffer() {
