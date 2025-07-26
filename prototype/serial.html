@@ -1,43 +1,92 @@
 <head>
 <meta name="viewport" charset='utf-8' content="width=device-width, initial-scale=1.0"/>
 <style>
-@import url('https://fonts.googleapis.com/css?family=Lato&display=swap');
+  @import url('https://fonts.googleapis.com/css?family=Lato&display=swap');
+  table {
+    border-spacing: -1px;
+    border-collapse: collapse;
+    border: 2px solid black;
+    margin: 2px;
+  }
+  #mcuGrid {
+    display: grid;
+    grid-template-columns: auto auto auto;
+  }
+  td {
+    align-content: center;
+    font-size: 1.2em;
+    text-align: center;
+    border: 1px solid black;
+  }
+  .alignLeft {
+    text-align: left;
+  }
+  .alignRight {
+    text-align: right;
+  }
+  td label {
+    display: block;
+    border: 1px solid black;
+    user-select: none;
+  }
+
+  .checkContainer input {
+    position: absolute;
+    opacity: 0;
+    height: 0;
+    width: 0;
+  }
+
+  .checkContainer .checklight {
+    display: inline-block;
+    height: 1em;
+    width: 1em;
+    background-color: red;
+    border-radius: 90%;
+    vertical-align: text-bottom;
+    margin: 1px;
+  }
+
+  .checkContainer:hover input ~ .checklight {
+    background-color: darkred;
+  }
+
+  .checkContainer input:checked ~ .checklight {
+    background-color: lawngreen;
+  }
+
+  .checkContainer:hover input:checked ~ .checklight {
+    background-color: green;
+  }
 </style>
 </head>
-<table>
-  <tr>
-    <td>
-      <table>
-      <tbody id="feedbackTable">
+<div id="startup">
+  <p id='output'>Serial Not Supported</p>
+  <button onclick='getSerial()'>Choose Serial Device</button>
+</div>
+<div id="mcuGrid">
+      
+</div>
 
-      </tbody>
-      </table>
-    </td>
+<form>
 
-    <td>
-      <p id='output'>Serial Not Supported</p>
-      <button onclick='getSerial()'>Choose Serial Device</button>
-      <form>
-        <label for="brate">Baud Rate:</label><br>
-        <input type="number" id="brate" name="brate" value="9600"><br>
-        <input type="button" onclick="openSerial()" value="Set Baud Rate"><br><br>
+  <label for="brate">Baud Rate:</label><br>
+  <input type="number" id="brate" name="brate" value="9600"><br>
+  <label for="hostMCU">Host MCU:</label>
+  <input type="number" id="hostMCU" maxlength="2" size="1" value="0" min="0" max="16">
+  <label for="targetMCU">Target MCU:</label>
+  <input type="number" id="targetMCU" maxlength="2" size="1" value="3" min="0" max="16"><br>
+  <label for="pMajor">P</label>
+  <input type="number" id="pMajor" maxlength="1" size="1" value="0" min="0" max="9">
+  <label for="pMinor">.</label>
+  <input type="number" id="pMinor" maxlength="1" size="1" value="0" min="0" max="7">
+  <label for="setOnOff">=</label>
+  <input type="number" id="setOnOff" maxlength="1" size="1" value="0" min="0" max="1"><br>
+  <input type="button" onclick="sendMessage()" value="Send Message">
+  <input type="button" onclick="saveLog()" value="Save Log">
+</form>
+<p>Output Stream:</p>
+<p id="outputStream"></p>
 
-        <label for="hostMCU">Host MCU:</label>
-        <input type="number" id="hostMCU" maxlength="2" size="1" value="0" min="0" max="16">
-        <label for="targetMCU">Target MCU:</label>
-        <input type="number" id="targetMCU" maxlength="2" size="1" value="3" min="0" max="16"><br>
-        <label for="pMajor">P</label>
-        <input type="number" id="pMajor" maxlength="1" size="1" value="0" min="0" max="9">
-        <label for="pMinor">.</label>
-        <input type="number" id="pMinor" maxlength="1" size="1" value="0" min="0" max="7">
-        <label for="setOnOff">=</label>
-        <input type="number" id="setOnOff" maxlength="1" size="1" value="0" min="0" max="1"><br>
-        <input type="button" onclick="sendMessage()" value="Send Message">
-      </form>
-      <p>Output Stream:</p>
-      <p id="outputStream"></p>
-    </td>
-  </tr>
-</table>
 
 <script src="serial.js"></script>

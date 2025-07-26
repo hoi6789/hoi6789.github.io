@@ -11,59 +11,84 @@ var enableDecoder = false;
 var enableEncoder = false;
 
 var table;
+var storedValues = [];
+// stored values is array in array in array action! [[[[val, cnt] (P0.0), [] (P0.1)...] (P0.x), [] (P1.x)...] (mcu14), [...] (mcu3)...]
+// outer arrays represents each mcu. order is always 14, 3, 4, 5...
+// updating the value of P2.6 in MCU4 is equal to setting storedValues[2][2][6][0]
+var loadedMCUs = 6;
+var globalSource = 0;
+
+var activityLog = [];
+
+var MCUToStore = {
+    14: 0,
+    3: 1,
+    4: 2,
+    5: 3,
+    6: 4,
+    7: 5,
+    8: 6,
+    9: 7
+}
+
+var StoreToMCU = [14, 3, 4, 5, 6, 7, 8, 9]
 
 var buffer = [];
 var timeout;
 
-for(i = 0; i < 16; i++) {
-    var output = "<tr>";
-    var maj = Math.floor(i / 8);
-    var min;
-    (i < 8) ? min = i % 8 : min = 7 - (i % 8); 
-    output += `<td> <label for="p${maj}${min}">P${maj}.${min}</label><input onclick="" type="checkbox" id="p${maj}${min}"> </td>`;
-    if(i == 0) {
-        output += `<td rowspan="16"> <img src="relayboard.png" alt="relayboard" height="500"> </td>`;
+for(j = 0; j < loadedMCUs; j++) {
+    storedValues[j] = [];
+    document.getElementById("mcuGrid").innerHTML += `<table><tbody id="feedbackTable${j}"></tbody></table>`
+    for(i = 0; i < 16; i++) {
+        var output = "<tr>";
+        var maj = Math.floor(i / 8);
+        var min;
+        (i < 8) ? min = i % 8 : min = 7 - (i % 8); 
+        output += `<td class="alignRight"> <label class="checkContainer">P${maj}.${min}<input onclick="togglePin(${StoreToMCU[j]},${maj},${min})" type="checkbox" id="check${j}.${maj}.${min}"> <span class="checklight"></span> </label> </td>`;
+        if(i == 0) {
+            output += `<td>MCU${StoreToMCU[j]}</td>`
+        }
+        if(i == 1) {
+            output += `<td rowspan="16" style="width: 30%"> <img src="relayboard.png" alt="relayboard" height="400"> </td>`;
+        }
+        maj += 2;
+        output += `<td class="alignLeft"> <label class="checkContainer"><input onclick="togglePin(${StoreToMCU[j]},${maj},${min})" type="checkbox" id="check${j}.${maj}.${min}"><span class="checklight"></span>P${maj}.${min} </label> </td>`;
+        document.getElementById("feedbackTable" + j).innerHTML += output;
     }
-    maj += 2;
-    output += `<td> <label for="p${maj}${min}">P${maj}.${min}</label><input onclick="" type="checkbox" id="p${maj}${min}"> </td>`;
-    document.getElementById("feedbackTable").innerHTML += output;
+    for(k = 0; k < 5; k++) {
+        storedValues[j][k] = [];
+        for(l = 0; l < 8; l++) {
+            storedValues[j][k][l] = [0, 0];
+        }
+    }
 }
+
+
 
 
 if("serial" in navigator) {
     document.getElementById("output").innerHTML = "Awaiting Serial Device"
+
 } else {
     document.getElementById("output").innerHTML = "Serial Not Supported"
 }
 // don't ask me what any of this does or how it works
 // as far as i'm concerned it doesn't, and it's all black magic to me
 async function getSerial() {
+    var knownPorts = await navigator.serial.getPorts();
+    for(item in knownPorts) {
+        await item.forget();
+    }
     port = await navigator.serial.requestPort();
-    document.getElementById("output").innerHTML = "Connected to: " + await port;
-    return 1;
-}
-
-async function openSerial() {
-    await port.open({ baudRate: 9600 });
-
-    if(enableDecoder) {
-        readableStreamClosed = port.readable.pipeTo(textDecoder.writable);
-        reader = textDecoder.readable.getReader();
-    } else {
-        reader = await port.readable.getReader();
-    }
-
-    if(enableEncoder) {
-        writableStreamClosed = textEncoder.readable.pipeTo(port.writable);
-         writer = textEncoder.writable.getWriter();
-    } else {
-        writer = await port.writable.getWriter();
-    }
+    document.getElementById("output").innerHTML = "Connected to Serial Device";
+    await port.open(document.getElementById("brate").value);
+    reader = await port.readable.getReader();
+    writer = await port.writable.getWriter();
+    document.getElementById("mcuGrid").style.display = "grid";
+    document.getElementById("startup").style.display = "none";
     locked = true;
     beginListening();
-
 }
-
 
 async function beginListening() {
     while(locked) {
@@ -110,14 +135,15 @@ async function sendMessage() { // BAD BAD BAD BAD BAD
     // MCUX -> Y   Pn.m = Z  [Tx]
     // and hopefully i can store inputs I receive? idk i want to make sure I'm reading a return value properly i think
     // whateverrr
-    var userIns = [document.getElementById("hostMCU").value, document.getElementById("targetMCU").value, document.getElementById("pMajor").value, document.getElementById("pMinor").value, document.getElementById("setOnOff").value];
-    var txArray = [0x7c, 0x06, Number(userIns[1]), 0, 0, Number(userIns[0]), 0, 0xcf];
-    console.log(userIns[2] + 1);
-    //console.log(userIns[4]);
-    txArray[3] = ((Number(userIns[2]) + 1) * 16) + Number(userIns[4]);
-    console.log(txArray[3]);
-    txArray[4] = Math.pow(2, Number(userIns[3]));
-    if(Number(userIns[4]) == 0 ) txArray[4] = ~Number(txArray[4]);
+    compileSend(document.getElementById("hostMCU").value, document.getElementById("targetMCU").value, document.getElementById("pMajor").value, document.getElementById("pMinor").value, document.getElementById("setOnOff").value);
+    
+}
+
+async function compileSend(host, target, major, minor, val) {
+    var txArray = [0x7c, 0x06, Number(target), 0, 0, Number(host), 0, 0xcf];
+    txArray[3] = ((Number(major) + 1) * 16) + Number(val);
+    txArray[4] = Math.pow(2, Number(minor));
+    if(Number(val) == 0 ) txArray[4] = ~Number(txArray[4]);
     txArray[6] = txArray[2] ^ txArray[3] ^ txArray[4] ^ txArray[5];
     var hexArray = [];
     var outArray = new Uint8Array(txArray);
@@ -127,15 +153,58 @@ async function sendMessage() { // BAD BAD BAD BAD BAD
     console.log(hexArray);
     console.log(txArray);
 
+
+    activityWrite(hexArray);
     await writer.write(outArray);
+}
+
+function togglePin(target, major, minor) {
+    compileSend(document.getElementById("hostMCU").value, target, major, minor, Number(!storedValues[MCUToStore[target]][major][minor][0]))
 }
 
 async function flushBuffer() {
     for(i = 0; i < buffer.length; i++) {
         buffer[i] = Number(buffer[i]).toString(16);
     }
-    document.getElementById("outputStream").innerHTML += buffer;
-    document.getElementById("outputStream").innerHTML += "<br>";
+    activityWrite(buffer);
     buffer = [];
     clearTimeout(timeout);
+}
+
+async function activityWrite(data) {
+    // data is an array with 8 bytes in it. please find a way to make it look normal
+    var onOff = parseInt(data[3], 16) % 16;
+    var parameter = parseInt(data[4], 16);
+    var _major = Math.floor(parseInt(data[3], 16) / 16 - 1)
+    if(!onOff) parameter = 255 - parameter;
+    parameter = Math.log2(parameter);
+    var simplify = `MCU${data[5]}->${data[2]}: P${_major}.${parameter} = ${onOff}`;
+    var currentDate = new Date(Date.now());
+    var currentTime = currentDate.toString().substring(4, 24) + ":" + currentDate.getMilliseconds();
+    
+    if(storedValues[MCUToStore[parseInt(data[2], 16)]][_major][parameter][0] != onOff) {
+        storedValues[MCUToStore[parseInt(data[2], 16)]][_major][parameter][0] = onOff;
+        storedValues[MCUToStore[parseInt(data[2], 16)]][_major][parameter][1]++;
+    }
+
+    document.getElementById(`check${MCUToStore[parseInt(data[2], 16)]}.${_major}.${parameter}`).checked = Boolean(onOff);
+
+    activityLog.push([currentTime, simplify]);
+    document.getElementById("outputStream").innerHTML += `${currentTime}: ${simplify}`;
+    document.getElementById("outputStream").innerHTML += ` (raw: ${data})`;
+    document.getElementById("outputStream").innerHTML += "<br>";
+}
+
+async function saveLog() {
+    var processedLog = activityLog.join("\n");
+    var outBlob = new Blob([processedLog], {type: "text/plain", endings: "native"})
+    var a = document.createElement("a");
+    document.body.appendChild(a);
+    a.style = "display: none";
+    url = window.URL.createObjectURL(outBlob);
+    a.href = url;
+    a.download = String(Date.now()) + ".txt";
+    a.click();
+    window.URL.revokeObjectURL(url);
+    //do thing where it creates an <a> and clicks it and it downloads waowoaoawa 
 }
