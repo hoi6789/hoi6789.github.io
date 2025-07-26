@@ -58,7 +58,7 @@ for(j = 0; j < loadedMCUs; j++) {
     for(k = 0; k < 5; k++) {
         storedValues[j][k] = [];
         for(l = 0; l < 8; l++) {
-            storedValues[j][k][l] = [0, 0];
+            storedValues[j][k][l] = [1, 0];
         }
     }
 }
