@@ -187,7 +187,7 @@ async function activityWrite(data) {
         storedValues[MCUToStore[parseInt(data[2], 16)]][_major][parameter][1]++;
     }
 
-    document.getElementById(`check${MCUToStore[parseInt(data[2], 16)]}.${_major}.${parameter}`).checked = Boolean(onOff);
+    document.getElementById(`check${MCUToStore[parseInt(data[2], 16)]}.${_major}.${parameter}`).checked = !Boolean(onOff);
 
     activityLog.push([currentTime, simplify]);
     document.getElementById("outputStream").innerHTML += `${currentTime}: ${simplify}`;
