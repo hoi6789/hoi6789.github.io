@@ -77,11 +77,11 @@ if("serial" in navigator) {
 async function getSerial() {
     var knownPorts = await navigator.serial.getPorts();
     for(item in knownPorts) {
-        await item.forget();
+        //await item.forget();
     }
     port = await navigator.serial.requestPort();
     document.getElementById("output").innerHTML = "Connected to Serial Device";
-    await port.open(document.getElementById("brate").value);
+    await port.open({baudRate: document.getElementById("brate").value});
     reader = await port.readable.getReader();
     writer = await port.writable.getWriter();
     document.getElementById("mcuGrid").style.display = "grid";
