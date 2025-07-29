@@ -146,7 +146,7 @@ async function compileSend(host, target, major, minor, val) {
     txArray[3] = ((Number(major) + 1) * 16) + Number(val);
     txArray[4] = Math.pow(2, Number(minor));
     if(Number(val) == 0 ) txArray[4] = ~Number(txArray[4]);
-    txArray[6] = txArray[2] ^ txArray[3] ^ txArray[4] ^ txArray[5];
+    txArray[6] = txArray[1] ^ txArray[2] ^ txArray[3] ^ txArray[4] ^ txArray[5];
     var hexArray = [];
     var outArray = new Uint8Array(txArray);
     for(i = 0; i < 8; i++) {
@@ -194,6 +194,9 @@ async function activityWrite(data) {
         storedValues[MCUToStore[parseInt(data[2], 16)]][_major][parameter][1]++;
     }
 
+    //if() {
+        
+    //}
     document.getElementById(`check${MCUToStore[parseInt(data[2], 16)]}.${_major}.${parameter}`).checked = !Boolean(onOff);
     document.getElementById(`tip${MCUToStore[parseInt(data[2], 16)]}.${_major}.${parameter}`).innerHTML = `Toggled ${storedValues[MCUToStore[parseInt(data[2], 16)]][_major][parameter][1]} times`;
 
