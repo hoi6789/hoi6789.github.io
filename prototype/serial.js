@@ -39,20 +39,22 @@ var timeout;
 for(j = 0; j < loadedMCUs; j++) {
     storedValues[j] = [];
     document.getElementById("mcuGrid").innerHTML += `<table><tbody id="feedbackTable${j}"></tbody></table>`
-    for(i = 0; i < 16; i++) {
+    for(i = 0; i < 20; i++) {
         var output = "<tr>";
         var maj = Math.floor(i / 8);
+        if(i >= 16) maj = 4;
         var min;
-        (i < 8) ? min = i % 8 : min = 7 - (i % 8); 
-        output += `<td class="alignRight"> <label class="checkContainer">P${maj}.${min}<input onclick="togglePin(${StoreToMCU[j]},${maj},${min})" type="checkbox" id="check${j}.${maj}.${min}"> <span class="checklight"></span> </label> </td>`;
+        (i < 16) ? min = i % 8 : min = i - 16; 
+        output += `<td class="alignRight"> <label class="checkContainer">P${maj}.${min}<input onclick="togglePin(${StoreToMCU[j]},${maj},${min})" type="checkbox" id="check${j}.${maj}.${min}"> <span class="checklight"></span> <span class="tooltip" id="tip${j}.${maj}.${min}">Toggled 0 times</span> </label> </td>`;
         if(i == 0) {
             output += `<td>MCU${StoreToMCU[j]}</td>`
         }
         if(i == 1) {
-            output += `<td rowspan="16" style="width: 30%"> <img src="relayboard.png" alt="relayboard" height="400"> </td>`;
+            output += `<td rowspan="200" style="width: 30%"> <img src="relayboard.png" alt="relayboard" height="400"> </td>`;
         }
-        maj += 2;
-        output += `<td class="alignLeft"> <label class="checkContainer"><input onclick="togglePin(${StoreToMCU[j]},${maj},${min})" type="checkbox" id="check${j}.${maj}.${min}"><span class="checklight"></span>P${maj}.${min} </label> </td>`;
+        if(i < 16) maj += 2;
+        if(i >= 16) min += 4;
+        output += `<td class="alignLeft"> <label class="checkContainer"><input onclick="togglePin(${StoreToMCU[j]},${maj},${min})" type="checkbox" id="check${j}.${maj}.${min}"><span class="checklight"></span>P${maj}.${min} <span class="tooltip" id="tip${j}.${maj}.${min}">Toggled 0 times</span> </label> </td>`;
         document.getElementById("feedbackTable" + j).innerHTML += output;
     }
     for(k = 0; k < 5; k++) {
@@ -182,17 +184,19 @@ async function activityWrite(data) {
     var currentDate = new Date(Date.now());
     var currentTime = currentDate.toString().substring(4, 24) + ":" + currentDate.getMilliseconds();
     
+    activityLog.push([currentTime, simplify]);
+    document.getElementById("outputStream").innerHTML += `${currentTime}: ${simplify}`;
+    document.getElementById("outputStream").innerHTML += ` (raw: ${data})`;
+    document.getElementById("outputStream").innerHTML += "<br>";
+
     if(storedValues[MCUToStore[parseInt(data[2], 16)]][_major][parameter][0] != onOff) {
         storedValues[MCUToStore[parseInt(data[2], 16)]][_major][parameter][0] = onOff;
         storedValues[MCUToStore[parseInt(data[2], 16)]][_major][parameter][1]++;
     }
 
     document.getElementById(`check${MCUToStore[parseInt(data[2], 16)]}.${_major}.${parameter}`).checked = !Boolean(onOff);
+    document.getElementById(`tip${MCUToStore[parseInt(data[2], 16)]}.${_major}.${parameter}`).innerHTML = `Toggled ${storedValues[MCUToStore[parseInt(data[2], 16)]][_major][parameter][1]} times`;
 
-    activityLog.push([currentTime, simplify]);
-    document.getElementById("outputStream").innerHTML += `${currentTime}: ${simplify}`;
-    document.getElementById("outputStream").innerHTML += ` (raw: ${data})`;
-    document.getElementById("outputStream").innerHTML += "<br>";
 }
 
 async function saveLog() {

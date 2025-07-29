@@ -9,7 +9,7 @@
     margin: 2px;
   }
   #mcuGrid {
-    display: hidden;
+    display: grid;
     grid-template-columns: auto auto auto;
   }
   td {
@@ -28,6 +28,10 @@
     display: block;
     border: 1px solid black;
     user-select: none;
+  }
+
+  .checkContainer {
+    position: relative;
   }
 
   .checkContainer input {
@@ -57,6 +61,34 @@
 
   .checkContainer:hover input:checked ~ .checklight {
     background-color: darkred;
+  }
+
+  .checkContainer .tooltip {
+    position: absolute;
+    visibility: collapse;
+    background-color: aliceblue;
+    border: 1px solid black;
+    padding: 5px;
+    z-index: 1;
+    text-align: center;
+
+    opacity: 0;
+    transition: opacity 0s 0.5s;
+    width: 140px;
+  
+    /* Fade in tooltip - takes 1 second to go from 0% to 100% opac: */
+  }
+
+  .checkContainer:hover .tooltip {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  .alignLeft .checkContainer .tooltip {
+    right: 105%;
+  }
+  .alignRight .checkContainer .tooltip {
+    left: 105%;
   }
 </style>
 </head>
