@@ -101,7 +101,7 @@ async function beginListening() {
             break;
         }
         // value is a Uint8Array.
-        buffer = buffer.concat(value);
+        buffer = [...buffer, ...value];
         clearTimeout(timeout);
         if(buffer.length >= 8) {
             flushBuffer();
